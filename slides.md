@@ -153,7 +153,7 @@ Je connais cette base de l'intérieur, et aujourd'hui je la connecte à une plat
 
 ---
 
-# Sinapse : la suite de la CAFAT
+# De la CAFAT à Sinapse : une suite logique
 
 <div class="grid grid-cols-3 gap-4 mt-2 mb-4">
 <IconCard titre="GIE · 2024" texte="CAFAT · Gouvernement · FSH"><carbon-partnership /></IconCard>
@@ -176,7 +176,7 @@ Je connais cette base de l'intérieur, et aujourd'hui je la connecte à une plat
   <div class="px-4 py-3 rounded-xl text-center font-bold" style="background: #eef3f5; border: 2px solid #5d8392; color: #1f3b47">SI social<br>modernisé</div>
 </div>
 
-> Hier **architecte de données à la CAFAT**, aujourd'hui je **construis la suite**.
+> Ce que j'ai appris à la CAFAT, je le mets au service du **SI de demain**, avec l'équipe Sinapse.
 
 <div class="absolute bottom-4 left-8 text-xs opacity-60">
 <a href="https://sinapse.nc/qui">sinapse.nc — Qui sommes-nous ?</a> ·
@@ -187,8 +187,7 @@ Je connais cette base de l'intérieur, et aujourd'hui je la connecte à une plat
 <!--
 Quelques mots sur là où je travaille aujourd'hui, parce que ça explique le regard que je porte.
 Sinapse est un groupement d'intérêt économique créé en 2024 par la CAFAT, le Gouvernement de la Nouvelle-Calédonie et le Fonds social de l'habitat. Sa mission : moderniser le système d'information de la protection sociale, en commençant par le recouvrement et les parcours des employeurs et des travailleurs indépendants. 265 000 Calédoniens sont concernés.
-Pour moi, c'est une continuité : même mission de service public, même terrain, un autre rôle.
-(À l'écran : trois cartes et le schéma ; le détail est ici.) Hier, architecte de données à la CAFAT ; aujourd'hui, je construis la suite. C'est exactement la posture du passeur : on ne modernise bien que ce qu'on connaît de l'intérieur.
+Pour moi, c'est une suite logique. À la CAFAT, j'ai appris à connaître ces données, leur histoire, leurs contraintes. Aujourd'hui, je mets cette connaissance au service du système d'information de demain, avec toute l'équipe Sinapse. Même mission de service public, un autre rôle.
 Et la méthode affichée par Sinapse — partir des besoins, livrer étape par étape — c'est ce que je vais vous montrer côté base de données dans la deuxième partie : moderniser progressivement.
 -->
 
