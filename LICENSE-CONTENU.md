@@ -5,7 +5,7 @@ est mis à disposition selon les termes de la licence
 **Creative Commons Attribution 4.0 International (CC BY 4.0)**.
 
 Vous pouvez le partager et l'adapter, y compris à des fins commerciales, à condition
-de créditer l'auteur (Andy, « Db2 for i : un héritage puissant qui ne demande qu'à
+de créditer l'auteur (Andy MALO, « Db2 for i : un héritage puissant qui ne demande qu'à
 évoluer », iBelieve 2026), d'indiquer si des modifications ont été faites et de
 fournir un lien vers la licence.
 
