@@ -362,7 +362,7 @@ Kit : <code>kit/rpg/</code> — 5 tables, 7 programmes RPG compilés depuis ACS,
 
 <!--
 Pour que ce ne soit pas que de la théorie, tous les exemples de cette partie ont été exécutés sur pub400, un IBM i public — et vous pouvez les rejouer : tout est dans le kit du dépôt, à lancer dans votre propre bibliothèque. Le schéma est volontairement petit : des clients, des devis, des lignes, des factures. Mais il a les défauts d'une vraie base : une date stockée en numérique, « parce que c'est partout », et des règles métier — remise, plafond d'encours, cycle de vie du devis — qui vivent dans les programmes.
-Le terrain, ce sont de vrais programmes RPG, publiés avec le kit et compilés depuis ACS : VALDEVIS valide un devis — il appelle CALCDEVIS, qui appelle CALCTARIF pour la remise et la TVA, et CTLENCOURS pour le plafond d'encours. GENFACT facture, et possède sa transaction. Par-dessus, un début de SQL : deux façades, PS_VAL_DEVIS et PS_GEN_FACT, et une procédure SQL, PS_TRAITER_DEVIS, qui les enchaîne. On verra à l'étape 2 comment on les écrit.
+Le terrain, ce sont de vrais programmes RPG, publiés avec le kit et compilés depuis ACS : VALDEVIS valide un devis — il appelle CALCDEVIS, qui appelle CALCTARIF pour la remise et la TVA, et CTLENCOURS pour le plafond d'encours. GENFACT facture, et possède sa transaction. Par-dessus, un début de SQL : deux façades, PS_VAL_DEVIS et PS_GEN_FACT, et une procédure SQL, PS_TRAITER_DEVIS, qui les enchaîne. On verra à l'étape 2.2 comment on les écrit.
 Un mot sur la nomenclature, parce qu'on va la retrouver partout : PS_ pour une procédure stockée, rien pour un programme RPG ou CL. PS_VAL_DEVIS encapsule VALDEVIS : on ne les confond plus. Autre raison, propre à l'IBM i : une procédure SQL crée un objet *PGM — sans préfixe, rien ne la distingue d'un RPG dans WRKOBJ ou dans le journal. Et comme un nom d'objet système tient en 10 caractères, chaque procédure déclare un SPECIFIC court — PS_TRAITER_DEVIS devient le programme PS_TRTDEV. Sans SPECIFIC, Db2 fabrique un nom, du genre PS_TR00001. (Tableau complet dans kit/README.md.)
 Pas de compilateur, ou pas le droit de compiler ? Le kit a une variante tout SQL (kit/00-terrain.sql), où des procédures SQL jouent le rôle des programmes.
 -->
@@ -611,7 +611,6 @@ CREATE OR REPLACE PROCEDURE PS_CALC_TARIF_RPG3 (
 )
   LANGUAGE RPG                       -- RPG, pas RPGLE : c'est de l'OPM
   SPECIFIC PS_TARIF3
-  NOT DETERMINISTIC
   NO SQL
   EXTERNAL NAME 'VOTREBIB/CALCTAR3'
   PARAMETER STYLE GENERAL;
@@ -1158,7 +1157,7 @@ chapitre: 4
 <IconCard titre="MCP" texte="assistants IA"><carbon-bot /></IconCard>
 </div>
 
-<div class="text-center mt-12 text-xl"><carbon-ibm-db2 class="inline" /> Les procédures de l'étape 2 passent <b>par les mêmes portes</b></div>
+<div class="text-center mt-12 text-xl"><carbon-ibm-db2 class="inline" /> Les procédures de l'étape 2.2 passent <b>par les mêmes portes</b></div>
 
 <div class="absolute bottom-4 left-8 text-xs opacity-60">
 <a href="https://www.ibm.com/support/pages/odbc-driver-ibm-i-access-client-solutions">ODBC ACS</a> ·
@@ -1170,7 +1169,7 @@ chapitre: 4
 
 <!--
 L'IBM i n'est pas un silo. On s'y connecte depuis de multiples points d'accès. ODBC (IBM i Access), sous Windows, Linux et macOS : Python, BI, ETL, DuckDB. JDBC (JTOpen) : Java, Talend, les outils JVM. Mapepire : des clients légers, un seul port chiffré, adapté au cloud. HTTP depuis SQL : l'IBM i qui appelle des API. MCP : des assistants IA qui interrogent Db2 for i. Point fort : le pilote ODBC sous Linux s'installe comme n'importe quel paquet, donc dans un conteneur ou un pipeline.
-Et les procédures stockées de l'étape 2 sont appelables par ces mêmes points d'accès : un pipeline data peut déclencher un traitement RPG existant par un simple CALL.
+Et les procédures stockées de l'étape 2.2 sont appelables par ces mêmes points d'accès : un pipeline data peut déclencher un traitement RPG existant par un simple CALL.
 -->
 
 ---
