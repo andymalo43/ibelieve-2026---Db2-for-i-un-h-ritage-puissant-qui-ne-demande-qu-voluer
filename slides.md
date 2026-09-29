@@ -137,15 +137,17 @@ Et la méthode affichée par Sinapse — partir des besoins, livrer étape par �
 layout: default
 ---
 
-# Trois questions
+# Faire évoluer son IBM i : par où commencer ?
+
+<div class="opacity-70 -mt-2">40 ans d'applicatif, des règles dans les programmes, peu de documentation</div>
 
 <div class="grid grid-cols-3 gap-6 mt-6">
-<IconCard titre="Avec un outil" texte="ça avance ?"><carbon-tool-kit /></IconCard>
-<IconCard titre="Sans outil" texte="comment avancer ?"><carbon-idea /></IconCard>
-<IconCard titre="Le natif seul" texte="jusqu'où ?"><carbon-ibm-i /></IconCard>
+<IconCard titre="Avec un outil" texte="jusqu'où aident-ils ?"><carbon-tool-kit /></IconCard>
+<IconCard titre="Sans outil" texte="comment avancer quand même ?"><carbon-idea /></IconCard>
+<IconCard titre="Avec le natif seul" texte="que permet le SQL ?"><carbon-ibm-i /></IconCard>
 </div>
 
-<div class="text-center mt-10 text-xl">Le SQL sur IBM i, <b>bien plus que des transactions</b></div>
+<div class="text-center mt-10 text-xl">Le fil de la réponse : le SQL, <b>bien plus que des transactions</b></div>
 
 <div class="grid grid-cols-4 gap-4 mt-3">
 <IconCard petit titre="moderniser"><carbon-migrate /></IconCard>
@@ -155,15 +157,16 @@ layout: default
 </div>
 
 <!--
-Ces trois questions vont guider toute la session. Les outils existants permettent-ils d'avancer ? S'il n'y a pas d'outil, comment avancer quand même ? Et que peut-on faire uniquement avec le natif ?
-Et le message central : le SQL sur IBM i dépasse largement la base de données et les transactions.
+Le point de départ, c'est une situation que beaucoup d'entre vous connaissent : un IBM i qui tourne depuis des décennies, 40 ans d'applicatif, des règles métier cachées dans les programmes, et peu de documentation. On veut le faire évoluer. Par où commencer ?
+Trois façons de s'y prendre, et trois questions qui vont guider toute la session. Avec un outil du marché : jusqu'où nous aident-ils ? Sans outil, parce qu'il n'y a pas de budget ou pas encore : comment avancer quand même ? Et avec le natif seul : que permet le SQL de l'IBM i ?
+Le fil de la réponse, vous allez le voir tout au long : le SQL sur IBM i dépasse largement les transactions. Il sert à moderniser, à administrer, à exploiter, et à ouvrir les données au reste du système d'information.
 -->
 
 ---
 layout: two-cols
 ---
 
-# 1. De 2021 à 2026
+# 1. Le chantier 2019-2022
 
 <div class="mt-2 leading-none font-bold" style="font-size: 5.5rem; color: var(--slidev-theme-primary)">500+</div>
 <div class="text-2xl mt-2">tables DDS → SQL, <b>sans recompiler</b></div>
@@ -196,7 +199,9 @@ new -> table: SQL {class: fil}
 
 <div class="absolute bottom-14 left-14 right-14 text-lg">
 
-> 2021 : **migrer des tables**. 2026 : en faire **une plateforme de données**.
+<div class="text-sm opacity-80 mb-2"><carbon-favorite-filled class="inline" style="color: #b56959" /> Merci à <b>E. Sadiman</b>, qui m'a confié ce chantier — et m'a rendu fan de l'IBM i</div>
+
+> iBelieve 2021 : **migrer des tables**. iBelieve 2026 : en faire **une plateforme de données**.
 
 </div>
 
@@ -205,9 +210,10 @@ Source : <a href="https://www.itheis.com/sql-comment-migrer-votre-base-de-donnee
 </div>
 
 <!--
-En 2021, je vous ai parlé de migrer des tables. Rappel rapide : plus de 500 tables DDS passées en SQL, accompagnés par Itheis et Gaia, avec l'outil Xcase for i. La clé, c'est la méthode surrogate : un fichier logique de substitution garde le format de l'ancien fichier, et les programmes existants continuent de tourner sans recompilation.
+En 2021, je vous ai parlé de migrer des tables. Rappel rapide : entre 2019 et 2022, plus de 500 tables DDS passées en SQL, accompagnés par Itheis et Gaia, avec l'outil Xcase for i. La clé, c'est la méthode surrogate : un fichier logique de substitution garde le format de l'ancien fichier, et les programmes existants continuent de tourner sans recompilation.
 Et après la migration, ce que le SQL débloque : des contraintes — les relations enfin portées par la base —, des tables temporelles pour l'historisation, RCAC pour la sécurité par ligne et par colonne. Pour un petit périmètre, le natif suffit : QSYS2.GENERATE_SQL régénère le DDL d'une bibliothèque (kit/04-la-base.sql, exécuté sur pub400).
 Pourquoi les contraintes comptent : une application moderne qui écrit directement dans une table, sans passer par le RPG, ne rencontre que les clés et l'intégrité référentielle ; plafond d'encours et cycle de vie du devis vivent dans les programmes, et elle les contourne sans le savoir. Chaque règle remontée dans la base est une règle qu'aucun nouveau client ne peut oublier.
+Et une dédicace, parce qu'on ne mène pas un chantier pareil seul : merci à E. Sadiman, qui m'a fait confiance sur ce sujet — et qui, sans le savoir, m'a rendu fan de l'IBM i.
 Transition : migrer la base, c'était la première marche. Mais une base moderne avec des programmes des années 80 autour, ça ne suffit pas. En 2026, je vous montre ce que cette base devient quand on la traite comme une vraie plateforme de données.
 -->
 
