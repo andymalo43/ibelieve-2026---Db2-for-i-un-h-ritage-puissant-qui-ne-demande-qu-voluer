@@ -64,6 +64,7 @@ layout: default
 
 <div class="etape-avec-fleche">
   <div class="etape legacy">
+    <div class="etape__annee">avant 2016</div>
     <div class="etape__role">Bureautique</div>
     <div class="etape__logos"><simple-icons-microsoftexcel style="color: #217346" /><simple-icons-microsoftaccess style="color: #a4373a" /></div>
     <div class="etape__note">déjà du SQL</div>
@@ -73,6 +74,7 @@ layout: default
 <div v-click class="etape-avec-fleche moyen">
   <carbon-arrow-right class="fleche" />
   <div class="etape">
+    <div class="etape__annee">2016 – 2019</div>
     <div class="etape__role">Développeur BI</div>
     <div class="etape__logos"><simple-icons-talend style="color: #ff6d70" /><span class="cognos">Cognos</span></div>
     <div class="etape__note">consomme la base</div>
@@ -82,6 +84,7 @@ layout: default
 <div v-click class="etape-avec-fleche moyen">
   <carbon-arrow-right class="fleche" />
   <div class="etape fort">
+    <div class="etape__annee">2019 – 2022</div>
     <div class="etape__role">DBA / DBE Db2 for i</div>
     <div class="etape__logos"><span class="puce puce--multi"><carbon-ibm-i style="color: #1f3b47" /><simple-icons-postgresql style="color: #4169e1" /><carbon-sql style="color: #5d8392" /></span></div>
     <div class="etape__note">500+ tables → SQL</div>
@@ -91,6 +94,7 @@ layout: default
 <div v-click class="etape-avec-fleche large">
   <carbon-arrow-right class="fleche" />
   <div class="etape">
+    <div class="etape__annee">2022 – 2026</div>
     <div class="etape__role">Architecte données</div>
     <div class="etape__logos"><Logo nom="cafat.jpg" alt="CAFAT" hauteur="2.6rem" /></div>
     <div class="outils">
@@ -105,6 +109,7 @@ layout: default
 <div v-click class="etape-avec-fleche">
   <div class="fleche-texte"><carbon-arrow-right class="fleche fil" /><span>continuité</span></div>
   <div class="etape fort">
+    <div class="etape__annee">2026 →</div>
     <div class="etape__role">Ingénieur données</div>
     <div class="etape__logos"><span class="puce"><Logo nom="sinapse.png" alt="Sinapse" hauteur="2rem" /></span></div>
   </div>
@@ -124,23 +129,25 @@ layout: default
 .etape { min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.8rem 0.4rem; border-radius: 12px; background: #eef3f5; border: 2px solid #5d8392; text-align: center; }
 .etape.legacy { background: #f1eee8; border-color: #9a8f7d; }
 .etape.fort { background: #5d8392; border-color: #2f4f5c; color: #fff; }
+.etape__annee { white-space: nowrap; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em; color: #b56959; }
+.etape.fort .etape__annee { color: #f6d7cf; }
 .etape__role { font-weight: 700; font-size: 0.85rem; line-height: 1.15; }
 .etape__logos { display: flex; align-items: center; justify-content: center; gap: 0.4rem; font-size: 1.8rem; min-height: 2.4rem; }
 .etape__note { font-size: 0.7rem; opacity: 0.8; }
 .puce { display: inline-flex; align-items: center; background: rgba(255, 255, 255, 0.96); border-radius: 0.6rem; padding: 0.3rem 0.6rem; }
 .cognos { display: inline-flex; align-items: center; font-size: 1rem; font-weight: 800; letter-spacing: 0.02em; color: #1f3b47; }
-.puce--multi { gap: 0.4rem; }
-.puce--multi svg { font-size: 1.6rem; }
+.puce--multi { gap: 0.3rem; padding: 0.3rem 0.45rem; }
+.puce--multi svg { font-size: 1.4rem; }
 .outils { display: flex; justify-content: center; gap: 0.8rem; font-size: 1.3rem; }
 .outils span { display: flex; flex-direction: column; align-items: center; gap: 0.1rem; font-size: 0.6rem; color: #1f3b47; }
 .outils span svg { font-size: 1.5rem; }
 </style>
 
 <!--
-Mes premières requêtes SQL, je les ai écrites dans Access, pour alimenter des outils Excel. Je ne le savais pas encore, mais le fil rouge de ma carrière était déjà là.
-[clic] Ensuite, je suis passé à la data, comme concepteur développeur Talend et Cognos. J'étais alors consommateur de la base IBM i.
-[clic] Puis je suis passé de l'autre côté du miroir, DBA puis DBE sur Db2 for i. J'y ai mené la modernisation de plus de 500 tables DDS vers SQL — c'est là que je suis tombé amoureux du SQL sur IBM i. Et je l'assume : depuis, je suis un vrai fan de l'IBM i.
-[clic] Puis retour à la data : architecte de données à la CAFAT, avec les outils de la data moderne — dbt, dlt, Kestra, ClickHouse. [clic] Et aujourd'hui ingénieur de données à Sinapse, dans la continuité.
+Mes premières requêtes SQL, avant 2016, je les ai écrites dans Access, pour alimenter des outils Excel. Je ne le savais pas encore, mais le fil rouge de ma carrière était déjà là.
+[clic] De 2016 à 2019, je suis passé à la data, comme concepteur développeur Talend et Cognos. J'étais alors consommateur de la base IBM i.
+[clic] De 2019 à 2022, je suis passé de l'autre côté du miroir, DBA puis DBE sur Db2 for i. J'y ai mené la modernisation de plus de 500 tables DDS vers SQL — c'est là que je suis tombé amoureux du SQL sur IBM i. Et je l'assume : depuis, je suis un vrai fan de l'IBM i.
+[clic] De 2022 à 2026, retour à la data : architecte de données à la CAFAT, avec les outils de la data moderne — dbt, dlt, Kestra, ClickHouse. [clic] Et depuis 2026, ingénieur de données à Sinapse, dans la continuité.
 Je connais cette base de l'intérieur, et aujourd'hui je la connecte à une plateforme de données moderne. C'est ce regard de passeur que je veux partager.
 -->
 
