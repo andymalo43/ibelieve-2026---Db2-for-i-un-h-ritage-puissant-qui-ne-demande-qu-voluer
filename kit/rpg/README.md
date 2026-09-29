@@ -40,6 +40,7 @@ disponible) ; `sources/CALCTARA.l4g` en est le source L4G de référence, à lir
 | `13-facades.sql` | Les procédures SQL qui encapsulent les programmes, et un `CALL` de chaque façade de tarif | **oui** (DDL) |
 | `14-rejouer.sql` | Les trois versions comparées sur un jeu de valeurs ; la chaîne validation → facturation | **oui** |
 | `15-cartographier-rpg.sql` | `DSPPGMREF` : chaîne d'appels RPG et usage des tables | `QTEMP` |
+| `16-appeler.sql` | Fonction table `TARIF_RPG3` : les valeurs calculées par le RPG, lisibles par un simple `SELECT` (pour les clients ODBC qui ne lisent pas les paramètres OUT) | **oui** (DDL) |
 | `19-menage.sql` | Supprime tout ce que cette partie a créé | **oui** |
 
 ## Ce que vous devez voir
@@ -52,6 +53,17 @@ disponible) ; `sources/CALCTARA.l4g` en est le source L4G de référence, à lir
   pour l'encours dépassé, `'S'` pour un devis déjà validé) et la facturation (`'D'` à la
   deuxième tentative : c'est la contrainte `UQ_FACDEV` qui protège, pas le RPG).
 - `15-cartographier-rpg.sql` : `VALDEVIS > CALCDEVIS > CALCTARIF` et `VALDEVIS > CTLENCOURS`.
+- `16-appeler.sql` : `SELECT * FROM TABLE(TARIF_RPG3(10000.00, 5.00)) T` → `9500.00 | 1900.00 | 11400.00`.
+
+## Appeler la façade depuis votre code
+
+- **JDBC** — `AppelerFacade.java` : un `CallableStatement` lit directement les paramètres OUT.
+  `IBMI_HOTE=… IBMI_USER=… IBMI_PWD=… java -cp jt400.jar AppelerFacade.java` (pilote [JTOpen](https://github.com/IBM/JTOpen)).
+- **ODBC** — `appeler_facade.py` : pyodbc [ne lit pas les paramètres de sortie](https://github.com/mkleehammer/pyodbc/wiki/Calling-Stored-Procedures) ;
+  il interroge la fonction table de `16-appeler.sql`. Même principe pour Excel, Power BI ou DuckDB.
+
+Le programme Java a tourné tel quel sur pub400 (29/09) ; la requête du script Python aussi, avec
+ses marqueurs alimentés par des flottants comme le fait pyodbc (le script lui-même demande un DSN ODBC).
 
 ## Pièges rencontrés (et réglés dans les scripts)
 

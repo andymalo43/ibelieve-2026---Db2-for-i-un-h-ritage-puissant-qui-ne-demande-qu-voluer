@@ -23,6 +23,7 @@ Tout le SQL montré pendant la session est dans [`kit/`](kit/), prêt à lancer 
 | Industrialiser l'extraction | `kit/06-industrialiser.sql` |
 | Tout supprimer | `kit/99-menage.sql` |
 | Encapsuler de vrais RPG, comparer trois versions, cartographier du RPG | `kit/rpg/` (sources RPG III / RPG IV fournies, compilées depuis ACS) |
+| Appeler le RPG encapsulé en JDBC (Java) ou en ODBC (Python) | `kit/rpg/AppelerFacade.java`, `kit/rpg/appeler_facade.py`, `kit/rpg/16-appeler.sql` |
 | ODBC → Arrow → DuckDB | `kit/exemples/` (à adapter) |
 
 ## Voir le deck

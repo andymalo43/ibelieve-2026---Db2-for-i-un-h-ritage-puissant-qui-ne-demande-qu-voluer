@@ -395,9 +395,9 @@ Ici les programmes sont des procédures SQL : leurs appels se lisent dans le cat
 ```sql
 SELECT 'graph TD' AS LIGNE FROM SYSIBM.SYSDUMMY1
 UNION ALL
-SELECT DISTINCT '  ' CONCAT TRIM(WHPNAM)
-       CONCAT ' --> ' CONCAT TRIM(WHFNAM)
-  FROM QTEMP.PGMREF
+SELECT DISTINCT '  ' CONCAT TRIM(WHPNAM) CONCAT ' --> '
+       CONCAT TRIM(WHFNAM) CONCAT '[(' CONCAT TRIM(WHFNAM) CONCAT ')]'
+  FROM QTEMP.PGMREF                             -- [( )] : table en cylindre
  WHERE WHOTYP = '*FILE'
    AND TRIM(WHLNAM) = CURRENT SCHEMA
 UNION ALL
@@ -410,9 +410,9 @@ SELECT '  ' CONCAT SPECIFIC_NAME
 
 ```text
 graph TD
-  VALIDER --> CALCULER
-  VALIDER --> CONTROLER
-  CALCULER --> TARIFER
+  CALCULER --> DEVLIG[(DEVLIG)]
+  CALCULER --> CLIENT[(CLIENT)]
+  VALIDER --> DEVIS[(DEVIS)]
   …  (16 lignes)
 ```
 
@@ -454,7 +454,7 @@ graph LR
 
 <!--
 Le SQL génère du Mermaid : les tables vues par DSPPGMREF, les appels vus par le catalogue. On colle le résultat dans n'importe quel éditeur, [clic] et on a un diagramme de structure. Pas aussi riche qu'un outil, mais suffisant pour cadrer.
-Le diagramme affiché est la sortie réelle de la requête sur pub400 (16 lignes), dont on a seulement ajouté la forme « table » aux fichiers.
+Le diagramme affiché est la sortie réelle de la requête sur pub400 (16 lignes) : la requête écrit elle-même les tables en cylindre, avec la syntaxe Mermaid [( )]. Seuls le sens (LR) et l'ordre des lignes ont été retouchés pour l'écran.
 Les limites, à annoncer honnêtement — c'est là qu'un outil fait la différence :
 - DSPPGMREF ne voit que les appels à nom littéral : un CALL sur une variable échappe.
 - Il ne voit pas les appels réseau : un programme qui appelle une API REST ne référence aucune table, alors que l'API, elle, en écrit.
@@ -534,6 +534,76 @@ Et une fois encapsulés, on les compose : une procédure SQL peut enchaîner une
 Point d'attention : une transaction ouverte par l'appelant ne traverse pas un programme compilé COMMIT(*NONE), et sans lever d'erreur. Encapsuler, c'est aussi décider qui possède la transaction — dans le kit, c'est le programme de facturation.
 Anecdote à garder si le temps le permet : sur 99,99 avec 33,33 % de remise, les trois versions divergent d'un centime — 79,99 contre 80,00 — parce que les arrondis ne sont pas écrits pareil. Encapsuler n'efface pas les différences : ça les rend testables (kit/rpg/14-rejouer.sql le montre).
 (Exécuté sur pub400 le 29/09 avec le kit RPG : sources chargées par SQL, compilées, façades créées ; les trois CALL rendent 9500.00 / 1900.00 / 11400.00.)
+-->
+
+---
+zoom: 0.9
+---
+
+# Appeler la façade depuis l'extérieur
+
+<div class="grid grid-cols-2 gap-6 mt-2">
+
+<div>
+
+### <logos-java class="inline" /> JDBC : les OUT, directement
+
+```java
+try (CallableStatement cs = cnx.prepareCall(
+        "CALL VOTREBIB.CALC_TARIF_RPG3(?, ?, ?, ?, ?, ?)")) {
+  cs.setBigDecimal(1, new BigDecimal("10000.00"));  // HT
+  cs.setBigDecimal(2, new BigDecimal("5.00"));      // remise %
+  for (int i = 3; i <= 5; i++)                      // OUT
+    cs.registerOutParameter(i, Types.DECIMAL, 2);
+  cs.registerOutParameter(6, Types.CHAR);
+  cs.execute();
+  System.out.println(cs.getBigDecimal(3) + " / "
+      + cs.getBigDecimal(4) + " / " + cs.getBigDecimal(5));
+}
+```
+
+</div>
+
+<div>
+
+### <logos-python class="inline" /> ODBC : par une fonction table
+
+<div class="text-sm px-3 py-2 mb-2 rounded" style="background: #f7ebe7; border-left: 4px solid #b56959">
+<carbon-warning-alt class="inline" style="color: #b56959" /> <b>pyodbc</b> et bien des outils BI <b>ne lisent pas les paramètres OUT</b> d'un <code>CALL</code>.
+On crée donc une <b>UDTF</b> (fonction table SQL) qui appelle la façade et rend ses valeurs en ligne : <code>kit/rpg/16-appeler.sql</code>.
+</div>
+
+```sql
+SELECT * FROM TABLE(TARIF_RPG3(10000.00, 5.00)) T;
+```
+
+```python
+import pyodbc
+
+cnx = pyodbc.connect("DSN=MONIBMI")   # IBM i Access ODBC
+remise, tva, ttc, rc = cnx.execute(
+    "SELECT * FROM TABLE(VOTREBIB.TARIF_RPG3(?, ?)) T",
+    10000.00, 5.00).fetchone()
+print(remise, tva, ttc)   # 9500.00 1900.00 11400.00
+```
+
+</div>
+
+</div>
+
+<div class="text-center mt-4 text-lg"><carbon-checkmark-outline class="inline" /> Dans les deux cas : <b>9500.00 · 1900.00 · 11400.00</b>, calculés par le RPG III</div>
+
+<div class="absolute bottom-4 left-8 text-xs opacity-60">
+<a href="https://github.com/IBM/JTOpen">JTOpen</a> ·
+<a href="https://github.com/mkleehammer/pyodbc/wiki/Calling-Stored-Procedures">pyodbc — procédures stockées</a> ·
+<code>kit/rpg/16-appeler.sql</code> · <code>AppelerFacade.java</code> · <code>appeler_facade.py</code>
+</div>
+
+<!--
+Une fois encapsulé, le RPG s'appelle comme n'importe quelle procédure, depuis n'importe quel langage. Deux exemples.
+À gauche, JDBC, avec le pilote JTOpen : un CallableStatement, on passe le montant et le taux, on enregistre les quatre paramètres de sortie, on exécute — et on lit ce que le programme RPG III a calculé. 9500, 1900, 11400.
+À droite, ODBC. Piège : beaucoup de clients ODBC, dont pyodbc en Python et une partie des outils BI, ne savent pas lire les paramètres de sortie d'un CALL. La solution native : une petite fonction table SQL qui appelle la façade et rend ses valeurs en ligne. Du coup, un simple SELECT suffit — depuis Python, Excel, Power BI ou DuckDB. Et c'est une idée qu'on retrouvera au chapitre 4 : l'IBM i comme source de données.
+(Exécuté sur pub400 le 29/09 avec le kit RPG : le programme Java tel quel, et la requête du script Python avec ses marqueurs alimentés par des flottants, comme le fait pyodbc ; le script Python lui-même n'a pas tourné, le pilote ODBC ne passant pas par le tunnel. La fonction table : kit/rpg/16-appeler.sql.)
 -->
 
 ---
