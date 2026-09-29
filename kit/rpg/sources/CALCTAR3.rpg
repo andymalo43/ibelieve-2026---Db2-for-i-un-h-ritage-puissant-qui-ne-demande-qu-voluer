@@ -1,0 +1,63 @@
+      * ==============================================================
+      * CALCTAR3  -  Calcul d'un tarif remise + TVA
+      * RPG III (RPG/400) - modele OPM - aucun acces fichier
+      *
+      * Parametres  1 IN  montant HT           packed(9,2)
+      *             2 IN  taux de remise       packed(5,2)
+      *             3 OUT montant remise       packed(11,2)
+      *             4 OUT montant TVA          packed(11,2)
+      *             5 OUT montant TTC          packed(11,2)
+      *             6 OUT code retour          char(1)
+      *
+      * CRTRPGPGM PGM(VOTREBIB/CALCTAR3) SRCFILE(VOTREBIB/KITRPGSRC)
+      * ==============================================================
+      *
+      * Noms de zones : 6 caracteres maximum. Contrainte RPG III.
+      *
+      * --- Interface d'appel -----------------------------------
+     C           *ENTRY    PLIST
+     C                     PARM           PMTHT   92       IN  HT
+     C                     PARM           PTXREM  52       IN  taux rem.
+     C                     PARM           PMTREM 112       OUT HT remise
+     C                     PARM           PMTTVA 112       OUT TVA
+     C                     PARM           PMTTTC 112       OUT TTC
+     C                     PARM           PCDRET  1        OUT ' ' ou 'E'
+      *
+      * --- Zones de travail ------------------------------------
+     C                     Z-ADD*ZERO     WREM   112
+     C                     Z-ADD*ZERO     WTVA   132
+     C                     Z-ADD20.00     WTXTVA  52
+      *
+      * --- Initialisation des sorties --------------------------
+     C                     MOVE ' '       PCDRET
+     C                     Z-ADD*ZERO     PMTREM
+     C                     Z-ADD*ZERO     PMTTVA
+     C                     Z-ADD*ZERO     PMTTTC
+      *
+      * --- Controle du taux de remise --------------------------
+     C           PTXREM    IFLT *ZERO
+     C           PTXREM    ORGT 100
+     C                     MOVE 'E'       PCDRET
+      *
+     C                     ELSE
+      *
+      * --- Remise ----------------------------------------------
+     C           PMTHT     MULT PTXREM    WREM   112H
+     C           WREM      DIV  100       WREM   112H
+     C           PMTHT     SUB  WREM      PMTREM 112H
+      *
+      * --- TVA -------------------------------------------------
+     C           PMTREM    MULT WTXTVA    WTVA   132H
+     C           WTVA      DIV  100       PMTTVA 112H
+      *
+      * --- TTC -------------------------------------------------
+     C           PMTREM    ADD  PMTTVA    PMTTTC 112H
+      *
+     C                     ENDIF
+      *
+      * --- Fin -------------------------------------------------
+      * SETON LR : le programme rend son stockage a chaque appel.
+      * Sans LR, il resterait active dans le job et conserverait
+      * l'etat de ses zones d'un appel a l'autre. Voir README.
+     C                     SETON                     LR
+     C                     RETRN

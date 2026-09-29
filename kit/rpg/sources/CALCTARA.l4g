@@ -1,0 +1,82 @@
+*=====================================================================
+* CALCTARA  -  Calcul d'un tarif remise + TVA
+* Adelia L4G  -  type de source SADELIA (module serveur, sans ecran)
+*
+* Equivalent fonctionnel de CALCTAR3 (RPG III) et CALCTARIF (RPG IV).
+* Genere un *PGM RPG. Le source RPG genere ne doit JAMAIS etre modifie.
+*
+* >>> AVERTISSEMENT DE SYNTAXE <<<
+* La syntaxe ci-dessous est reconstituee. Elle est a valider contre un
+* source L4G reel de ton referentiel avant toute utilisation. Les
+* points a verifier en priorite sont signales par  (?) .
+* Les CONCEPTS, eux, sont surs : declaration des parametres hors
+* source, terminateur FIN generique, nom logique / nom physique.
+*=====================================================================
+*
+*---------------------------------------------------------------------
+* FICHE PROGRAMME (referentiel Adelia) - PAS DANS LE SOURCE
+*---------------------------------------------------------------------
+* Nom logique   : CALCUL_TARIF
+* Nom physique  : CALCTARA          (10 caracteres max -> nom appele)
+* Type source   : SADELIA
+* Bibliotheque  : VOTREBIB           (bibliotheque des modules serveur)
+*
+* Parametres declares dans la fiche, dans cet ordre :
+*   1  MONTANT_HT      numerique  9 dont 2 decimales   E
+*   2  TAUX_REMISE     numerique  5 dont 2 decimales   E
+*   3  MONTANT_REMISE  numerique 11 dont 2 decimales   S
+*   4  MONTANT_TVA     numerique 11 dont 2 decimales   S
+*   5  MONTANT_TTC     numerique 11 dont 2 decimales   S
+*   6  CODE_RETOUR     alphanumerique 1                S
+*
+* C'est cette fiche - et non le source - qui constitue le contrat
+* d'appel. C'est elle que tu transcris en PCML ou en CREATE PROCEDURE.
+*---------------------------------------------------------------------
+*
+* Zones de travail (declarees au glossaire du programme) :
+*   W_REMISE     numerique 13 dont 2
+*   W_TVA        numerique 13 dont 2
+*   K_TAUX_TVA   numerique  5 dont 2   valeur initiale 20,00
+*
+*=====================================================================
+*
+* --- Initialisation des sorties -------------------------------------
+CODE_RETOUR = ' '
+MONTANT_REMISE = 0
+MONTANT_TVA = 0
+MONTANT_TTC = 0
+*
+* --- Controle du taux de remise -------------------------------------
+* (?) verifier l'operateur logique : OU / .OU. selon la version
+SI TAUX_REMISE < 0 OU TAUX_REMISE > 100
+   CODE_RETOUR = 'E'
+   RETOUR
+FIN
+*
+* --- Remise ----------------------------------------------------------
+W_REMISE = MONTANT_HT * TAUX_REMISE / 100
+MONTANT_REMISE = MONTANT_HT - W_REMISE
+*
+* --- TVA -------------------------------------------------------------
+W_TVA = MONTANT_REMISE * K_TAUX_TVA / 100
+MONTANT_TVA = W_TVA
+*
+* --- TTC -------------------------------------------------------------
+MONTANT_TTC = MONTANT_REMISE + MONTANT_TVA
+*
+RETOUR
+*=====================================================================
+* NOTES POUR LA DEMO
+*
+* 1. FIN est un terminateur generique : il ferme SI, TANT_QUE, POUR.
+*    Pour un parseur, cela impose une pile de contextes - un simple
+*    appariement mot-cle a mot-cle ne suffit pas.
+*
+* 2. Les arrondis sont geres par le generateur selon la definition des
+*    zones au glossaire, pas par une instruction explicite. C'est le
+*    point ou ce programme peut diverger de CALCTAR3 au centime pres :
+*    a verifier avec le jeu d'essai, pas a supposer.
+*
+* 3. APPELER <programme> serait invisible aux vues catalogue QSYS2 :
+*    seul le source L4G permet de construire le graphe de dependances.
+*=====================================================================

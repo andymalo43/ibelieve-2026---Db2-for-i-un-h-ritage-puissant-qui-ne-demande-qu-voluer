@@ -22,7 +22,8 @@ Tout le SQL montré pendant la session est dans [`kit/`](kit/), prêt à lancer 
 | Administrer et exploiter en SQL | `kit/05-administrer.sql` |
 | Industrialiser l'extraction | `kit/06-industrialiser.sql` |
 | Tout supprimer | `kit/99-menage.sql` |
-| Encapsuler un RPG, ODBC → Arrow → DuckDB | `kit/exemples/` (à adapter) |
+| Encapsuler de vrais RPG, comparer trois versions, cartographier du RPG | `kit/rpg/` (sources RPG III / RPG IV fournies, compilées depuis ACS) |
+| ODBC → Arrow → DuckDB | `kit/exemples/` (à adapter) |
 
 ## Voir le deck
 

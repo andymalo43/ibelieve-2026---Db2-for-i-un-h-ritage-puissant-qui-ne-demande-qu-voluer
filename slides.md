@@ -374,7 +374,7 @@ NIVEAU | CHEMIN
 <!--
 Point de départ : VALIDER, le programme qui valide un devis.
 Récursion : les programmes appelés par les programmes appelés. Deux garde-fous : une profondeur maximale et la détection de boucle.
-Ici les programmes sont des procédures SQL : leurs appels se lisent dans le catalogue, QSYS2.SYSROUTINEDEP. Sur du RPG ou du CL, c'est DSPPGMREF qui les donne, avec les objets de type *PGM : même requête récursive, autre source.
+Ici les programmes sont des procédures SQL : leurs appels se lisent dans le catalogue, QSYS2.SYSROUTINEDEP. Sur du RPG ou du CL, c'est DSPPGMREF qui les donne, avec les objets de type *PGM : même requête récursive, autre source. Le kit RPG le montre sur de vrais programmes : kit/rpg/15-cartographier-rpg.sql retrouve VALDEVIS > CALCDEVIS > CALCTARIF et VALDEVIS > CTLENCOURS.
 [clic] Résultat réel sur pub400 : la chaîne attendue, VALIDER > CALCULER > TARIFER… et une branche qu'on n'avait pas en tête, le contrôle d'encours CONTROLER. C'est exactement à ça que sert la cartographie.
 -->
 
@@ -471,21 +471,23 @@ Un programme existant devient une **procédure stockée**. Sans toucher à son c
 <div class="col-span-3">
 
 ```sql
--- Exemple : votre programme RPG III existant, derrière un contrat SQL
-CREATE OR REPLACE PROCEDURE VOTREBIB.CALC_TARIF (
-    IN  P_MONTANT_HT  DECIMAL(9, 2),
-    IN  P_TAUX_REMISE DECIMAL(5, 2),
-    OUT P_TTC         DECIMAL(11, 2),
-    OUT P_RC          CHAR(1))
-  LANGUAGE RPG                          -- RPG, pas RPGLE : c'est de l'OPM
-  NOT DETERMINISTIC  NO SQL
-  EXTERNAL NAME 'VOTREBIB/TARIFOPM'
+CREATE OR REPLACE PROCEDURE CALC_TARIF_RPG3 (
+    IN  p_montant_ht   DECIMAL(9,2),
+    IN  p_taux_remise  DECIMAL(5,2),
+    OUT p_remise       DECIMAL(11,2),
+    OUT p_tva          DECIMAL(11,2),
+    OUT p_ttc          DECIMAL(11,2),
+    OUT p_rc           CHAR(1)
+)
+  LANGUAGE RPG                       -- RPG, pas RPGLE : c'est de l'OPM
+  SPECIFIC CALCTARIF3
+  NOT DETERMINISTIC
+  NO SQL
+  EXTERNAL NAME 'VOTREBIB/CALCTAR3'
   PARAMETER STYLE GENERAL;
 
-CALL VOTREBIB.CALC_TARIF(10000.00, 5.00, ?, ?);
+CALL CALC_TARIF_RPG3(10000.00, 5.00, ?, ?, ?, ?);
 ```
-
-<div class="text-sm opacity-70 mt-1">Exemple à adapter à votre programme : pas dans le kit, qui n'a pas de RPG.</div>
 
 </div>
 
@@ -497,11 +499,11 @@ direction: down
 
 prog: "3 programmes, 3 époques" {
   class: zone
-  p3: "RPG III\nOPM" {class: legacy}
-  p4: "RPG IV\nILE" {class: legacy}
-  pa: "Code généré\n(Adélia…)" {class: legacy}
+  p3: "CALCTAR3\nRPG III" {class: legacy}
+  p4: "CALCTARIF\nRPG IV" {class: legacy}
+  pa: "CALCTARA\nAdélia" {class: legacy}
 }
-contrat: "Même contrat SQL" {class: fort}
+contrat: "Même contrat SQL\n9500 · 1900 · 11400" {class: fort}
 app: "ODBC · JDBC · Mapepire\npipeline data" {class: bloc}
 
 prog.p3 -> contrat
@@ -516,15 +518,16 @@ contrat -> app: CALL {class: fil}
 
 <div class="absolute bottom-4 left-8 text-xs opacity-60">
 <a href="https://www.oreilly.com/library/view/modernizing-ibm-eserver/0738492132/chapter-47.html">SG24-6393 — External stored procedures</a> ·
-<code>kit/exemples/encapsuler-rpg.non-execute.sql</code>
+<code>kit/rpg/13-facades.sql</code>
 </div>
 
 <!--
-Un programme existant — ici un RPG III, en OPM — devient une procédure stockée : on n'écrit que du DDL, le programme n'est pas recompilé. LANGUAGE RPG et non RPGLE, parce que c'est de l'OPM ; PARAMETER STYLE GENERAL, parce que le programme reçoit ses paramètres tels quels.
-[clic] Le même contrat peut s'appliquer à des programmes d'époques différentes — RPG III, RPG IV, code généré par un atelier comme Adélia. Vu du catalogue, ce sont des procédures interchangeables, appelables depuis ODBC, JDBC, Mapepire, un orchestrateur ou un pipeline data.
+Trois programmes d'époques différentes — un RPG III en OPM, un RPG IV free-form, et du RPG généré à la façon d'Adélia — derrière trois procédures au contrat identique. Aucun n'a été recompilé pour ça : on n'a écrit que du DDL. LANGUAGE RPG et non RPGLE, parce que c'est de l'OPM ; PARAMETER STYLE GENERAL, parce que le programme reçoit ses paramètres tels quels.
+[clic] Vu du catalogue, ce sont trois procédures interchangeables, appelables depuis ODBC, JDBC, Mapepire, un orchestrateur ou un pipeline data. Et sur pub400 elles rendent la même chose pour 10 000 HT et 5 % de remise : 9500 HT remisé, 1900 de TVA, 11400 TTC.
 Et une fois encapsulés, on les compose : une procédure SQL peut enchaîner une validation existante, un peu de SQL neuf, puis une facturation existante. Chaque étape se remplace individuellement, le contrat est documenté dans le catalogue.
-Point d'attention : une transaction ouverte par l'appelant ne traverse pas un programme compilé COMMIT(*NONE), et sans lever d'erreur. Encapsuler, c'est aussi décider qui possède la transaction. Et encapsuler n'efface pas les différences de calcul entre deux versions d'un même programme : ça les rend testables.
-(Exemple non exécuté dans le kit, qui ne contient pas de RPG ; la technique a été éprouvée sur pub400.)
+Point d'attention : une transaction ouverte par l'appelant ne traverse pas un programme compilé COMMIT(*NONE), et sans lever d'erreur. Encapsuler, c'est aussi décider qui possède la transaction — dans le kit, c'est le programme de facturation.
+Anecdote à garder si le temps le permet : sur 99,99 avec 33,33 % de remise, les trois versions divergent d'un centime — 79,99 contre 80,00 — parce que les arrondis ne sont pas écrits pareil. Encapsuler n'efface pas les différences : ça les rend testables (kit/rpg/14-rejouer.sql le montre).
+(Exécuté sur pub400 le 29/09 avec le kit RPG : sources chargées par SQL, compilées, façades créées ; les trois CALL rendent 9500.00 / 1900.00 / 11400.00.)
 -->
 
 ---

@@ -33,12 +33,17 @@ Chaque bloc SQL montré sur les slides figure ici mot pour mot.
 `03-decoupler.sql` ne se rejoue pas deux fois de suite : il facture le devis 101.
 Pour recommencer : `99-menage.sql`, puis `00-terrain.sql`.
 
+## Avec du vrai RPG : `rpg/`
+
+Le kit SQL tourne partout sans compilation. Pour encapsuler de **vrais programmes RPG**
+(RPG III, RPG IV, code généré façon Adélia), comparer leurs résultats et cartographier une
+chaîne d'appels RPG avec `DSPPGMREF` : voir [`rpg/README.md`](rpg/README.md). Sources
+fournies, chargées et compilées depuis ACS, sans rien téléverser.
+
 ## Exemples non exécutés par le kit
 
-Dans `exemples/`, ce qui dépend de votre environnement :
+Dans `exemples/`, ce qui dépend de votre poste :
 
-- `encapsuler-rpg.non-execute.sql` : déclarer **votre** programme RPG existant comme procédure
-  stockée (le kit n'a pas de RPG, pour tourner partout sans compilation) ;
 - `arrow_odbc_duckdb.py` et `duckdb-nanodbc.non-execute.sql` : extraire en colonne par ODBC
   vers Apache Arrow et DuckDB, depuis votre poste (pilote IBM i Access ODBC requis).
 
@@ -47,7 +52,7 @@ Dans `exemples/`, ce qui dépend de votre environnement :
 - **Les « programmes » sont des procédures SQL.** `DSPPGMREF` voit les tables qu'elles lisent
   et écrivent, mais pas leurs appels entre elles (un `CALL` SQL se résout à l'exécution) :
   la chaîne d'appels se lit donc dans le catalogue `QSYS2.SYSROUTINEDEP`. Sur du RPG ou du CL,
-  `DSPPGMREF` donne aussi les programmes appelés (objets `*PGM`).
+  `DSPPGMREF` donne aussi les programmes appelés (objets `*PGM`) : voir `rpg/15-cartographier-rpg.sql`.
 - **Journal.** `00-terrain.sql` crée un journal `QSQJRN` si votre bibliothèque n'en a pas
   (une bibliothèque `CRTLIB` n'en a pas) ; `99-menage.sql` ne le supprime que s'il vient du kit.
 - **Vues `SYS*`.** Dès qu'une bibliothèque porte des contraintes, Db2 y crée six vues de
