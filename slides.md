@@ -1071,6 +1071,43 @@ SELECT AUTHORIZATION_NAME, OBJECT_AUTHORITY
   :lignes="[['*PUBLIC', '*EXCLUDE'], ['‹propriétaire›', '*ALL']]" />
 
 </template>
+<template #3>
+
+<div class="etape-admin"><carbon-security /> Tout peut partir vers un SIEM, par le chemin de 2.3</div>
+
+<div class="siem">
+  <div class="siem__col">
+    <div class="siem__bloc"><carbon-document /> Journal<br><span>DISPLAY_JOURNAL</span></div>
+    <div class="siem__bloc"><carbon-warning-alt /> Historique<br><span>HISTORY_LOG_INFO</span></div>
+    <div class="siem__bloc"><carbon-send /> File de données<br><span>SEND_DATA_QUEUE</span></div>
+  </div>
+  <carbon-arrow-right class="siem__fleche" />
+  <div class="siem__bloc siem__bloc--fort">syslog RFC 5424<br>ou consommateur<br><span>comme en 2.3</span></div>
+  <carbon-arrow-right class="siem__fleche" />
+  <div class="siem__col">
+    <div class="siem__outil"><simple-icons-graylog style="color: #ff3633" />Graylog</div>
+    <div class="siem__outil"><simple-icons-elasticstack style="color: #005571" />ELK</div>
+    <div class="siem__outil"><simple-icons-clickhouse style="color: #e6b800" />ClickStack</div>
+  </div>
+</div>
+
+<div class="text-center mt-6 text-lg">La sécurité de l'IBM i rejoint <b>la supervision de toute l'entreprise</b>.</div>
+<div class="text-center text-sm opacity-60 mt-1">Principe, non exécuté : aucun SIEM branché sur pub400.</div>
+
+<style>
+.siem { display: flex; align-items: center; justify-content: center; gap: 1.2rem; margin-top: 1rem; }
+.siem__col { display: flex; flex-direction: column; gap: 0.6rem; }
+.siem__bloc { padding: 0.5rem 1rem; border-radius: 10px; background: #eef3f5; border: 2px solid #5d8392; text-align: center; font-weight: 700; color: #1f3b47; line-height: 1.25; }
+.siem__bloc span { font-weight: 400; font-size: 0.75rem; font-family: var(--slidev-code-font-family, monospace); opacity: 0.8; }
+.siem__bloc svg { display: inline; color: #5d8392; }
+.siem__bloc--fort { background: #5d8392; border-color: #2f4f5c; color: #fff; }
+.siem__bloc--fort span { font-family: inherit; }
+.siem__fleche { color: #b56959; font-size: 2rem; }
+.siem__outil { display: flex; align-items: center; gap: 0.5rem; font-size: 1.2rem; font-weight: 700; color: #1f3b47; }
+.siem__outil svg { font-size: 2rem; }
+</style>
+
+</template>
 </v-switch>
 
 <style>
@@ -1089,14 +1126,18 @@ SELECT AUTHORIZATION_NAME, OBJECT_AUTHORITY
 <a href="https://www.ibm.com/docs/en/i/7.5.0?topic=services-system-value-info-view">SYSTEM_VALUE_INFO</a> ·
 <a href="https://www.ibm.com/docs/en/i/7.5.0?topic=services-history-log-info-table-function">HISTORY_LOG_INFO</a> ·
 <a href="https://www.ibm.com/docs/en/i/7.5.0?topic=services-object-privileges-view">OBJECT_PRIVILEGES</a> ·
-<a href="https://www.ibm.com/support/pages/db2-i-generated-syslog-history-and-audit-journal">Syslog</a>
+<a href="https://www.ibm.com/support/pages/db2-i-generated-syslog-history-and-audit-journal">Syslog</a> ·
+<a href="https://graylog.org/">Graylog</a> ·
+<a href="https://www.elastic.co/elastic-stack">ELK</a> ·
+<a href="https://clickhouse.com/use-cases/observability">ClickStack</a>
 </div>
 
 <!--
 Trois exemples suffisent : la sécurité, l'exploitation, l'audit.
 Sécurité : le niveau de sécurité du système, le nombre d'essais de connexion, l'expiration des mots de passe, en une requête. [clic] Exploitation : les messages graves de la dernière heure, sans ouvrir DSPLOG. [clic] Audit : qui a quels droits sur la table CLIENT — le public est exclu, seul le propriétaire a tout.
 Sous chaque requête, son résultat sur pub400 (lignes reprises de pub400/resultats-kit/05-administrer.txt, mises en forme : ce n'est pas une capture) : QSECURITY à 50, 361 messages de sévérité 40 ou plus en une heure (les 5 premiers affichés ; le chiffre bouge d'un passage à l'autre), et la table CLIENT fermée au public. Le nom du profil propriétaire est masqué.
-Vers la supervision d'entreprise : DISPLAY_JOURNAL et HISTORY_LOG_INFO savent produire du syslog RFC5424, en continu.
+[clic] Et tout ça peut partir vers un SIEM, l'outil où la sécurité centralise ses journaux : Graylog, la pile Elastic (ELK), ou ClickStack, la pile d'observabilité de ClickHouse. Deux chemins. Le plus direct : DISPLAY_JOURNAL et HISTORY_LOG_INFO savent produire leurs lignes au format syslog RFC 5424, qu'un collecteur envoie tel quel. L'autre, c'est exactement ce qu'on a vu à l'étape 2.3 : le journal, ou une file de données, lu par un consommateur qui relaie vers le SIEM. Même mécanique pour les données métier et pour la sécurité.
+(Principe, non exécuté : aucun SIEM n'est branché sur pub400. Le format syslog est documenté par IBM, lien en pied de slide.)
 Sur un vrai système, on irait plus loin : les profils qui ont *ALLOBJ (QSYS2.USER_INFO), les échecs de mot de passe (SYSTOOLS.AUDIT_JOURNAL_PW). Sur pub400, les services respectent les droits : la première rend 0 ligne, la seconde est refusée faute d'accès au journal d'audit (SQL0443).
 (Exécuté tel quel sur pub400 le 29/09 : kit/05-administrer.sql. Le texte des messages n'est pas affiché : le client JDBC utilisé en abîme les accents.)
 Trois requêtes, trois domaines, mais toujours la même démarche : c'est ce que résume la slide suivante.
