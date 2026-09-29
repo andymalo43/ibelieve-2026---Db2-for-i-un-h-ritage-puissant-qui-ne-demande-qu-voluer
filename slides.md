@@ -223,7 +223,7 @@ chapitre: 1
 
 <div class="mt-2 leading-none font-bold" style="font-size: 4.6rem; color: var(--slidev-theme-primary)">500+</div>
 <div class="text-2xl mt-2">tables DDS → SQL, <b>sans recompiler</b></div>
-<div class="flex items-center gap-4 mt-2"><Logo nom="itheis.jpg" alt="Itheis" hauteur="2.4rem" /><Logo nom="gaia.png" alt="Gaia" hauteur="2.4rem" /><span class="opacity-70">+ Xcase for i</span></div>
+<div class="flex items-center gap-4 mt-2"><Logo nom="itheis.jpg" alt="Itheis" hauteur="2.4rem" /><Logo nom="gaia.png" alt="Gaia" hauteur="2.4rem" /><Logo nom="xcase.png" alt="Xcase for i" hauteur="2.4rem" /></div>
 
 <div class="mt-4 opacity-70 text-sm uppercase tracking-wider">Et après</div>
 <div class="grid grid-cols-3 gap-2 mt-1 w-4/5">

@@ -8,6 +8,7 @@ Ils ne sont **pas** couverts par les licences du dépôt (MIT pour le code, CC B
 |---|---|---|
 | `ibelieve.png` | iBelieve 2026 (conçu pour fond sombre) | https://www.ibelieve2026.fr/ |
 | `itheis.jpg` | Itheis | https://www.itheis.com/ |
+| `xcase.png` | Resolution Xcase (Xcase for i), petit fichier de 210 px | https://www.itheis.com/ (page produits) |
 | `gaia.png` | Gaia | https://www.gaia.fr/ |
 | `sinapse.png` | Sinapse | https://sinapse.nc/ |
 | `cafat.jpg`, `gouvernement.jpg`, `fsh.png` | CAFAT, Gouvernement de la Nouvelle-Calédonie, Fonds social de l'habitat | https://sinapse.nc/qui |
