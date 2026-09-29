@@ -8,8 +8,8 @@ SET SCHEMA VOTREBIB;
 SET PATH = CURRENT PATH, VOTREBIB;              -- pour trouver les procédures du kit
 
 -- De l'activité : les « programmes » travaillent, sans rien savoir du journal
-CALL VALIDER(101, ?);
-CALL FACTURER(101, ?);
+CALL PS_VALIDER(101, ?);
+CALL PS_FACTURER(101, ?);
 
 -- Le journal a déjà tout capté
 SELECT ENTRY_TIMESTAMP, JOURNAL_ENTRY_TYPE,

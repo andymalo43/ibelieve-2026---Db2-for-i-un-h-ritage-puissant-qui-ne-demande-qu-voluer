@@ -1,4 +1,4 @@
-"""Kit iBelieve 2026 — RPG — lire en ODBC ce que le RPG a calculé, par la fonction table TARIF_RPG3.
+"""Kit iBelieve 2026 — RPG — lire en ODBC ce que le RPG a calculé, par la fonction table F_TARIF_RPG3.
 
     pip install pyodbc        (pilote IBM i Access ODBC installé, DSN « MONIBMI » déclaré)
 
@@ -9,6 +9,6 @@ import pyodbc
 
 cnx = pyodbc.connect("DSN=MONIBMI")   # IBM i Access ODBC
 remise, tva, ttc, rc = cnx.execute(
-    "SELECT * FROM TABLE(VOTREBIB.TARIF_RPG3(?, ?)) T",
+    "SELECT * FROM TABLE(VOTREBIB.F_TARIF_RPG3(?, ?)) T",
     10000.00, 5.00).fetchone()
 print(remise, tva, ttc)   # 9500.00 1900.00 11400.00

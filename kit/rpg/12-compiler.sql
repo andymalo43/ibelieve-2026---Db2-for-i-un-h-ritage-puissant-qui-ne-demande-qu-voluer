@@ -6,13 +6,11 @@
 
 SET SCHEMA VOTREBIB;
 
--- CTLENCOURS lit CLIENT en accès natif, et les programmes s'appellent par leur nom :
--- la bibliothèque doit être dans la liste, dès la compilation
-BEGIN
-  DECLARE V_DEJA INTEGER DEFAULT 0;
-  DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET V_DEJA = 1;   -- déjà dans la liste
-  CALL QSYS2.QCMDEXC('ADDLIBLE ' CONCAT CURRENT SCHEMA);
-END;
+-- Les programmes s'appellent par leur nom (*LIBL) et CTLENCOURS ouvre CLIENT par *LIBL :
+-- la bibliothèque du kit doit passer devant toute autre qui aurait les mêmes noms.
+-- ADDLIBLE ne suffit pas : la bibliothèque en cours (CURLIB) est cherchée avant la
+-- partie utilisateur de la liste. On en fait donc la bibliothèque en cours de la session.
+CALL QSYS2.QCMDEXC('CHGCURLIB CURLIB(' CONCAT CURRENT SCHEMA CONCAT ')');
 
 -- RPG III (OPM) : CRTRPGPGM, depuis un fichier source uniquement
 CALL QSYS2.QCMDEXC('CRTRPGPGM PGM(' CONCAT CURRENT SCHEMA CONCAT '/CALCTAR3) SRCFILE('

@@ -130,14 +130,16 @@ INSERT INTO DEVIS (DEV_NUM, DEV_CLI, DEV_DATE, DEV_STATUT, DEV_HT) VALUES
   (500001, 1001, 20260115, 'S', 10000.00),   -- cas nominal
   (500002, 1002, 20260116, 'S',  5000.00),   -- fera sauter l'encours
   (500003, 1003, 20260117, 'S',   800.00),   -- passe de justesse
-  (500004, 1001, 20260118, 'V',  2000.00);   -- déjà validé, prêt à facturer
+  (500004, 1001, 20260118, 'V',  2000.00),   -- déjà validé, prêt à facturer
+  (500005, 1001, 20260119, 'S',  1500.00);   -- pour 17-decoupler.sql
 
 INSERT INTO DEVLIG VALUES
   (500001, 1, 'ART-A', 10.00, 800.00),
   (500001, 2, 'ART-B',  4.00, 500.00),
   (500002, 1, 'ART-C',  5.00,1000.00),
   (500003, 1, 'ART-A',  1.00, 800.00),
-  (500004, 1, 'ART-B',  4.00, 500.00);
+  (500004, 1, 'ART-B',  4.00, 500.00),
+  (500005, 1, 'ART-B',  3.00, 500.00);
 
 -- Vérification
 SELECT * FROM V_DEVIS ORDER BY numero_devis;

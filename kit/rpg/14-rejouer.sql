@@ -7,12 +7,11 @@
 SET SCHEMA VOTREBIB;
 SET PATH = CURRENT PATH, VOTREBIB;              -- pour trouver les procédures du kit
 
--- Les programmes s'appellent par leur nom : la bibliothèque doit être dans la liste
-BEGIN
-  DECLARE V_DEJA INTEGER DEFAULT 0;
-  DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET V_DEJA = 1;   -- déjà dans la liste
-  CALL QSYS2.QCMDEXC('ADDLIBLE ' CONCAT CURRENT SCHEMA);
-END;
+-- Les programmes s'appellent par leur nom (*LIBL) et CTLENCOURS ouvre CLIENT par *LIBL :
+-- la bibliothèque du kit doit passer devant toute autre qui aurait les mêmes noms.
+-- ADDLIBLE ne suffit pas : la bibliothèque en cours (CURLIB) est cherchée avant la
+-- partie utilisateur de la liste. On en fait donc la bibliothèque en cours de la session.
+CALL QSYS2.QCMDEXC('CHGCURLIB CURLIB(' CONCAT CURRENT SCHEMA CONCAT ')');
 
 -- ---------------------------------------------------------------------
 -- Avant de remplacer une implémentation, prouver l'équivalence sur un jeu de valeurs
@@ -57,15 +56,15 @@ BEGIN
 
   FOR c AS SELECT CAS_HT, CAS_TAUX FROM T_CAS DO
 
-    CALL CALC_TARIF_RPG3 (c.CAS_HT, c.CAS_TAUX, v_rem, v_tva, v_ttc, v_rc);
+    CALL PS_CALC_TARIF_RPG3 (c.CAS_HT, c.CAS_TAUX, v_rem, v_tva, v_ttc, v_rc);
     INSERT INTO T_COMPARE
       VALUES (c.CAS_HT, c.CAS_TAUX, 'RPG3', v_rem, v_tva, v_ttc, v_rc);
 
-    CALL CALC_TARIF_RPGLE (c.CAS_HT, c.CAS_TAUX, v_rem, v_tva, v_ttc, v_rc);
+    CALL PS_CALC_TARIF_RPGLE (c.CAS_HT, c.CAS_TAUX, v_rem, v_tva, v_ttc, v_rc);
     INSERT INTO T_COMPARE
       VALUES (c.CAS_HT, c.CAS_TAUX, 'RPGLE', v_rem, v_tva, v_ttc, v_rc);
 
-    CALL CALC_TARIF_ADELIA (c.CAS_HT, c.CAS_TAUX, v_rem, v_tva, v_ttc, v_rc);
+    CALL PS_CALC_TARIF_ADELIA (c.CAS_HT, c.CAS_TAUX, v_rem, v_tva, v_ttc, v_rc);
     INSERT INTO T_COMPARE
       VALUES (c.CAS_HT, c.CAS_TAUX, 'ADELIA', v_rem, v_tva, v_ttc, v_rc);
 
@@ -97,8 +96,9 @@ ORDER BY CMP_HT, CMP_TAUX;
 -- ---------------------------------------------------------------------
 -- La chaîne réelle : VALDEVIS -> CALCDEVIS -> CALCTARIF (+ CTLENCOURS), puis GENFACT
 -- ---------------------------------------------------------------------
-CALL VAL_DEVIS(500001, ?, ?, ?);          -- attendu ' ', TTC 11400.00
-CALL VAL_DEVIS(500002, ?, ?, ?);          -- attendu 'E' : encours 48000/50000
-CALL VAL_DEVIS(500001, ?, ?, ?);          -- attendu 'S' : déjà validé
-CALL GEN_FACT (500004, 20260904, ?, ?);   -- attendu ' ', facture 1001
-CALL GEN_FACT (500004, 20260904, ?, ?);   -- attendu 'D' : déjà facturé (la contrainte UQ_FACDEV veille)
+CALL PS_VAL_DEVIS(500001, ?, ?, ?);       -- attendu ' ', TTC 11400.00
+CALL PS_VAL_DEVIS(500002, ?, ?, ?);       -- attendu 'E' : encours 48000/50000
+CALL PS_VAL_DEVIS(500001, ?, ?, ?);       -- attendu 'S' : déjà validé
+CALL PS_GEN_FACT (500004, 20260904, ?, ?); -- attendu ' ', facture 1001
+CALL PS_GEN_FACT (500004, 20260904, ?, ?); -- attendu 'D' : déjà facturé (la contrainte UQ_FACDEV veille)
+CALL PS_TRAITER_DEVIS(500003, 20260905, ?, ?);  -- attendu facture 1002, ' ' : validé puis facturé
