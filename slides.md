@@ -23,6 +23,15 @@ drawings:
 
 iBelieve 2026 · 15 octobre 2026
 
+<div class="absolute bottom-10 left-0 right-0 flex justify-center items-center gap-4">
+  <div class="px-6 py-2 rounded-2xl" style="background: #333e49"><Logo nom="ibelieve.png" alt="iBelieve 2026" hauteur="3rem" /></div>
+  <div class="flex items-center gap-6 px-6 py-2 rounded-2xl" style="background: rgba(255,255,255,0.96)">
+    <div class="text-xs leading-tight text-left" style="color: #4a5560">Co-organisé<br>par</div>
+    <Logo nom="itheis.jpg" alt="Itheis" hauteur="3rem" />
+    <simple-icons-ibm class="text-5xl" style="color: #1f70c1" />
+  </div>
+</div>
+
 <!--
 Bonjour à toutes et à tous. Merci à Itheis et IBM pour l'invitation.
 Aujourd'hui, pas de démo produit, pas de vente : je vais vous montrer ce qui est possible avec Db2 for i.
@@ -97,25 +106,20 @@ Je connais cette base de l'intérieur, et aujourd'hui je la connecte à une plat
 <IconCard titre="Étape par étape" texte="le recouvrement d'abord"><carbon-roadmap /></IconCard>
 </div>
 
-```d2 {maxHeight: '11rem'}
-...@theme
-direction: right
-
-fond: "Membres fondateurs" {
-  class: zone
-  cafat: "CAFAT\nprotection sociale" {class: legacy}
-  gouv: "Gouvernement\nde la N.-C." {class: bloc}
-  fsh: "FSH" {class: bloc}
-}
-sinapse: "Sinapse NC\nGIE · 2024" {class: fort}
-si: "SI social\nmodernisé" {class: bloc}
-
-fond.cafat -> sinapse
-fond.gouv -> sinapse
-fond.fsh -> sinapse
-sinapse -> si: étape par étape
-fond.cafat -> si: continuité {class: fil}
-```
+<div class="flex items-center justify-center gap-5 mt-2">
+  <div class="flex flex-col items-center gap-1 px-4 py-2 rounded-xl" style="border: 2px dashed #5d8392">
+    <div class="text-xs font-bold" style="color: #5d8392">Membres fondateurs</div>
+    <div class="flex items-center gap-4">
+      <Logo nom="cafat.jpg" alt="CAFAT" hauteur="4.5rem" />
+      <Logo nom="gouvernement.jpg" alt="Gouvernement de la Nouvelle-Calédonie" hauteur="4.5rem" />
+      <Logo nom="fsh.png" alt="Fonds social de l'habitat" hauteur="4.5rem" />
+    </div>
+  </div>
+  <carbon-arrow-right class="text-3xl" style="color: #5d8392" />
+  <Logo nom="sinapse.png" alt="Sinapse NC" hauteur="3.6rem" />
+  <div class="flex flex-col items-center"><carbon-arrow-right class="text-3xl" style="color: #b56959" /><span class="text-xs" style="color: #b56959">étape par étape</span></div>
+  <div class="px-4 py-3 rounded-xl text-center font-bold" style="background: #eef3f5; border: 2px solid #5d8392; color: #1f3b47">SI social<br>modernisé</div>
+</div>
 
 > Hier **architecte de données à la CAFAT**, aujourd'hui je **construis la suite**.
 
@@ -169,13 +173,11 @@ chapitre: 1
 
 # 1. Le chantier 2019-2022
 
-<div class="opacity-70 -mt-1">En clair : changer le stockage des données sans toucher aux programmes.</div>
-
-<div class="mt-2 leading-none font-bold" style="font-size: 5.5rem; color: var(--slidev-theme-primary)">500+</div>
+<div class="mt-2 leading-none font-bold" style="font-size: 4.6rem; color: var(--slidev-theme-primary)">500+</div>
 <div class="text-2xl mt-2">tables DDS → SQL, <b>sans recompiler</b></div>
-<div class="opacity-60 mt-1">Itheis · Gaia · Xcase for i</div>
+<div class="flex items-center gap-4 mt-2"><Logo nom="itheis.jpg" alt="Itheis" hauteur="2.4rem" /><Logo nom="gaia.png" alt="Gaia" hauteur="2.4rem" /><span class="opacity-70">+ Xcase for i</span></div>
 
-<div class="mt-8 opacity-70 text-sm uppercase tracking-wider">Et après</div>
+<div class="mt-4 opacity-70 text-sm uppercase tracking-wider">Et après</div>
 <div class="grid grid-cols-3 gap-2 mt-1 w-4/5">
 <IconCard petit titre="contraintes"><carbon-connect /></IconCard>
 <IconCard petit titre="temporel"><carbon-time /></IconCard>
@@ -1264,6 +1266,8 @@ chapitre: 4
 
 # Sinapse NC : quand l'outil manque, on le construit
 
+<Logo class="absolute bottom-4 right-8" nom="sinapse.png" alt="Sinapse NC" hauteur="2.4rem" />
+
 ```d2 {maxHeight: '11rem'}
 ...@theme
 direction: right
@@ -1329,6 +1333,15 @@ layout: end
 ## La seule question, c'est ce qu'on en fait.
 
 Merci — questions ?
+
+<div class="mt-8 flex justify-center items-center gap-4">
+  <Logo nom="ibelieve.png" alt="iBelieve 2026" hauteur="3rem" />
+  <div class="flex items-center gap-6 px-6 py-2 rounded-2xl" style="background: rgba(255,255,255,0.96)">
+    <Logo nom="itheis.jpg" alt="Itheis" hauteur="2.6rem" />
+    <simple-icons-ibm class="text-4xl" style="color: #1f70c1" />
+    <Logo nom="sinapse.png" alt="Sinapse NC" hauteur="2.4rem" />
+  </div>
+</div>
 
 <div class="absolute bottom-6 left-0 right-0 text-xs opacity-70">
 <a href="https://redbooks.ibm.com/abstracts/sg248185.html">SG24-8185</a> ·

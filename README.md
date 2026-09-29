@@ -58,3 +58,4 @@ bun run export    # PDF (première fois : bunx playwright install chromium)
 - Le **code** (kit SQL, exemples, composants, configuration) : [MIT](LICENSE).
 - Le **contenu** de la présentation (textes, schémas, notes) :
   [CC BY 4.0](LICENSE-CONTENU.md) — réutilisation libre, en citant la source.
+- Les **logos** (`public/logos/`) sont des marques de leurs détenteurs, hors de ces licences : voir `public/logos/README.md`.

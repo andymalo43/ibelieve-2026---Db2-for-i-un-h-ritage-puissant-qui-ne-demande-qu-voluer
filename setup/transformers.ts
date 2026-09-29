@@ -8,9 +8,11 @@
 // Options : scale (taille relative, 1 par défaut), maxHeight (CSS), layout ('elk' | 'dagre'), sketch.
 // Animation au clic : donner aux éléments la classe etape2, etape3… (en plus de leur classe de style,
 // ex. {class: [bloc; etape2]}) ; ils apparaissent un clic après l'autre, sans changer la disposition.
+// Logos : `icon: @logo:sinapse.png` dans un bloc D2 devient une URL factice pour D2, puis l'image de public/logos/
+// est incorporée en data URI dans le SVG produit (autonome). À coupler avec `shape: image`.
 // Rendu par components/D2Diagram.vue (SVG en ligne : polices et taille fiables, contrairement à <img>).
 import { readdir, readFile } from 'node:fs/promises'
-import { join } from 'node:path'
+import { extname, join } from 'node:path'
 import { defineTransformersSetup } from '@slidev/types'
 import { D2 } from '@terrastruct/d2'
 
@@ -56,12 +58,21 @@ async function render(code: string, meta: Record<string, any>, root: string) {
     const fs = await loadFs(root)
     // `...@nom` seul sur sa ligne : inclusion textuelle, car les globs D2 (style des flèches)
     // ne traversent pas un import.
-    const source = code.replace(/^\s*\.\.\.@([\w-]+)\s*$/gm, (line, name) => fs[`${name}.d2`] ?? line)
+    let source = code.replace(/^\s*\.\.\.@([\w-]+)\s*$/gm, (line, name) => fs[`${name}.d2`] ?? line)
+    // D2 limite la longueur des clés : on laisse une URL factice, remplacée par la data URI après rendu.
+    const logos = [...new Set([...source.matchAll(/@logo:([\w.-]+)/g)].map(m => m[1]))]
+    for (const fichier of logos)
+      source = source.replaceAll(`@logo:${fichier}`, `https://logo.local/${fichier}`)
     const result = await d.compile(
       { fs: { ...fs, index: source }, inputPath: 'index' },
       { layout: meta.layout ?? 'elk', sketch: meta.sketch ?? false, pad: 8, center: true },
     )
     let svg = await d.render(result.diagram, { ...result.renderOptions, pad: 8, noXMLTag: true })
+    for (const fichier of logos) {
+      const octets = await readFile(join(root, 'public', 'logos', fichier))
+      const mime = ({ '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml' } as Record<string, string>)[extname(fichier)] ?? 'image/png'
+      svg = svg.replaceAll(`https://logo.local/${fichier}`, `data:${mime};base64,${octets.toString('base64')}`)
+    }
     // Taille naturelle (unités D2 ≈ px du canevas Slidev) × scale ; le CSS du composant borne ensuite.
     const [, , w, h] = (svg.match(/viewBox="([^"]+)"/)?.[1] ?? '0 0 600 300').split(/\s+/).map(Number)
     const k = meta.scale ?? 1
