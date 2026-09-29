@@ -1,0 +1,21 @@
+{
+  "name": "ibelieve2026-db2fori",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "slidev slides.md --open",
+    "build": "slidev build slides.md",
+    "export": "slidev export slides.md"
+  },
+  "dependencies": {
+    "@slidev/cli": "^53.0.0",
+    "@slidev/theme-seriph": "^0.25.0"
+  },
+  "devDependencies": {
+    "@iconify-json/carbon": "^1.2.28",
+    "@iconify-json/logos": "^1.2.15",
+    "@iconify-json/simple-icons": "^1.2.98",
+    "@terrastruct/d2": "^0.1.33",
+    "playwright-chromium": "^1.63.0"
+  }
+}

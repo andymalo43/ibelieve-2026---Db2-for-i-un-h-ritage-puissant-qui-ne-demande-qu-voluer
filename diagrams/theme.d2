@@ -1,0 +1,100 @@
+# Palette commune des schémas D2 du deck (alignée sur le thème seriph : primaire #5d8392).
+# À insérer en tête de bloc : ...@theme (inclusion textuelle par setup/transformers.ts)
+
+classes: {
+  # Étapes révélées au clic (components/D2Diagram.vue) : à cumuler avec une classe de style,
+  # ex. {class: [bloc; etape2]}. Sans style propre : elles ne font que marquer l'élément.
+  etape2: {}
+  etape3: {}
+  etape4: {}
+  etape5: {}
+  etape6: {}
+
+  # Étape, composant : le cas courant
+  bloc: {
+    style: {
+      fill: "#eef3f5"
+      stroke: "#5d8392"
+      stroke-width: 2
+      font-color: "#1f3b47"
+      border-radius: 8
+      font-size: 18
+    }
+  }
+  # Ce qui est mis en avant sur la slide
+  fort: {
+    style: {
+      fill: "#5d8392"
+      stroke: "#2f4f5c"
+      stroke-width: 2
+      font-color: "#ffffff"
+      border-radius: 8
+      bold: true
+      font-size: 18
+    }
+  }
+  # L'existant, le legacy
+  legacy: {
+    style: {
+      fill: "#f1eee8"
+      stroke: "#9a8f7d"
+      stroke-width: 2
+      font-color: "#4a4238"
+      border-radius: 8
+      font-size: 18
+    }
+  }
+  # Données : à combiner avec shape: cylinder
+  donnees: {
+    shape: cylinder
+    style: {
+      fill: "#e3eef1"
+      stroke: "#2f4f5c"
+      stroke-width: 2
+      font-color: "#1f3b47"
+      font-size: 18
+    }
+  }
+  # Zone, rive, organisation
+  zone: {
+    style: {
+      fill: "#fafbfb"
+      stroke: "#5d8392"
+      stroke-dash: 4
+      border-radius: 12
+      font-color: "#5d8392"
+      bold: true
+      font-size: 20
+    }
+  }
+  # Le fil rouge (parcours, passeur)
+  fil: {
+    style: {
+      stroke: "#b56959"
+      stroke-width: 3
+      font-color: "#b56959"
+      bold: true
+    }
+  }
+}
+
+# Flèches : couleur du thème par défaut (au lieu du bleu D2), y compris dans les conteneurs.
+# Les globs l'emportent sur les classes : on réaffirme d'abord le style des flèches « fil ».
+(** -> **)[*]: {
+  &class: fil
+  style: {
+    stroke: "#b56959"
+    stroke-width: 3
+    font-color: "#b56959"
+    bold: true
+  }
+}
+(** -> **)[*]: {
+  !&class: fil
+  style: {
+    stroke: "#5d8392"
+    stroke-width: 2
+    font-color: "#2f4f5c"
+    font-size: 16
+  }
+}

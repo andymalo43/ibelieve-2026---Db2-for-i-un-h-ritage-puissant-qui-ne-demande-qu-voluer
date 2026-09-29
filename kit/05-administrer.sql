@@ -1,0 +1,31 @@
+-- =====================================================================
+-- Kit iBelieve 2026 — 05. Administrer et exploiter en SQL. Lecture seule.
+-- Fonctionne sur n'importe quel compte ; les services respectent vos droits.
+-- =====================================================================
+
+SET SCHEMA VOTREBIB;
+SET PATH = CURRENT PATH, VOTREBIB;              -- pour trouver les procédures du kit
+
+-- Une commande CL, un service SQL : chacun répond
+SELECT COUNT(*) AS WRKACTJOB FROM TABLE (QSYS2.ACTIVE_JOB_INFO(CURRENT_USER_LIST_FILTER => CURRENT_USER)) X;
+SELECT COUNT(*) AS DSPLOG    FROM TABLE (QSYS2.HISTORY_LOG_INFO(START_TIME => CURRENT TIMESTAMP - 5 MINUTES)) X;
+SELECT COUNT(*) AS DSPJRN    FROM TABLE (QSYS2.DISPLAY_JOURNAL(JOURNAL_LIBRARY => CURRENT SCHEMA, JOURNAL_NAME => 'QSQJRN')) X;
+SELECT COUNT(*) AS WRKOBJOWN FROM QSYS2.OBJECT_OWNERSHIP WHERE AUTHORIZATION_NAME = CURRENT_USER;
+SELECT COUNT(*) AS WRKSYSVAL FROM QSYS2.SYSTEM_VALUE_INFO;
+
+-- Sécurité : les valeurs système qui comptent
+SELECT SYSTEM_VALUE_NAME, CURRENT_CHARACTER_VALUE
+  FROM QSYS2.SYSTEM_VALUE_INFO
+ WHERE SYSTEM_VALUE_NAME IN ('QSECURITY', 'QMAXSIGN', 'QPWDEXPITV');
+
+-- Exploitation : messages graves de la dernière heure
+SELECT MESSAGE_TIMESTAMP, MESSAGE_ID, SEVERITY
+  FROM TABLE (QSYS2.HISTORY_LOG_INFO(
+         START_TIME => CURRENT TIMESTAMP - 1 HOUR)) X
+ WHERE SEVERITY >= 40;
+
+-- Audit : qui a quels droits sur CLIENT ?
+SELECT AUTHORIZATION_NAME, OBJECT_AUTHORITY
+  FROM QSYS2.OBJECT_PRIVILEGES
+ WHERE SYSTEM_OBJECT_SCHEMA = CURRENT SCHEMA
+   AND SYSTEM_OBJECT_NAME   = 'CLIENT';
