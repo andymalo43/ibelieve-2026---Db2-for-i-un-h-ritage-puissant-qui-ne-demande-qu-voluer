@@ -425,35 +425,12 @@ chapitre: 2
 etape: 1
 ---
 
-# La chaîne d'appels, en deux requêtes
+# La chaîne d'appels, du SQL jusqu'au RPG
 
 <v-switch>
 <template #0>
 
-<div class="etape-carto"><carbon-data-table /> 1. Rassembler : trois sources, une table</div>
-
-```sql
-CREATE OR REPLACE TABLE T_APPELS (APPELANT, APPELE, SOURCE) AS (
-  SELECT R.ROUTINE_NAME, D.OBJECT_NAME, 'SYSROUTINEDEP'        -- procédure → procédure
-    FROM QSYS2.SYSROUTINEDEP D
-    JOIN QSYS2.SYSROUTINES R ON R.SPECIFIC_SCHEMA = D.SPECIFIC_SCHEMA
-                            AND R.SPECIFIC_NAME   = D.SPECIFIC_NAME
-   WHERE D.SPECIFIC_SCHEMA = CURRENT SCHEMA AND D.OBJECT_TYPE = 'PROCEDURE'
-  UNION
-  SELECT ROUTINE_NAME, SUBSTR(EXTERNAL_NAME, LOCATE('/', EXTERNAL_NAME) + 1),
-         'SYSROUTINES'                                         -- façade → programme
-    FROM QSYS2.SYSROUTINES
-   WHERE ROUTINE_SCHEMA = CURRENT SCHEMA AND ROUTINE_BODY = 'EXTERNAL'
-  UNION
-  SELECT TRIM(WHPNAM), TRIM(WHFNAM), 'DSPPGMREF'               -- programme → programme
-    FROM T_PGMREF WHERE WHOTYP = '*PGM' AND WHLNAM NOT IN ('QSYS', 'QSYS2')
-) WITH DATA ON REPLACE DELETE ROWS;
-```
-
-</template>
-<template #1>
-
-<div class="etape-carto"><carbon-flow /> 2. Descendre la chaîne, du SQL jusqu'au RPG</div>
+<div class="etape-carto"><carbon-flow /> Une requête récursive descend la chaîne</div>
 
 ```sql
 WITH CHAINE (APPELE, NIVEAU, CHEMIN, SOURCE) AS (
@@ -469,8 +446,10 @@ WITH CHAINE (APPELE, NIVEAU, CHEMIN, SOURCE) AS (
 SELECT NIVEAU, CHEMIN, SOURCE FROM CHAINE ORDER BY CHEMIN;
 ```
 
+<div class="text-sm opacity-70 mt-2">T_APPELS rassemble trois sources : catalogue SQL, façades, DSPPGMREF (dans le kit).</div>
+
 </template>
-<template #2>
+<template #1>
 
 <div class="etape-carto"><carbon-checkmark-outline /> Résultat sur pub400</div>
 
@@ -486,64 +465,9 @@ SELECT NIVEAU, CHEMIN, SOURCE FROM CHAINE ORDER BY CHEMIN;
   ]" />
 
 </template>
-</v-switch>
+<template #2>
 
-<style>
-.etape-carto {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
-  font-weight: 600;
-  font-size: 1.1rem;
-  color: var(--slidev-theme-primary, #5d8392);
-}
-</style>
-
-<div class="absolute bottom-4 left-8 text-xs opacity-60">
-<a href="https://www.ibm.com/docs/en/i/7.5.0?topic=views-sysroutinedep">SYSROUTINEDEP</a> ·
-<a href="https://www.ibm.com/docs/en/i/7.5.0?topic=views-sysroutines">SYSROUTINES</a> ·
-<code>kit/rpg/15-cartographier-rpg.sql</code>
-</div>
-
-<!--
-Point de départ : PS_TRAITER_DEVIS, la procédure SQL qui valide puis facture un devis. La chaîne traverse deux mondes, et chaque maillon se lit à un endroit différent.
-Première requête : on rassemble les trois sources dans une table, T_APPELS. Procédure SQL vers procédure : le catalogue, SYSROUTINEDEP — avec SYSROUTINES pour retrouver le nom SQL de l'appelant, que SYSROUTINEDEP donne sous son nom spécifique, PS_TRTDEV. Façade vers programme : SYSROUTINES encore, la colonne EXTERNAL_NAME, dont on garde ce qui suit la barre. Programme vers programme : DSPPGMREF, matérialisé à l'étape d'avant dans T_PGMREF, hors bibliothèques système. Un UNION, et c'est tout : on matérialise, puis on interroge — c'est la méthode qu'on reverra pour l'administration.
-[clic] Deuxième requête, une récursion tout ce qu'il y a de plus classique : les programmes appelés par les programmes appelés, avec deux garde-fous, une profondeur maximale et la détection de boucle. La colonne SOURCE suit chaque maillon.
-[clic] Résultat réel sur pub400 : on part du SQL, on passe par les façades, on descend dans le RPG — VALDEVIS, CALCDEVIS, CALCTARIF… et une branche qu'on n'avait pas en tête, le contrôle d'encours CTLENCOURS. La colonne SOURCE dit d'où vient chaque maillon.
-(Exécuté sur pub400 le 29/09 : kit/rpg/15-cartographier-rpg.sql, lignes reprises de pub400/resultats-kit/rpg/15-cartographier-rpg.txt.)
--->
-
----
-chapitre: 2
-etape: 1
----
-
-# Un diagramme sans outil
-
-<v-switch>
-<template #0>
-
-```sql
-SELECT 'graph LR' AS LIGNE FROM SYSIBM.SYSDUMMY1
-UNION ALL
-SELECT DISTINCT '  ' CONCAT APPELANT CONCAT ' --> ' CONCAT APPELE FROM T_APPELS
-UNION ALL
-SELECT DISTINCT '  ' CONCAT TRIM(WHPNAM) CONCAT ' --> '
-       CONCAT TRIM(WHFNAM) CONCAT '[(' CONCAT TRIM(WHFNAM) CONCAT ')]'
-  FROM T_PGMREF                                 -- [( )] : table en cylindre
- WHERE WHOTYP = '*FILE' AND WHLNAM NOT IN ('QSYS', 'QSYS2')
-UNION ALL
-SELECT '  class ' CONCAT ROUTINE_NAME CONCAT ' ps' FROM QSYS2.SYSROUTINES
- WHERE ROUTINE_SCHEMA = CURRENT SCHEMA AND ROUTINE_TYPE = 'PROCEDURE'
-UNION ALL
-SELECT '  classDef ps fill:#5d8392,stroke:#3f5f6b,color:#fff' FROM SYSIBM.SYSDUMMY1;
-```
-
-</template>
-<template #1>
-
-```mermaid {scale: 0.5}
+```mermaid {scale: 0.42}
 graph LR
   PS_TRAITER_DEVIS --> PS_VAL_DEVIS
   PS_TRAITER_DEVIS --> PS_GEN_FACT
@@ -569,29 +493,42 @@ graph LR
   classDef ps fill:#5d8392,stroke:#3f5f6b,color:#fff
 ```
 
+<div class="text-sm opacity-70 -mt-2">Le même graphe, écrit en Mermaid par une requête SQL (kit).</div>
+
 </template>
 </v-switch>
 
 > Le natif ne remplace pas un outil. Il permet de savoir **par où commencer** et **quoi ne pas casser**.
 
+<style>
+.etape-carto {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--slidev-theme-primary, #5d8392);
+}
+</style>
+
 <div class="absolute bottom-4 left-8 text-xs opacity-60">
-<a href="https://www.volubis.fr/news/liens/courshtm/V7.2/SQLasaService.html">Volubis</a> ·
-<a href="https://www.ibm.com/support/pages/ibm-i-sql-services-information">IBM i SQL Services</a> ·
+<a href="https://www.ibm.com/docs/en/i/7.5.0?topic=views-sysroutinedep">SYSROUTINEDEP</a> ·
+<a href="https://www.ibm.com/docs/en/i/7.5.0?topic=views-sysroutines">SYSROUTINES</a> ·
 <a href="https://www.linkedin.com/pulse/dsppgmref-sql-table-function-ibmi-bob-cozzi">Bob Cozzi — DSPPGMREF en UDTF</a> ·
 <code>kit/rpg/15-cartographier-rpg.sql</code>
 </div>
 
 <!--
-Le SQL génère du Mermaid : les appels viennent de T_APPELS — le SQL, les façades, le RPG —, les tables de DSPPGMREF. Et la requête colore elle-même les procédures PS_ : une ligne « class » par procédure, lue dans SYSROUTINES. On colle le résultat dans n'importe quel éditeur, [clic] et on a un diagramme de structure, où l'on voit d'un coup d'œil ce qui est SQL et ce qui est RPG. Pas aussi riche qu'un outil, mais suffisant pour cadrer.
-Le diagramme affiché est la sortie réelle de la requête sur pub400 (27 lignes) : seuls l'ordre des lignes et le regroupement des lignes « class » ont été retouchés pour l'écran. On y voit aussi que CALCTARIF sert deux fois : appelé par CALCDEVIS, et exposé par sa propre façade.
-Les limites, à annoncer honnêtement — c'est là qu'un outil fait la différence :
-- DSPPGMREF ne voit que les appels à nom littéral : un CALL sur une variable échappe.
-- Il ne voit pas les appels réseau : un programme qui appelle une API REST ne référence aucune table, alors que l'API, elle, en écrit.
-(En réserve pour les questions : le SQL dynamique n'apparaît pas — SYSPROGRAMSTMTSTAT, PARSE_STATEMENT, BOUND_MODULE_INFO pour le reste — et les relations fines, quelle zone joint quelle zone, demandent de lire le source.)
+Point de départ : PS_TRAITER_DEVIS, la procédure SQL qui valide puis facture un devis. La chaîne traverse deux mondes, le SQL et le RPG, et chaque maillon se lit à un endroit différent : le catalogue pour le SQL, DSPPGMREF pour le RPG. On les rassemble dans une table, T_APPELS — la requête est dans le kit.
+Ensuite, une récursion classique : les programmes appelés par les programmes appelés, avec deux garde-fous, une profondeur maximale et la détection de boucle.
+[clic] Résultat réel sur pub400 : on part du SQL, on passe par les façades, on descend dans le RPG — VALDEVIS, CALCDEVIS, CALCTARIF… et une branche qu'on n'avait pas en tête, le contrôle d'encours CTLENCOURS. La colonne SOURCE dit d'où vient chaque maillon.
+[clic] Et une autre requête écrit le même graphe en Mermaid, avec les tables : on colle le résultat dans un éditeur, et on a un diagramme de structure, où l'on voit ce qui est SQL et ce qui est RPG.
+Les limites, honnêtement — c'est là qu'un outil fait la différence : DSPPGMREF ne voit que les appels à nom littéral, et il ne voit pas les appels réseau.
 Le natif ne remplace pas un outil. Il permet de savoir par où commencer, et quoi ne pas casser.
-En réserve (kit, 15-cartographier-rpg.sql) : qui touche à DEVIS ? Trois programmes — CALCDEVIS, VALDEVIS et GENFACT, qui le lisent et le mettent à jour (usage 5 : lecture + mise à jour). Avant de modifier la table, on sait qui prévenir.
+(En réserve pour les questions : la requête qui rassemble les trois sources et celle qui génère le Mermaid, dans kit/rpg/15-cartographier-rpg.sql ; SQL dynamique — SYSPROGRAMSTMTSTAT, PARSE_STATEMENT, BOUND_MODULE_INFO ; « qui touche à DEVIS ? » : CALCDEVIS, VALDEVIS et GENFACT, usage 5.)
+(Exécuté sur pub400 le 29/09 : kit/rpg/15-cartographier-rpg.sql, résultat repris de pub400/resultats-kit/rpg/15-cartographier-rpg.txt ; Mermaid : sortie réelle de 27 lignes, seul l'ordre des lignes est retouché pour l'écran.)
 -->
-
 ---
 zoom: 0.9
 chapitre: 2
