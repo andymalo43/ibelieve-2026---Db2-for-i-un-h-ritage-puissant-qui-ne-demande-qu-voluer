@@ -1140,44 +1140,8 @@ Sous chaque requête, son résultat sur pub400 (lignes reprises de pub400/result
 (Principe, non exécuté : aucun SIEM n'est branché sur pub400. Le format syslog est documenté par IBM, lien en pied de slide.)
 Sur un vrai système, on irait plus loin : les profils qui ont *ALLOBJ (QSYS2.USER_INFO), les échecs de mot de passe (SYSTOOLS.AUDIT_JOURNAL_PW). Sur pub400, les services respectent les droits : la première rend 0 ligne, la seconde est refusée faute d'accès au journal d'audit (SQL0443).
 (Exécuté tel quel sur pub400 le 29/09 : kit/05-administrer.sql. Le texte des messages n'est pas affiché : le client JDBC utilisé en abîme les accents.)
-Trois requêtes, trois domaines, mais toujours la même démarche : c'est ce que résume la slide suivante.
--->
-
----
-chapitre: 3
----
-
-# La méthode
-
-<div class="mt-16">
-
-```d2 {maxHeight: '17rem'}
-...@theme
-direction: right
-
-i: "1. Identifier\nla commande CL\nWRKACTJOB" {class: bloc}
-t: "2. Trouver\nle service\nACTIVE_JOB_INFO" {class: [bloc; etape2]}
-f: "3. Filtrer tôt\n*ALLSIMPLE" {class: [bloc; etape3]}
-m: "4. Matérialiser\ndans une table" {class: [bloc; etape4]}
-x: "5. Extraire\ncomme une donnée\nmétier" {class: [fort; etape5]}
-
-i -> t: {class: etape2}
-t -> f: {class: etape3}
-f -> m: {class: etape4}
-m -> x: {class: etape5}
-```
-
-</div>
-
-<div class="text-center mt-16 text-2xl">Le système devient <b>une table comme les autres</b></div>
-
-<div class="absolute bottom-4 left-8 text-xs opacity-60">
-<a href="https://www.ibm.com/support/pages/ibm-i-sql-services-information">IBM i SQL Services — matérialiser le résultat</a>
-</div>
-
-<!--
-Ces trois exemples suivent la même méthode, en cinq temps. Partir de la commande qu'on utilise aujourd'hui — WRKACTJOB. [clic] Trouver le service équivalent — ACTIVE_JOB_INFO. [clic] Filtrer tôt : les services ont souvent un niveau de détail réduit, comme *ALLSIMPLE, beaucoup moins coûteux. [clic] Matérialiser le résultat dans une table, comme le recommande IBM. [clic] Et l'extraire comme n'importe quelle donnée métier.
-C'est la transition vers la suite : la carte des programmes, le système, les logs… tout devient une table SQL. Et une table, ça s'extrait.
+Trois requêtes, trois domaines, et à chaque fois la même idée : le système devient une table comme les autres. Conseil d'IBM au passage : filtrer tôt, et matérialiser le résultat dans une table.
+Et une table, ça s'extrait : c'est la transition vers la dernière partie.
 -->
 
 ---
