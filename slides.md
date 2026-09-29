@@ -74,16 +74,16 @@ layout: default
   <carbon-arrow-right class="fleche" />
   <div class="etape">
     <div class="etape__role">Développeur BI</div>
-    <div class="etape__logos"><simple-icons-talend style="color: #ff6d70" /><span class="cognos"><simple-icons-ibm style="color: #1f70c1" />Cognos</span></div>
-    <div class="etape__note">consommateur d'IBM i</div>
+    <div class="etape__logos"><simple-icons-talend style="color: #ff6d70" /><span class="cognos">Cognos</span></div>
+    <div class="etape__note">consomme la base</div>
   </div>
 </div>
 
-<div v-click class="etape-avec-fleche">
+<div v-click class="etape-avec-fleche moyen">
   <carbon-arrow-right class="fleche" />
   <div class="etape fort">
     <div class="etape__role">DBA / DBE Db2 for i</div>
-    <div class="etape__logos"><span class="puce"><carbon-ibm-i style="color: #1f3b47" /></span></div>
+    <div class="etape__logos"><span class="puce puce--multi"><carbon-ibm-i style="color: #1f3b47" /><simple-icons-postgresql style="color: #4169e1" /><carbon-sql style="color: #5d8392" /></span></div>
     <div class="etape__note">500+ tables → SQL</div>
   </div>
 </div>
@@ -128,8 +128,9 @@ layout: default
 .etape__logos { display: flex; align-items: center; justify-content: center; gap: 0.4rem; font-size: 1.8rem; min-height: 2.4rem; }
 .etape__note { font-size: 0.7rem; opacity: 0.8; }
 .puce { display: inline-flex; align-items: center; background: rgba(255, 255, 255, 0.96); border-radius: 0.6rem; padding: 0.3rem 0.6rem; }
-.cognos { display: inline-flex; align-items: center; gap: 0.2rem; font-size: 0.7rem; font-weight: 700; color: #1f3b47; }
-.cognos svg { font-size: 1.2rem; }
+.cognos { display: inline-flex; align-items: center; font-size: 1rem; font-weight: 800; letter-spacing: 0.02em; color: #1f3b47; }
+.puce--multi { gap: 0.4rem; }
+.puce--multi svg { font-size: 1.6rem; }
 .outils { display: flex; justify-content: center; gap: 0.8rem; font-size: 1.3rem; }
 .outils span { display: flex; flex-direction: column; align-items: center; gap: 0.1rem; font-size: 0.6rem; color: #1f3b47; }
 .outils span svg { font-size: 1.5rem; }
