@@ -1,6 +1,6 @@
 -- =====================================================================
 -- Kit iBelieve 2026 — RPG — 15. Cartographier une chaîne qui traverse SQL et RPG
--- (slides « Étape 1 — Cartographier », « La chaîne d'appels », « Un diagramme sans outil »)
+-- (slides « 2.1 Cartographier », « La chaîne d'appels », « Un diagramme sans outil »)
 -- Trois sources, une table T_APPELS :
 --   SYSROUTINEDEP            procédure SQL → procédure
 --   SYSROUTINES              façade → programme (EXTERNAL_NAME)

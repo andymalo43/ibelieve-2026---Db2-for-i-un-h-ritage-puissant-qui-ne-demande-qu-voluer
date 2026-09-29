@@ -1,5 +1,5 @@
 -- =====================================================================
--- Kit iBelieve 2026 — 01. Cartographier (slides « Étape 1 », « La chaîne d'appels »,
+-- Kit iBelieve 2026 — 01. Cartographier (slides « 2.1 Cartographier », « La chaîne d'appels »,
 -- « Un diagramme sans outil »). Lecture seule, hors QTEMP (disparaît avec la session).
 -- Prérequis : 00-terrain.sql. Lancer dans la même session ACS, de haut en bas.
 -- =====================================================================

@@ -164,9 +164,12 @@ Le fil de la réponse, vous allez le voir tout au long : le SQL sur IBM i dépas
 
 ---
 layout: two-cols
+chapitre: 1
 ---
 
 # 1. Le chantier 2019-2022
+
+<div class="opacity-70 -mt-1">En clair : changer le stockage des données sans toucher aux programmes.</div>
 
 <div class="mt-2 leading-none font-bold" style="font-size: 5.5rem; color: var(--slidev-theme-primary)">500+</div>
 <div class="text-2xl mt-2">tables DDS → SQL, <b>sans recompiler</b></div>
@@ -219,6 +222,8 @@ Transition : migrer la base, c'était la première marche. Mais une base moderne
 
 ---
 layout: center
+chapitre: 2
+etape: 0
 ---
 
 # 2. Moderniser progressivement
@@ -231,7 +236,7 @@ direction: right
 
 c: "1. Cartographier\nchaînes d'appels\ntables ↔ programmes" {class: bloc}
 e: "2. Encapsuler\nRPG → procédures\nstockées" {class: [bloc; etape2]}
-d: "3. Découpler\njournal\nfiles de messages" {class: [bloc; etape3]}
+d: "3. Découpler\nla base publie\nles changements" {class: [bloc; etape3]}
 m: "4. Moderniser\nun bloc\nà la fois" {class: [fort; etape4]}
 
 c -> e: {class: etape2}
@@ -255,6 +260,9 @@ Le Redbook SG24-8185 ne parle pas seulement d'interface web. Il pose quatre prin
 Concrètement, ça donne une démarche en quatre temps. D'abord cartographier : savoir ce qui existe. [clic] Encapsuler : rendre l'existant appelable, sans le réécrire. [clic] Découpler : que la base publie ce qui change. [clic] Et seulement alors, moderniser un bloc à la fois. [clic] Et on recommence, sur le bloc suivant. Le SQL est l'outil de chacune de ces étapes.
 -->
 
+---
+chapitre: 2
+etape: 0
 ---
 
 # Le terrain : une mini-application de devis
@@ -310,8 +318,13 @@ Pas de compilateur, ou pas le droit de compiler ? Le kit a une variante tout SQL
 -->
 
 ---
+chapitre: 2
+etape: 1
+---
 
-# Étape 1 — Cartographier
+# 2.1 Cartographier
+
+<div class="opacity-70 -mt-2">En clair : savoir qui appelle quoi avant de toucher à quoi que ce soit.</div>
 
 <div class="grid grid-cols-3 gap-4 mt-2">
 <IconCard titre="Avec un outil" texte="X-Analysis : modèle déduit du code"><carbon-tool-kit /></IconCard>
@@ -350,6 +363,9 @@ Le fichier de sortie (format QADSPPGM) : WHPNAM, le programme analysé ; WHFNAM 
 Sur le kit (exécuté sur pub400 le 29/09, kit/rpg/15-cartographier-rpg.sql) : 8 programmes analysés — les 7 RPG et PS_TRTDEV, le *PGM de la procédure SQL —, 3 appels entre programmes (VALDEVIS vers CALCDEVIS et CTLENCOURS, CALCDEVIS vers CALCTARIF), 9 références de tables. Les références au système — moteur SQL, runtime RPG, catalogue QSYS2 — sont écartées.
 -->
 
+---
+chapitre: 2
+etape: 1
 ---
 
 # La chaîne d'appels, en deux requêtes
@@ -442,6 +458,9 @@ Première requête : on rassemble les trois sources dans une table, T_APPELS. Pr
 -->
 
 ---
+chapitre: 2
+etape: 1
+---
 
 # Un diagramme sans outil
 
@@ -519,9 +538,11 @@ En réserve (kit, 15-cartographier-rpg.sql) : qui touche à DEVIS ? Trois progra
 
 ---
 zoom: 0.9
+chapitre: 2
+etape: 2
 ---
 
-# Étape 2 — Encapsuler
+# 2.2 Encapsuler
 
 Un programme existant devient une **procédure stockée**. Sans toucher à son code.
 
@@ -591,6 +612,8 @@ Anecdote à garder si le temps le permet : sur 99,99 avec 33,33 % de remise, les
 
 ---
 zoom: 0.9
+chapitre: 2
+etape: 2
 ---
 
 # Appeler la façade depuis l'extérieur
@@ -660,8 +683,57 @@ Une fois encapsulé, le RPG s'appelle comme n'importe quelle procédure, depuis 
 -->
 
 ---
+chapitre: 2
+etape: 3
+---
 
-# Étape 3 — Découpler : le journal a tout vu
+# 2.3 Découpler : publier sans toucher aux programmes
+
+<div class="opacity-70 -mt-2">En clair : au lieu que le programme appelle chaque service, la base publie et chacun vient lire.</div>
+
+```d2 {maxHeight: '22rem'}
+...@theme
+direction: right
+
+avant: "Aujourd'hui : le programme appelle chaque service" {
+  class: zone
+  direction: right
+  p1: "Programme RPG\nécrit la donnée\net appelle l'API" {class: legacy}
+  t1: "Table" {class: donnees}
+  d1: "Service REST A" {class: bloc}
+  d2: "Service REST B" {class: bloc}
+  p1 -> t1
+  p1 -> d1: HTTP, à chaque fois {class: fil}
+  p1 -> d2: HTTP, à chaque fois {class: fil}
+}
+apres: "Alternative testée : la base publie, chacun vient lire" {
+  class: [zone; etape2]
+  direction: right
+  p2: "Programme RPG\nnon modifié" {class: [legacy; etape2]}
+  t2: "Table" {class: [donnees; etape2]}
+  b: "La base publie\njournal · file" {class: [fort; etape2]}
+  d3: "Un consommateur\npipeline · API · Kafka\n(à brancher)" {class: [eteint; etape2]}
+  p2 -> t2 {class: etape2}
+  t2 -> b {class: etape2}
+  b -> d3: s'abonne {class: [eteint; etape2]}
+}
+```
+
+<div class="text-center mt-3 text-xl" v-click>Le programme n'a pas changé, et <b>la base publie</b> ce qui change.<div class="text-sm opacity-60 mt-1">Testé sur pub400 : journal et file. Aucun consommateur n'est déployé.</div></div>
+
+<!--
+Découpler, c'est séparer celui qui produit un changement de ceux qui ont besoin de le connaître.
+Chez nous, aujourd'hui, quand une donnée change et qu'un autre système doit le savoir, le programme appelle lui-même un service REST, avec les fonctions HTTP de Db2. Le programme est lié à chaque service : en ajouter un, c'est retoucher le programme, et une panne du service se répercute sur la transaction.
+[clic] L'alternative, que j'ai testée sur pub400 : on déplace cette responsabilité dans la base. Le programme écrit sa donnée et ne sait rien de personne. La base publie le changement, par le journal ou par une file, et chacun vient lire ce qui l'intéresse.
+[clic] Le programme n'a pas changé, et la base publie ce qui change. Honnêteté : ce qui a tourné, c'est le journal et la file ; le consommateur, pipeline, API ou Kafka, reste à brancher, et rien de tel n'est déployé chez nous aujourd'hui. Les deux slides suivantes montrent les deux moyens : le journal, puis la file.
+-->
+
+---
+chapitre: 2
+etape: 3
+---
+
+# 2.3 Le journal a tout vu
 
 <div class="grid grid-cols-5 gap-6">
 
@@ -705,9 +777,9 @@ ibmi: "IBM i" {
   t -> j: chaque modification 
   t -> q: SEND_DATA_QUEUE {class: eteint}
 }
-cdc: "Job de capture (CDC)\nlit DISPLAY_JOURNAL" {class: bloc}
-conso: "Consommateurs\nJava · Python · RPG" {class: eteint}
-cible: "Kafka · API\npipeline data" {class: legacy}
+cdc: "Job de capture (CDC)\nlit DISPLAY_JOURNAL\n(à écrire ou à acheter)" {class: bloc}
+conso: "Consommateurs possibles\nJava · Python · RPG" {class: eteint}
+cible: "Kafka · API · pipeline\nà brancher, non déployé" {class: eteint}
 
 ibmi.j -> cdc 
 ibmi.q -> conso {class: eteint}
@@ -727,16 +799,20 @@ conso -> cible {class: eteint}
 <!--
 Au lieu que chaque programme sache qui prévenir, la base publie l'événement.
 D'abord, la capture sans rien écrire : les tables sont journalisées. On traite un devis — PS_TRAITER_DEVIS, qui valide puis facture en appelant le RPG — et le journal a tout vu : chaque mise à jour laisse l'image avant (UB) et l'image après (UP) — à l'écran, un extrait —, avec la table et le programme qui l'a faite. CALCDEVIS et VALDEVIS sur DEVIS, GENFACT sur le compteur, la facture, le client et le devis. Ce sont les programmes RPG eux-mêmes, qu'on n'a pas touchés : ni recompilés, ni modifiés pour ça. C'est la base de toute capture de changements à grande échelle.
-Le schéma, à droite : deux façons de faire sortir un changement de l'IBM i. Ici, la branche du journal : un job de capture de changements — un outil de réplication du marché, ou un job maison qui lit DISPLAY_JOURNAL — relaie vers Kafka, une API ou un pipeline data. La branche grisée, la file de données, c'est la slide suivante.
+Le schéma, à droite : deux façons de faire sortir un changement de l'IBM i. Ici, la branche du journal : un job de capture de changements — un outil de réplication du marché, ou un job maison qui lit DISPLAY_JOURNAL — pourrait relayer vers Kafka, une API ou un pipeline data. Ce maillon n'existe pas chez nous et n'a pas été testé sur pub400 : seul le journal l'a été. La branche grisée, la file de données, c'est la slide suivante.
 Et surtout pas d'appel réseau au moment où la donnée change (dans un trigger, par exemple) : ça allonge chaque transaction et la rend dépendante du réseau — et les fonctions HTTP de Db2 ne bornent que le temps de connexion. Le schéma robuste : écrire localement (journal, file, outbox), un consommateur asynchrone relaie.
 (Exécuté sur pub400 le 29/09 : kit/rpg/17-decoupler.sql, 6 entrées sur les 90 de l'heure — le reste vient du jeu d'essai et de 14-rejouer.sql. Horodatage : heure de la machine pub400. Variante sans compilation : kit/03-decoupler.sql.)
 -->
 
 ---
 zoom: 0.9
+chapitre: 2
+etape: 3
 ---
 
-# Étape 3 — Découpler : la base publie
+# 2.3 La base publie
+
+<div class="opacity-70 -mt-2">En clair : la base prévient elle-même qui doit l'être, sans modifier les programmes.</div>
 
 <div class="grid grid-cols-5 gap-6">
 
@@ -754,6 +830,8 @@ CALL QSYS2.SEND_DATA_QUEUE_UTF8(
   DATA_QUEUE         => 'EVT_CLIENT',
   DATA_QUEUE_LIBRARY => CURRENT SCHEMA);
 ```
+
+<div class="text-sm opacity-70 -mt-2 mb-1">Ici l'envoi est lancé à la main. Sur un vrai système, un trigger le fait à chaque modification.</div>
 
 <div v-click>
 
@@ -788,9 +866,9 @@ ibmi: "IBM i" {
   t -> j: chaque modification {class: eteint}
   t -> q: SEND_DATA_QUEUE 
 }
-cdc: "Job de capture (CDC)\nlit DISPLAY_JOURNAL" {class: eteint}
-conso: "Consommateurs\nJava · Python · RPG" {class: bloc}
-cible: "Kafka · API\npipeline data" {class: legacy}
+cdc: "Job de capture (CDC)\nlit DISPLAY_JOURNAL\n(à écrire ou à acheter)" {class: eteint}
+conso: "Consommateurs possibles\nJava · Python · RPG" {class: bloc}
+cible: "Kafka · API · pipeline\nà brancher, non déployé" {class: eteint}
 
 ibmi.j -> cdc {class: eteint}
 ibmi.q -> conso 
@@ -826,15 +904,27 @@ Sur un vrai système, on pose ce SEND_DATA_QUEUE_UTF8 dans un trigger AFTER UPDA
 
 ---
 layout: statement
+chapitre: 2
+etape: 4
 ---
 
 # Le SQL sur IBM i n'est pas qu'un langage de requête.
 
 ## C'est un langage d'**intégration** : il appelle des programmes, publie des événements, parle à MQ et au web.
 
+<div class="mt-10 text-lg opacity-70">2.4 Moderniser, un bloc à la fois — puis on recommence sur le suivant.</div>
+
+<!--
+On ferme la boucle du chapitre : cartographier, encapsuler, découpler, et la quatrième étape, c'est simplement de moderniser un bloc à la fois — l'étape qui n'a pas besoin de slide, puisque c'est le travail de chacun chez soi. Les trois premières l'ont rendue possible sans rien casser.
+-->
+
+---
+chapitre: 3
 ---
 
 # 3. Administrer et exploiter en SQL
+
+<div class="opacity-70 -mt-2">En clair : le système se consulte comme une table, sans connaître les commandes.</div>
 
 <div class="grid grid-cols-2 gap-8 mt-2">
 
@@ -875,40 +965,7 @@ Les IBM i Services : des vues, fonctions table et procédures dans QSYS2 et SYST
 -->
 
 ---
-
-# La méthode
-
-<div class="mt-16">
-
-```d2 {maxHeight: '17rem'}
-...@theme
-direction: right
-
-i: "1. Identifier\nla commande CL\nWRKACTJOB" {class: bloc}
-t: "2. Trouver\nle service\nACTIVE_JOB_INFO" {class: [bloc; etape2]}
-f: "3. Filtrer tôt\n*ALLSIMPLE" {class: [bloc; etape3]}
-m: "4. Matérialiser\ndans une table" {class: [bloc; etape4]}
-x: "5. Extraire\ncomme une donnée\nmétier" {class: [fort; etape5]}
-
-i -> t: {class: etape2}
-t -> f: {class: etape3}
-f -> m: {class: etape4}
-m -> x: {class: etape5}
-```
-
-</div>
-
-<div class="text-center mt-16 text-2xl">Le système devient <b>une table comme les autres</b></div>
-
-<div class="absolute bottom-4 left-8 text-xs opacity-60">
-<a href="https://www.ibm.com/support/pages/ibm-i-sql-services-information">IBM i SQL Services — matérialiser le résultat</a>
-</div>
-
-<!--
-La méthode tient en cinq temps. Partir de la commande qu'on utilise aujourd'hui — WRKACTJOB. [clic] Trouver le service équivalent — ACTIVE_JOB_INFO. [clic] Filtrer tôt : les services ont souvent un niveau de détail réduit, comme *ALLSIMPLE, beaucoup moins coûteux. [clic] Matérialiser le résultat dans une table, comme le recommande IBM. [clic] Et l'extraire comme n'importe quelle donnée métier.
-C'est la transition vers la suite : la carte des programmes, le système, les logs… tout devient une table SQL. Et une table, ça s'extrait.
--->
-
+chapitre: 3
 ---
 
 # Sécurité · exploitation · audit
@@ -995,14 +1052,53 @@ Sous chaque requête, son résultat sur pub400 (lignes reprises de pub400/result
 Vers la supervision d'entreprise : DISPLAY_JOURNAL et HISTORY_LOG_INFO savent produire du syslog RFC5424, en continu.
 Sur un vrai système, on irait plus loin : les profils qui ont *ALLOBJ (QSYS2.USER_INFO), les échecs de mot de passe (SYSTOOLS.AUDIT_JOURNAL_PW). Sur pub400, les services respectent les droits : la première rend 0 ligne, la seconde est refusée faute d'accès au journal d'audit (SQL0443).
 (Exécuté tel quel sur pub400 le 29/09 : kit/05-administrer.sql. Le texte des messages n'est pas affiché : le client JDBC utilisé en abîme les accents.)
-Et une fois que tout — la carte des programmes, le système, les logs — est une table SQL… on peut tout extraire. C'est la transition vers la dernière partie.
+Trois requêtes, trois domaines, mais toujours la même démarche : c'est ce que résume la slide suivante.
 -->
 
+---
+chapitre: 3
+---
+
+# La méthode
+
+<div class="mt-16">
+
+```d2 {maxHeight: '17rem'}
+...@theme
+direction: right
+
+i: "1. Identifier\nla commande CL\nWRKACTJOB" {class: bloc}
+t: "2. Trouver\nle service\nACTIVE_JOB_INFO" {class: [bloc; etape2]}
+f: "3. Filtrer tôt\n*ALLSIMPLE" {class: [bloc; etape3]}
+m: "4. Matérialiser\ndans une table" {class: [bloc; etape4]}
+x: "5. Extraire\ncomme une donnée\nmétier" {class: [fort; etape5]}
+
+i -> t: {class: etape2}
+t -> f: {class: etape3}
+f -> m: {class: etape4}
+m -> x: {class: etape5}
+```
+
+</div>
+
+<div class="text-center mt-16 text-2xl">Le système devient <b>une table comme les autres</b></div>
+
+<div class="absolute bottom-4 left-8 text-xs opacity-60">
+<a href="https://www.ibm.com/support/pages/ibm-i-sql-services-information">IBM i SQL Services — matérialiser le résultat</a>
+</div>
+
+<!--
+Ces trois exemples suivent la même méthode, en cinq temps. Partir de la commande qu'on utilise aujourd'hui — WRKACTJOB. [clic] Trouver le service équivalent — ACTIVE_JOB_INFO. [clic] Filtrer tôt : les services ont souvent un niveau de détail réduit, comme *ALLSIMPLE, beaucoup moins coûteux. [clic] Matérialiser le résultat dans une table, comme le recommande IBM. [clic] Et l'extraire comme n'importe quelle donnée métier.
+C'est la transition vers la suite : la carte des programmes, le système, les logs… tout devient une table SQL. Et une table, ça s'extrait.
+-->
+
+---
+chapitre: 4
 ---
 
 # 4. L'IBM i, source de données de premier plan
 
-<div class="opacity-70 -mt-2">Pas un silo</div>
+<div class="opacity-70 -mt-2">En clair : les données de l'IBM i alimentent les outils modernes, sans recopie à la main.</div>
 
 <div class="grid grid-cols-5 gap-3 mt-8">
 <IconCard titre="ODBC" texte="Python · BI · DuckDB"><carbon-data-connected /></IconCard>
@@ -1027,6 +1123,8 @@ L'IBM i n'est pas un silo. On s'y connecte depuis de multiples points d'accès. 
 Et les procédures stockées de l'étape 2 sont appelables par ces mêmes points d'accès : un pipeline data peut déclencher un traitement RPG existant par un simple CALL.
 -->
 
+---
+chapitre: 4
 ---
 
 # ODBC → Arrow → DuckDB
@@ -1101,41 +1199,7 @@ Clin d'œil : le référentiel DSPPGMREF du chapitre 2 s'extrait de la même fa�
 -->
 
 ---
-
-# Sinapse NC : quand l'outil manque, on le construit
-
-```d2 {maxHeight: '11rem'}
-...@theme
-direction: right
-
-db2: "Db2 for i" {class: donnees}
-x: "arrow-odbc / ADBC\nextraction colonne" {class: fort}
-duck: "DuckDB\nParquet" {class: donnees}
-dbt: "dbt\nmodèles" {class: bloc}
-ia: "Analyse · IA" {class: bloc}
-
-db2 -> x: ODBC
-x -> duck: Arrow {class: fil}
-duck -> dbt -> ia
-```
-
-<div class="grid grid-cols-4 gap-3 mt-4">
-<IconCard titre="Le besoin" texte="alimenter la plateforme data, sans peser sur la prod"><carbon-data-share /></IconCard>
-<IconCard titre="L'existant" texte="ODBC, fiable mais ligne à ligne"><carbon-hourglass /></IconCard>
-<IconCard titre="Construit" texte="Arrow · ADBC · piste Flight SQL"><carbon-tool-kit /></IconCard>
-<div v-click><IconCard titre="Résultat" texte="[volumes, temps avant / après]"><carbon-growth /></IconCard></div>
-</div>
-
-<div class="absolute bottom-4 left-8 text-xs opacity-60">
-<a href="https://arrow.apache.org/adbc/">Apache Arrow ADBC</a>
-</div>
-
-<!--
-Il n'y avait pas d'outil ? On s'est appuyé sur le natif — le pilote ODBC IBM — et on a construit le reste avec des standards ouverts. Le besoin : alimenter une plateforme data moderne, sans alourdir la production. L'existant : ODBC, fiable mais ligne à ligne. Ce qu'on a construit : l'extraction en colonne avec Arrow, un pilote ADBC, et la piste d'un service Arrow Flight SQL devant l'IBM i.
-[clic] Le résultat.
-À ajuster selon ce qui peut être montré publiquement.
--->
-
+chapitre: 4
 ---
 
 # Industrialiser l'extraction
@@ -1195,6 +1259,44 @@ Et quelques garde-fous : un compte technique en lecture seule (RCAC si besoin), 
 -->
 
 ---
+chapitre: 4
+---
+
+# Sinapse NC : quand l'outil manque, on le construit
+
+```d2 {maxHeight: '11rem'}
+...@theme
+direction: right
+
+db2: "Db2 for i" {class: donnees}
+x: "arrow-odbc / ADBC\nextraction colonne" {class: fort}
+duck: "DuckDB\nParquet" {class: donnees}
+dbt: "dbt\nmodèles" {class: bloc}
+ia: "Analyse · IA" {class: bloc}
+
+db2 -> x: ODBC
+x -> duck: Arrow {class: fil}
+duck -> dbt -> ia
+```
+
+<div class="grid grid-cols-4 gap-3 mt-4">
+<IconCard titre="Le besoin" texte="alimenter la plateforme data, sans peser sur la prod"><carbon-data-share /></IconCard>
+<IconCard titre="L'existant" texte="ODBC, fiable mais ligne à ligne"><carbon-hourglass /></IconCard>
+<IconCard titre="Construit" texte="Arrow · ADBC · piste Flight SQL"><carbon-tool-kit /></IconCard>
+<div v-click><IconCard titre="Résultat" texte="[volumes, temps avant / après]"><carbon-growth /></IconCard></div>
+</div>
+
+<div class="absolute bottom-4 left-8 text-xs opacity-60">
+<a href="https://arrow.apache.org/adbc/">Apache Arrow ADBC</a>
+</div>
+
+<!--
+Pour finir ce chapitre, ce que ça donne en vrai chez Sinapse. Il n'y avait pas d'outil ? On s'est appuyé sur le natif — le pilote ODBC IBM — et on a construit le reste avec des standards ouverts. Le besoin : alimenter une plateforme data moderne, sans alourdir la production. L'existant : ODBC, fiable mais ligne à ligne. Ce qu'on a construit : l'extraction en colonne avec Arrow, un pilote ADBC, et la piste d'un service Arrow Flight SQL devant l'IBM i.
+[clic] Le résultat.
+À ajuster selon ce qui peut être montré publiquement.
+-->
+
+---
 
 # À retenir
 
@@ -1214,7 +1316,7 @@ Et quelques garde-fous : un compte technique en lecture seule (RCAC si besoin), 
 </div>
 
 <!--
-Quatre messages à retenir. Moderniser progressivement : cartographier, encapsuler, découpler, un bloc à la fois. Le SQL va au-delà du transactionnel : il administre, il exploite, il intègre. L'IBM i est une source de données de premier plan : ODBC, Arrow, DuckDB. Et les compétences IBM i sont un tremplin : connaître l'existant, c'est construire la suite.
+On referme sur les trois questions du début. Avec un outil : il accélère, notamment l'IA pour l'état des lieux. Sans outil : on a des standards ouverts et un peu de code. Avec le natif seul : le SQL de l'IBM i va très loin, comme on l'a vu. Quatre messages à retenir. Moderniser progressivement : cartographier, encapsuler, découpler, un bloc à la fois. Le SQL va au-delà du transactionnel : il administre, il exploite, il intègre. L'IBM i est une source de données de premier plan : ODBC, Arrow, DuckDB. Et les compétences IBM i sont un tremplin : connaître l'existant, c'est construire la suite.
 Et pourquoi ça marche : la base est intégrée à l'OS — catalogue, journaux, sécurité objet ; c'est un langage d'intégration ; elle est ouverte — ODBC, JDBC, Mapepire, HTTP, MCP ; et elle évolue en continu : les TR de l'été 2026 ont livré 5 améliorations, 17 nouveaux services et 10 services enrichis.
 -->
 
