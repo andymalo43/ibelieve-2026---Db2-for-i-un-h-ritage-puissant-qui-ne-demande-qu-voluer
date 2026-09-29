@@ -1174,15 +1174,57 @@ Et les procédures stockées de l'étape 2.2 sont appelables par ces mêmes poin
 chapitre: 4
 ---
 
-# ODBC → Arrow → DuckDB
+# ODBC → DuckDB, avec ou sans Arrow
 
-<div class="text-sm opacity-70 -mt-2 mb-3">Code illustratif, <b>non exécuté sur pub400</b> : le pilote ODBC ne passe pas par le tunnel SOCKS.</div>
+<div class="opacity-70 -mt-2 mb-2"><carbon-checkmark-outline class="inline" /> Exécuté sur pub400 le 30/09, <b>en connexion directe</b> : le pilote IBM i Access ODBC et un DSN.</div>
 
-<div class="grid grid-cols-2 gap-6">
+<div class="grid grid-cols-5 gap-6">
 
-<div>
+<div class="col-span-3">
 
-```d2 {maxHeight: '21rem'}
+<v-switch>
+<template #0>
+
+<div class="etape-extraire"><simple-icons-duckdb /> Le plus simple : DuckDB interroge l'IBM i</div>
+
+```sql
+-- Une connexion, puis une requête exécutée par l'IBM i
+SET VARIABLE ibmi = odbc_connect('DSN=MONIBMI');
+CREATE TABLE client AS
+  FROM odbc_query(getvariable('ibmi'),
+                  'SELECT * FROM VOTREBIB.CLIENT');
+```
+
+</template>
+<template #1>
+
+<div class="etape-extraire"><simple-icons-apachearrow /> Pour le volume : des lots Arrow, en colonne</div>
+
+```python
+reader = read_arrow_batches_from_odbc(
+    query="SELECT * FROM VOTREBIB.CLIENT",
+    connection_string="DSN=MONIBMI",
+    batch_size=50_000,
+)
+clients = pa.Table.from_batches(
+    reader, schema=reader.schema)
+
+duckdb.sql(
+  "CREATE TABLE client AS SELECT * FROM clients")
+```
+
+</template>
+</v-switch>
+
+<div class="mt-3 text-sm opacity-80">Dans les deux cas, dans DuckDB :</div>
+
+<Resultat class="mt-1" :colonnes="['clients', 'encours_total']" :lignes="[['3', '48000.00']]" />
+
+</div>
+
+<div class="col-span-2">
+
+```d2 {maxHeight: '20rem'}
 ...@theme
 direction: down
 
@@ -1193,56 +1235,45 @@ avant: "Ligne à ligne" {
   d -> p: "× 1 000 000"
 }
 apres: "En colonne" {
-  class: [zone; etape2]
-  d: "Db2 for i" {class: [donnees; etape2]}
-  a: "lots Apache Arrow" {class: [fort; etape2]}
-  k: "DuckDB" {class: [donnees; etape2]}
-  d -> a: ODBC {class: etape2}
-  a -> k: sans copie {class: [fil; etape2]}
+  class: zone
+  d: "Db2 for i" {class: donnees}
+  a: "lots Apache Arrow" {class: fort}
+  k: "DuckDB" {class: donnees}
+  d -> a: ODBC
+  a -> k: sans copie {class: fil}
 }
 ```
 
 </div>
 
-<div>
-
-<div class="flex gap-4 text-3xl mb-2 justify-center"><logos-python /><simple-icons-apachearrow /><simple-icons-duckdb /></div>
-
-```python
-from arrow_odbc import read_arrow_batches_from_odbc
-import pyarrow as pa
-import duckdb
-
-reader = read_arrow_batches_from_odbc(
-    query="SELECT * FROM VOTREBIB.CLIENT",
-    connection_string="Driver={IBM i Access "
-                      "ODBC Driver};System=MONIBMI;...",
-    batch_size=50_000,
-)
-clients = pa.Table.from_batches(
-    reader, schema=reader.schema)
-
-duckdb.sql(
-  "CREATE TABLE client AS SELECT * FROM clients")
-```
-
 </div>
 
-</div>
+<style>
+.etape-extraire {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--slidev-theme-primary, #5d8392);
+}
+</style>
 
 <div class="absolute bottom-4 left-8 text-xs opacity-60">
+<a href="https://duckdb.org/docs/current/core_extensions/odbc/overview">DuckDB — extension ODBC</a> ·
 <a href="https://github.com/pacman82/arrow-odbc-py">arrow-odbc-py</a> ·
 <a href="https://github.com/pacman82/arrow-odbc">arrow-odbc (Rust)</a> ·
-<a href="https://duckdb.org/community_extensions/extensions/nanodbc">nanodbc</a> ·
-<a href="https://github.com/duckdb/odbc-scanner">duckdb/odbc-scanner</a>
+<code>kit/exemples/duckdb-odbc.sql</code> · <code>arrow_odbc_duckdb.py</code>
 </div>
 
 <!--
-Un pilote SQL classique renvoie des lignes, une par une, converties en objets du langage. Sur des millions d'enregistrements, c'est lent. [clic]
-arrow-odbc lit par lots et remplit directement des tableaux Arrow, en colonne. DuckDB, une base analytique embarquée, lit cette table Arrow en mémoire sans copie.
-Deuxième chemin, à citer : une extension ODBC directement dans DuckDB (nanodbc, ou odbc_scanner) — INSTALL nanodbc FROM community; LOAD nanodbc; puis SELECT * FROM odbc_query(connection => 'DSN=…', query => 'SELECT * FROM VOTREBIB.CLIENT'). À valider avec le pilote IBM i ; le bloc est dans kit/exemples/duckdb-nanodbc.non-execute.sql.
-(Seul code du deck non exécuté sur pub400, et c'est écrit sur la slide : le pilote ODBC IBM i ne sait pas passer par le proxy SOCKS du tunnel. Le faire passer demande de modifier la configuration ACS du poste ; choix du 29/09 de ne pas le faire. MONIBMI est un nom de DSN illustratif.)
-Clin d'œil : le référentiel DSPPGMREF du chapitre 2 s'extrait de la même façon → la carte des programmes devient analysable dans DuckDB.
+Deux façons de sortir les données de l'IBM i vers DuckDB, une base analytique qui tourne sur un poste, sans serveur. Les deux passent par le pilote ODBC d'IBM, et les deux ont tourné sur pub400.
+La plus simple d'abord : DuckDB a depuis peu une extension ODBC officielle. On charge l'extension, on ouvre une connexion sur un DSN, et on envoie la requête à l'IBM i. Le résultat devient une table DuckDB, qu'on analyse en local. Trois lignes de SQL.
+[clic] Pour le volume, l'autre chemin : arrow-odbc. Un pilote SQL classique renvoie des lignes, une par une, converties en objets du langage ; sur des millions d'enregistrements, c'est lent. arrow-odbc lit par lots et remplit directement des tableaux Arrow, en colonne, et DuckDB lit cette table en mémoire sans copie. C'est ce que montre le schéma.
+Dans les deux cas, le même résultat : trois clients, 48 000 d'encours. Et les types sont conservés : les DECIMAL de l'IBM i restent des DECIMAL dans DuckDB.
+Clin d'œil : le référentiel DSPPGMREF du chapitre 2 s'extrait de la même façon, et la carte des programmes devient analysable dans DuckDB.
+(Exécuté sur pub400 le 30/09, en connexion directe par le pilote IBM i Access ODBC et un DSN, sans tunnel : kit/exemples/duckdb-odbc.sql et arrow_odbc_duckdb.py, sorties dans pub400/resultats-kit/exemples/. MONIBMI est le nom de DSN illustratif. Pas de mesure de performance : pub400 est un système partagé, et 3 lignes ne disent rien d'un volume.)
 -->
 
 ---
@@ -1399,5 +1430,5 @@ Merci — questions ?
 <a href="https://github.com/pacman82/arrow-odbc-py">arrow-odbc-py</a> ·
 <a href="https://arrow.apache.org/adbc/">Apache Arrow ADBC</a> ·
 <a href="https://mapepire-ibmi.github.io/">Mapepire</a> ·
-<a href="https://duckdb.org/community_extensions/extensions/nanodbc">DuckDB nanodbc</a>
+<a href="https://duckdb.org/docs/current/core_extensions/odbc/overview">DuckDB ODBC</a>
 </div>

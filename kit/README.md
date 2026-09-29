@@ -65,12 +65,17 @@ chaîne d'appels qui part d'une procédure SQL et descend dans le RPG (catalogue
 voir [`rpg/README.md`](rpg/README.md). C'est le terrain des slides « Le terrain » à « 2.3 Découpler ». Sources
 fournies, chargées et compilées depuis ACS, sans rien téléverser.
 
-## Exemples non exécutés par le kit
+## Exemples côté poste : `exemples/`
 
-Dans `exemples/`, ce qui dépend de votre poste :
+Ce qui tourne sur votre poste, pas dans ACS :
 
-- `arrow_odbc_duckdb.py` et `duckdb-nanodbc.non-execute.sql` : extraire en colonne par ODBC
-  vers Apache Arrow et DuckDB, depuis votre poste (pilote IBM i Access ODBC requis).
+- `duckdb-odbc.sql` : DuckDB (≥ 1.2, extension officielle `odbc`) interroge l'IBM i et copie `CLIENT`
+  en local — `duckdb -f duckdb-odbc.sql`.
+- `arrow_odbc_duckdb.py` : la même extraction en lots Apache Arrow, en colonne, pour le volume.
+
+Les deux demandent le pilote IBM i Access ODBC et un DSN (`MONIBMI` dans les scripts : remplacez-le
+par le vôtre, qui porte système, utilisateur et mot de passe), et `00-terrain.sql` dans `VOTREBIB`.
+Exécutés sur pub400 le 30/09/2026, en connexion directe.
 
 ## Bon à savoir
 

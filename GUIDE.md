@@ -39,8 +39,8 @@ des transactions : il sert à moderniser, administrer, exploiter et ouvrir les d
 - **Pourquoi ça compte** : la donnée de gestion nourrit l'analyse et l'IA sans copie manuelle et sans ralentir la production.
 - **À demander à un collègue technique** : « Comment nos données IBM i arrivent-elles aujourd'hui vers l'analyse ? Combien de temps prend une extraction ? »
 
-> Deux éléments sont volontairement signalés comme non exécutés : l'extraction ODBC → Arrow → DuckDB
-> (code illustratif) et les chiffres avant / après du retour d'expérience Sinapse.
+> Deux éléments sont volontairement signalés comme non exécutés : la réécriture d'un bloc (slide 2.4, un principe)
+> et les chiffres avant / après du retour d'expérience Sinapse.
 
 ## Lexique
 

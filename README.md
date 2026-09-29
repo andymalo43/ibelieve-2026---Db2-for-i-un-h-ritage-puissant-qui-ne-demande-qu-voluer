@@ -39,7 +39,7 @@ Les autres chapitres n'ont qu'une version :
 | Administrer et exploiter en SQL | `kit/05-administrer.sql` |
 | Industrialiser l'extraction | `kit/06-industrialiser.sql` |
 | Tout supprimer | `kit/99-menage.sql` (kit SQL), `kit/rpg/19-menage.sql` (kit RPG) |
-| ODBC → Arrow → DuckDB | `kit/exemples/` (à adapter) |
+| ODBC → DuckDB, avec ou sans Arrow | `kit/exemples/duckdb-odbc.sql`, `kit/exemples/arrow_odbc_duckdb.py` (sur votre poste, avec un DSN) |
 
 ## Voir le deck
 
