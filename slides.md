@@ -363,7 +363,7 @@ Kit : <code>kit/rpg/</code> — 5 tables, 7 programmes RPG compilés depuis ACS,
 <!--
 Pour que ce ne soit pas que de la théorie, tous les exemples de cette partie ont été exécutés sur pub400, un IBM i public — et vous pouvez les rejouer : tout est dans le kit du dépôt, à lancer dans votre propre bibliothèque. Le schéma est volontairement petit : des clients, des devis, des lignes, des factures. Mais il a les défauts d'une vraie base : une date stockée en numérique, « parce que c'est partout », et des règles métier — remise, plafond d'encours, cycle de vie du devis — qui vivent dans les programmes.
 Le terrain, ce sont de vrais programmes RPG, publiés avec le kit et compilés depuis ACS : VALDEVIS valide un devis — il appelle CALCDEVIS, qui appelle CALCTARIF pour la remise et la TVA, et CTLENCOURS pour le plafond d'encours. GENFACT facture, et possède sa transaction. Par-dessus, un début de SQL : deux façades, PS_VAL_DEVIS et PS_GEN_FACT, et une procédure SQL, PS_TRAITER_DEVIS, qui les enchaîne. On verra à l'étape 2.2 comment on les écrit.
-Un mot sur la nomenclature, parce qu'on va la retrouver partout : PS_ pour une procédure stockée, rien pour un programme RPG ou CL. PS_VAL_DEVIS encapsule VALDEVIS : on ne les confond plus. Autre raison, propre à l'IBM i : une procédure SQL crée un objet *PGM — sans préfixe, rien ne la distingue d'un RPG dans WRKOBJ ou dans le journal. Et comme un nom d'objet système tient en 10 caractères, chaque procédure déclare un SPECIFIC court — PS_TRAITER_DEVIS devient le programme PS_TRTDEV. Sans SPECIFIC, Db2 fabrique un nom, du genre PS_TR00001. (Tableau complet dans kit/README.md.)
+Un mot : PS_ désigne une procédure stockée ; un programme RPG n'a pas de préfixe (détail dans kit/README.md).
 Pas de compilateur, ou pas le droit de compiler ? Le kit a une variante tout SQL (kit/00-terrain.sql), où des procédures SQL jouent le rôle des programmes.
 -->
 
@@ -580,8 +580,7 @@ Le diagramme affiché est la sortie réelle de la requête sur pub400 (27 lignes
 Les limites, à annoncer honnêtement — c'est là qu'un outil fait la différence :
 - DSPPGMREF ne voit que les appels à nom littéral : un CALL sur une variable échappe.
 - Il ne voit pas les appels réseau : un programme qui appelle une API REST ne référence aucune table, alors que l'API, elle, en écrit.
-- Le SQL dynamique n'apparaît pas ; pour le reste, SYSPROGRAMSTMTSTAT, PARSE_STATEMENT, et BOUND_MODULE_INFO pour les liaisons ILE.
-- Les relations fines, quelle zone joint quelle zone, demandent de lire le source.
+(En réserve pour les questions : le SQL dynamique n'apparaît pas — SYSPROGRAMSTMTSTAT, PARSE_STATEMENT, BOUND_MODULE_INFO pour le reste — et les relations fines, quelle zone joint quelle zone, demandent de lire le source.)
 Le natif ne remplace pas un outil. Il permet de savoir par où commencer, et quoi ne pas casser.
 En réserve (kit, 15-cartographier-rpg.sql) : qui touche à DEVIS ? Trois programmes — CALCDEVIS, VALDEVIS et GENFACT, qui le lisent et le mettent à jour (usage 5 : lecture + mise à jour). Avant de modifier la table, on sait qui prévenir.
 -->
@@ -653,6 +652,7 @@ contrat -> app: CALL {class: fil}
 <!--
 Trois programmes d'époques différentes — un RPG III en OPM, un RPG IV free-form, et du RPG généré à la façon d'Adélia — derrière trois procédures au contrat identique. Aucun n'a été recompilé pour ça : on n'a écrit que du DDL. LANGUAGE RPG et non RPGLE, parce que c'est de l'OPM ; PARAMETER STYLE GENERAL, parce que le programme reçoit ses paramètres tels quels.
 [clic] Vu du catalogue, ce sont trois procédures interchangeables, appelables depuis ODBC, JDBC, Mapepire, un orchestrateur ou un pipeline data. Et sur pub400 elles rendent la même chose pour 10 000 HT et 5 % de remise : 9500 HT remisé, 1900 de TVA, 11400 TTC.
+Et ça s'appelle de partout : en JDBC, on lit directement les paramètres de sortie ; en ODBC, beaucoup d'outils ne savent pas les lire, alors une petite fonction table rend les valeurs par un simple SELECT. Les deux exemples sont dans le kit.
 Et une fois encapsulés, on les compose : une procédure SQL peut enchaîner une validation existante, un peu de SQL neuf, puis une facturation existante. Chaque étape se remplace individuellement, le contrat est documenté dans le catalogue.
 Point d'attention : une transaction ouverte par l'appelant ne traverse pas un programme compilé COMMIT(*NONE), et sans lever d'erreur. Encapsuler, c'est aussi décider qui possède la transaction — dans le kit, c'est le programme de facturation.
 Anecdote à garder si le temps le permet : sur 99,99 avec 33,33 % de remise, les trois versions divergent d'un centime — 79,99 contre 80,00 — parce que les arrondis ne sont pas écrits pareil. Encapsuler n'efface pas les différences : ça les rend testables (kit/rpg/14-rejouer.sql le montre).
@@ -663,6 +663,7 @@ Anecdote à garder si le temps le permet : sur 99,99 avec 33,33 % de remise, les
 zoom: 0.9
 chapitre: 2
 etape: 2
+hide: true
 ---
 
 # Appeler la façade depuis l'extérieur
@@ -725,6 +726,7 @@ print(remise, tva, ttc)   # 9500.00 1900.00 11400.00
 </div>
 
 <!--
+(Slide en réserve, masquée par hide: true : à montrer en questions.)
 Une fois encapsulé, le RPG s'appelle comme n'importe quelle procédure, depuis n'importe quel langage. Deux exemples.
 À gauche, JDBC, avec le pilote JTOpen : un CallableStatement, on passe le montant et le taux, on enregistre les quatre paramètres de sortie, on exécute — et on lit ce que le programme RPG III a calculé. 9500, 1900, 11400.
 À droite, ODBC. Piège : beaucoup de clients ODBC, dont pyodbc en Python et une partie des outils BI, ne savent pas lire les paramètres de sortie d'un CALL. La solution native : une petite fonction table SQL qui appelle la façade et rend ses valeurs en ligne. Du coup, un simple SELECT suffit — depuis Python, Excel, Power BI ou DuckDB. Et c'est une idée qu'on retrouvera au chapitre 4 : l'IBM i comme source de données.
@@ -774,19 +776,25 @@ apres: "Alternative testée : la base publie, chacun vient lire" {
 Découpler, c'est séparer celui qui produit un changement de ceux qui ont besoin de le connaître.
 Chez nous, aujourd'hui, quand une donnée change et qu'un autre système doit le savoir, le programme appelle lui-même un service REST, avec les fonctions HTTP de Db2. Le programme est lié à chaque service : en ajouter un, c'est retoucher le programme, et une panne du service se répercute sur la transaction.
 [clic] L'alternative, que j'ai testée sur pub400 : on déplace cette responsabilité dans la base. Le programme écrit sa donnée et ne sait rien de personne. La base publie le changement, par le journal ou par une file, et chacun vient lire ce qui l'intéresse.
-[clic] Le programme n'a pas changé, et la base publie ce qui change. Honnêteté : ce qui a tourné, c'est le journal et la file ; le consommateur, pipeline, API ou Kafka, reste à brancher, et rien de tel n'est déployé chez nous aujourd'hui. Les deux slides suivantes montrent les deux moyens : le journal, puis la file.
+[clic] Le programme n'a pas changé, et la base publie ce qui change. Honnêteté : ce qui a tourné, c'est le journal et la file ; le consommateur, pipeline, API ou Kafka, reste à brancher, et rien de tel n'est déployé chez nous aujourd'hui. La slide suivante montre les deux moyens : le journal, puis la file.
 -->
 
 ---
+zoom: 0.9
 chapitre: 2
 etape: 3
 ---
 
-# 2.3 Le journal a tout vu
+# 2.3 Le journal et la file : la base publie
 
 <div class="grid grid-cols-5 gap-6">
 
 <div class="col-span-3">
+
+<v-switch>
+<template #0>
+
+<div class="etape-decouple"><carbon-document /> Le journal a déjà tout vu</div>
 
 ```sql
 -- Le journal a déjà tout capté
@@ -810,62 +818,10 @@ SELECT ENTRY_TIMESTAMP, JOURNAL_ENTRY_TYPE,
 
 <div class="mt-2 opacity-80"><carbon-checkmark-outline class="inline" /> Le journal sait <b>quel programme</b> a modifié quoi. Aucun n'a été modifié.</div>
 
-</div>
+</template>
+<template #1>
 
-<div class="col-span-2">
-
-```d2 {maxHeight: '24rem'}
-...@theme
-direction: down
-
-ibmi: "IBM i" {
-  class: zone
-  t: "Tables\nCLIENT · DEVIS…" {class: donnees}
-  j: "Journal\nQSQJRN" {class: fort}
-  q: "*DTAQ\nEVT_CLIENT" {class: eteint; shape: queue}
-  t -> j: chaque modification 
-  t -> q: SEND_DATA_QUEUE {class: eteint}
-}
-cdc: "Job de capture (CDC)\nlit DISPLAY_JOURNAL\n(à écrire ou à acheter)" {class: bloc}
-conso: "Consommateurs possibles\nJava · Python · RPG" {class: eteint}
-cible: "Kafka · API · pipeline\nà brancher, non déployé" {class: eteint}
-
-ibmi.j -> cdc 
-ibmi.q -> conso {class: eteint}
-cdc -> cible 
-conso -> cible {class: eteint}
-```
-
-</div>
-
-</div>
-
-<div class="absolute bottom-4 left-8 text-xs opacity-60">
-<a href="https://www.ibm.com/docs/en/i/7.5.0?topic=services-display-journal-table-function">DISPLAY_JOURNAL</a> ·
-<code>kit/rpg/17-decoupler.sql</code>
-</div>
-
-<!--
-Au lieu que chaque programme sache qui prévenir, la base publie l'événement.
-D'abord, la capture sans rien écrire : les tables sont journalisées. On traite un devis — PS_TRAITER_DEVIS, qui valide puis facture en appelant le RPG — et le journal a tout vu : chaque mise à jour laisse l'image avant (UB) et l'image après (UP) — à l'écran, un extrait —, avec la table et le programme qui l'a faite. CALCDEVIS et VALDEVIS sur DEVIS, GENFACT sur le compteur, la facture, le client et le devis. Ce sont les programmes RPG eux-mêmes, qu'on n'a pas touchés : ni recompilés, ni modifiés pour ça. C'est la base de toute capture de changements à grande échelle.
-Le schéma, à droite : deux façons de faire sortir un changement de l'IBM i. Ici, la branche du journal : un job de capture de changements — un outil de réplication du marché, ou un job maison qui lit DISPLAY_JOURNAL — pourrait relayer vers Kafka, une API ou un pipeline data. Ce maillon n'existe pas chez nous et n'a pas été testé sur pub400 : seul le journal l'a été. La branche grisée, la file de données, c'est la slide suivante.
-Et surtout pas d'appel réseau au moment où la donnée change (dans un trigger, par exemple) : ça allonge chaque transaction et la rend dépendante du réseau — et les fonctions HTTP de Db2 ne bornent que le temps de connexion. Le schéma robuste : écrire localement (journal, file, outbox), un consommateur asynchrone relaie.
-(Exécuté sur pub400 le 29/09 : kit/rpg/17-decoupler.sql, 6 entrées sur les 90 de l'heure — le reste vient du jeu d'essai et de 14-rejouer.sql. Horodatage : heure de la machine pub400. Variante sans compilation : kit/03-decoupler.sql.)
--->
-
----
-zoom: 0.9
-chapitre: 2
-etape: 3
----
-
-# 2.3 La base publie
-
-<div class="opacity-70 -mt-2">En clair : la base prévient elle-même qui doit l'être, sans modifier les programmes.</div>
-
-<div class="grid grid-cols-5 gap-6">
-
-<div class="col-span-3">
+<div class="etape-decouple"><carbon-send /> La base publie un JSON dans une file</div>
 
 ```sql
 -- Publier l'état du client en JSON
@@ -880,9 +836,12 @@ CALL QSYS2.SEND_DATA_QUEUE_UTF8(
   DATA_QUEUE_LIBRARY => CURRENT SCHEMA);
 ```
 
-<div class="text-sm opacity-70 -mt-2 mb-1">Ici l'envoi est lancé à la main. Sur un vrai système, un trigger le fait à chaque modification.</div>
+<div class="text-sm opacity-70 mt-1">Ici l'envoi est lancé à la main. Sur un vrai système, un trigger le fait à chaque modification.</div>
 
-<div v-click>
+</template>
+<template #2>
+
+<div class="etape-decouple"><carbon-download /> Le consommateur lit, y compris par ODBC</div>
 
 ```sql
 -- Côté consommateur, y compris via ODBC
@@ -897,58 +856,67 @@ SELECT CAST(MESSAGE_DATA_UTF8 AS VARCHAR(1000)) AS MESSAGE
  "ts":"2026-09-29-09.45.57.398581"}
 ```
 
-</div>
+</template>
+</v-switch>
 
 </div>
 
 <div class="col-span-2">
 
-```d2 {maxHeight: '19rem'}
+```d2 {maxHeight: '24rem'}
 ...@theme
 direction: down
 
 ibmi: "IBM i" {
   class: zone
   t: "Tables\nCLIENT · DEVIS…" {class: donnees}
-  j: "Journal\nQSQJRN" {class: eteint}
+  j: "Journal\nQSQJRN" {class: fort}
   q: "*DTAQ\nEVT_CLIENT" {class: fort; shape: queue}
-  t -> j: chaque modification {class: eteint}
-  t -> q: SEND_DATA_QUEUE 
+  t -> j: chaque modification
+  t -> q: SEND_DATA_QUEUE
 }
-cdc: "Job de capture (CDC)\nlit DISPLAY_JOURNAL\n(à écrire ou à acheter)" {class: eteint}
+cdc: "Job de capture (CDC)\nlit DISPLAY_JOURNAL\n(à écrire ou à acheter)" {class: bloc}
 conso: "Consommateurs possibles\nJava · Python · RPG" {class: bloc}
 cible: "Kafka · API · pipeline\nà brancher, non déployé" {class: eteint}
 
-ibmi.j -> cdc {class: eteint}
-ibmi.q -> conso 
+ibmi.j -> cdc
+ibmi.q -> conso
 cdc -> cible {class: eteint}
-conso -> cible 
+conso -> cible {class: eteint}
 ```
 
-<div class="grid grid-cols-3 gap-1">
-<IconCard petit titre="Java · JTOpen"><logos-java /></IconCard>
-<IconCard petit titre="Python · ODBC"><logos-python /></IconCard>
-<IconCard petit titre="RPG · QRCVDTAQ"><carbon-ibm-i /></IconCard>
 </div>
 
 </div>
 
-</div>
+<style>
+.etape-decouple {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--slidev-theme-primary, #5d8392);
+}
+</style>
 
 <div class="absolute bottom-4 left-8 text-xs opacity-60">
+<a href="https://www.ibm.com/docs/en/i/7.5.0?topic=services-display-journal-table-function">DISPLAY_JOURNAL</a> ·
 <a href="https://ibm.com/support/knowledgecenter/ssw_ibm_i_75/rzajq/rzajqprocsenddtaq.htm">SEND_DATA_QUEUE</a> ·
 <a href="https://www.ibm.com/support/pages/qsys2receivedataqueue">RECEIVE_DATA_QUEUE</a> ·
-<a href="https://www.ibm.com/docs/en/i/7.5.0?topic=ssw_ibm_i_75/apis/qrcvdtaq.htm">QRCVDTAQ</a> ·
 <a href="https://javadoc.io/doc/net.sf.jt400/jt400/latest/com/ibm/as400/access/DataQueue.html">JTOpen DataQueue</a> ·
-<a href="https://www.ibm.com/support/knowledgecenter/ssw_ibm_i_72/sqlp/rbafymqdb2functions.htm">Db2 MQ functions</a> ·
-<a href="https://www.ibm.com/docs/en/ssw_ibm_i_75/sqlp/rbafyhttpoverview.htm">HTTP functions</a> ·
+<a href="https://www.ibm.com/docs/en/i/7.5.0?topic=ssw_ibm_i_75/apis/qrcvdtaq.htm">QRCVDTAQ</a> ·
 <code>kit/rpg/17-decoupler.sql</code>
 </div>
 
 <!--
-Ensuite, la publication : un JSON construit en SQL, poussé dans une file de données — ici l'encours du client, juste après sa facture. Sur le schéma, c'est maintenant la branche de la file qui est en couleur. [clic] Côté consommateur, la file se lit en SQL, y compris de l'extérieur par ODBC. Et le consommateur peut être n'importe quoi : un service Java qui la lit avec la classe DataQueue de JTOpen, un script Python par ODBC avec la requête qu'on vient de voir, ou un bon vieux programme RPG en batch avec l'API QRCVDTAQ. La file est indifférente au langage de celui qui la lit. De là, on relaie vers un broker : les fonctions Db2 MQ si IBM MQ est installé (absent de pub400, non exécuté), ou les fonctions HTTP de Db2 vers une API ou un proxy Kafka.
-Sur un vrai système, on pose ce SEND_DATA_QUEUE_UTF8 dans un trigger AFTER UPDATE : chaque mise à jour publie son événement, avant et après. Sur pub400, CREATE TRIGGER est refusé au compte gratuit (SQL0552) : c'est pour ça qu'il n'est pas à l'écran.
-(Exécuté sur pub400 le 29/09 : kit/rpg/17-decoupler.sql, file créée puis supprimée. L'encours du client 1001 passe de 1200 à 2910 : la facture de 1710 TTC qu'on vient d'émettre.)
+Deux moyens pour que la base publie, sans toucher aux programmes.
+Le journal d'abord. Les tables sont journalisées. On traite un devis, et le journal a tout vu : chaque modification, avec la table et le programme qui l'a faite — CALCDEVIS et VALDEVIS sur le devis, GENFACT sur la facture et le client. Ce sont les programmes RPG eux-mêmes, qu'on n'a pas touchés. C'est la base de toute capture de changements ; le job qui relaierait vers Kafka ou une API reste à écrire ou à acheter.
+[clic] La file ensuite : un JSON construit en SQL, déposé dans une file de données. Ici je l'envoie à la main ; sur un vrai système, un trigger le ferait à chaque modification — pub400 refuse CREATE TRIGGER au compte gratuit.
+[clic] Et n'importe qui la lit : en SQL, y compris par ODBC, un service Java, ou un vieux programme RPG. L'encours du client est passé à 2910 : la facture qu'on vient d'émettre.
+Surtout pas d'appel réseau au moment où la donnée change : on écrit localement, un consommateur asynchrone relaie.
+(Exécuté sur pub400 le 29/09 : kit/rpg/17-decoupler.sql — 6 entrées de journal sur les 90 de l'heure, file créée puis supprimée ; MQ et trigger non exécutés. Variante sans compilation : kit/03-decoupler.sql.)
 -->
 
 ---

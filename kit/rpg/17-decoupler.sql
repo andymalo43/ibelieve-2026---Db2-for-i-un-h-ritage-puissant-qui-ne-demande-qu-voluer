@@ -1,5 +1,5 @@
 -- =====================================================================
--- Kit iBelieve 2026 — RPG — 17. Découpler (slides « le journal a tout vu », « la base publie »)
+-- Kit iBelieve 2026 — RPG — 17. Découpler (slide « 2.3 Le journal et la file : la base publie »)
 -- Le RPG travaille sans rien savoir du journal ; la base publie l'état du client en JSON.
 -- ÉCRIT : valide et facture le devis 500005, crée puis supprime la *DTAQ EVT_CLIENT.
 -- Prérequis : 13-facades.sql. Pour rejouer : relancer 10-terrain-rpg.sql.
