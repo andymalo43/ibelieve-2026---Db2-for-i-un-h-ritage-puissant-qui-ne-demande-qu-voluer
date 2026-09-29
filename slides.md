@@ -927,19 +927,42 @@ Surtout pas d'appel réseau au moment où la donnée change : on écrit localeme
 -->
 
 ---
-layout: statement
 chapitre: 2
 etape: 4
 ---
 
-# Le SQL sur IBM i n'est pas qu'un langage de requête.
+# 2.4 Moderniser, un bloc à la fois
 
-## C'est un langage d'**intégration** : il appelle des programmes, publie des événements, parle à MQ et au web.
+<div class="opacity-70 -mt-2">En clair : on remplace ce qu'il y a derrière la façade, les appelants ne voient rien.</div>
 
-<div class="mt-10 text-lg opacity-70">2.4 Moderniser, un bloc à la fois — puis on recommence sur le suivant.</div>
+```d2 {scale: 1.7, maxHeight: '19rem'}
+...@theme
+direction: right
+
+app: "Appelants\nSQL · JDBC · ODBC\npipeline" {class: bloc}
+facade: "Façade SQL\nmême contrat\nHT, remise → TVA, TTC" {class: fort}
+rpg: "Aujourd'hui\nCALCTARIF\nRPG IV" {class: legacy}
+neuf: "Demain\ncalcul réécrit\nSQL ou Java" {class: [bloc; etape2]}
+suivant: "Bloc suivant\nCTLENCOURS, GENFACT…" {class: [eteint; etape3]}
+
+app -> facade: CALL
+facade -> rpg
+facade -> neuf: remplace {class: [fil; etape2]}
+neuf -> suivant: puis {class: [fil; etape3]}
+```
+
+<div class="text-center mt-8 text-2xl" v-click>Le contrat ne change pas, <b>l'implémentation si</b>.</div>
+
+<div class="text-center text-sm opacity-60 mt-1">Principe, non exécuté : le kit montre trois implémentations derrière un même contrat (2.2), pas encore une réécriture.</div>
 
 <!--
-On ferme la boucle du chapitre : cartographier, encapsuler, découpler, et la quatrième étape, c'est simplement de moderniser un bloc à la fois — l'étape qui n'a pas besoin de slide, puisque c'est le travail de chacun chez soi. Les trois premières l'ont rendue possible sans rien casser.
+Dernière étape, et c'est celle pour laquelle on a fait tout le reste.
+Aujourd'hui, les appelants — du SQL, un programme Java, un outil par ODBC, un pipeline — appellent la façade SQL. Derrière, c'est le RPG CALCTARIF qui calcule.
+[clic] Demain, on réécrit ce calcul, en SQL ou en Java, et on le branche derrière la même façade. Le contrat ne bouge pas : mêmes paramètres, mêmes résultats. Les appelants ne voient rien.
+[clic] Puis on passe au bloc suivant, le contrôle d'encours, la facturation… un bloc à la fois, jamais tout d'un coup.
+[clic] Le contrat ne change pas, l'implémentation si. Et comment sait-on qu'on n'a rien cassé ? On l'a vu à l'étape 2.2 : on compare les versions sur un jeu de valeurs — c'est là qu'on avait trouvé l'écart d'un centime.
+Honnêteté : c'est un principe ; le kit montre trois implémentations derrière un même contrat, pas encore une réécriture.
+Transition : cartographier, encapsuler, découpler, remplacer — à chaque étape, l'outil, c'était le SQL. Le SQL sur IBM i n'est pas qu'un langage de requête : c'est un langage d'intégration. Et il sert aussi à administrer le système : c'est la suite.
 -->
 
 ---
