@@ -27,7 +27,7 @@ Chaque bloc SQL montré sur les slides figure ici mot pour mot.
 | `03-decoupler.sql` | « 2.3 Le journal et la file » — **variante sans compilation** (les slides utilisent `rpg/17-decoupler.sql`) | Valide et facture un devis, lit le journal (`DISPLAY_JOURNAL`), publie et consomme un JSON dans une file de données | **oui** : devis 101 facturé, `*DTAQ` créée puis supprimée |
 | `04-la-base.sql` | « 1. Le chantier 2019-2022 » (notes) | Régénère le DDL de la bibliothèque (`GENERATE_SQL`) | dans `QTEMP` seulement |
 | `05-administrer.sql` | « 3. Administrer et exploiter en SQL », « Sécurité · exploitation · audit » | Services IBM i : valeurs système, historique, droits… | non |
-| `06-industrialiser.sql` | Industrialiser l'extraction | Taille au catalogue, tranche par `RRN` | non |
+| `06-industrialiser.sql` | « 4.3 Industrialiser l'extraction » | Taille au catalogue, tranche par `RRN` | non |
 | `99-menage.sql` | — | Supprime tout ce que le kit a créé | **oui** |
 
 `03-decoupler.sql` ne se rejoue pas deux fois de suite : il facture le devis 101.

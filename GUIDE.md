@@ -6,7 +6,7 @@ partie, ce qu'elle montre, pourquoi cela compte pour l'organisation, et **la que
 à un collègue technique** pour aller plus loin.
 
 Le bandeau en haut de chaque slide indique où l'on en est : le chapitre (1 à 4), et pour le
-chapitre 2 l'étape (2.1 à 2.4).
+chapitres 2 et 4 l'étape (2.1 à 2.4, 4.1 à 4.4).
 
 ## Le fil de la session
 
@@ -35,6 +35,7 @@ des transactions : il sert à moderniser, administrer, exploiter et ouvrir les d
 - **À demander à un collègue technique** : « Quels contrôles d'exploitation refait-on à la main que l'on pourrait écrire une fois en SQL ? »
 
 ### 4. L'IBM i, source de données
+- **Le fil** : 4.1 se connecter, 4.2 extraire, 4.3 industrialiser, 4.4 en vrai (le retour d'expérience Sinapse).
 - **Ce que ça montre** : les données de l'IBM i sont lisibles par les outils modernes (Python, outils de BI, bases analytiques) et extractibles vite, en colonnes.
 - **Pourquoi ça compte** : la donnée de gestion nourrit l'analyse et l'IA sans copie manuelle et sans ralentir la production.
 - **À demander à un collègue technique** : « Comment nos données IBM i arrivent-elles aujourd'hui vers l'analyse ? Combien de temps prend une extraction ? »

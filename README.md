@@ -11,7 +11,7 @@ et souvent avec le seul natif. Ce n'est ni une démo produit ni une vente.
 
 Le [**guide du lecteur et lexique**](GUIDE.md) résume chaque partie, explique pourquoi elle compte
 et propose une question à poser à un collègue technique. Le [**diaporama en PDF**](diaporama.pdf)
-se relit à son rythme. En haut de chaque slide, un bandeau indique le chapitre et, pour le chapitre 2, l'étape.
+se relit à son rythme. En haut de chaque slide, un bandeau indique le chapitre et, pour les chapitres 2 et 4, l'étape.
 
 ## Rejouer les exemples : le kit
 
@@ -37,9 +37,9 @@ Les autres chapitres n'ont qu'une version :
 |---|---|
 | La base elle-même (`GENERATE_SQL`) | `kit/04-la-base.sql` |
 | Administrer et exploiter en SQL | `kit/05-administrer.sql` |
-| Industrialiser l'extraction | `kit/06-industrialiser.sql` |
+| 4.3 Industrialiser l'extraction | `kit/06-industrialiser.sql` |
 | Tout supprimer | `kit/99-menage.sql` (kit SQL), `kit/rpg/19-menage.sql` (kit RPG) |
-| ODBC → DuckDB, avec ou sans Arrow | `kit/exemples/duckdb-odbc.sql`, `kit/exemples/arrow_odbc_duckdb.py` (sur votre poste, avec un DSN) |
+| 4.2 ODBC → DuckDB, avec ou sans Arrow | `kit/exemples/duckdb-odbc.sql`, `kit/exemples/arrow_odbc_duckdb.py` (sur votre poste, avec un DSN) |
 
 ## Voir le deck
 

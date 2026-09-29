@@ -1146,11 +1146,14 @@ Et une table, ça s'extrait : c'est la transition vers la dernière partie.
 
 ---
 chapitre: 4
+etape: 1
 ---
 
 # 4. L'IBM i, source de données de premier plan
 
-<div class="opacity-70 -mt-2">En clair : les données de l'IBM i alimentent les outils modernes, sans recopie à la main.</div>
+<div class="text-lg -mt-2 mb-1" style="color: #b56959">4.1 Se connecter</div>
+
+<div class="opacity-70">En clair : les données de l'IBM i alimentent les outils modernes, sans recopie à la main.</div>
 
 <div class="grid grid-cols-5 gap-3 mt-8">
 <IconCard titre="ODBC" texte="Python · BI · DuckDB"><carbon-data-connected /></IconCard>
@@ -1177,9 +1180,10 @@ Et les procédures stockées de l'étape 2.2 sont appelables par ces mêmes poin
 
 ---
 chapitre: 4
+etape: 2
 ---
 
-# ODBC → DuckDB, avec ou sans Arrow
+# 4.2 ODBC → DuckDB, avec ou sans Arrow
 
 <div class="opacity-70 -mt-2 mb-2"><carbon-checkmark-outline class="inline" /> Exécuté sur pub400 le 30/09, <b>en connexion directe</b> : le pilote IBM i Access ODBC et un DSN.</div>
 
@@ -1283,9 +1287,10 @@ Clin d'œil : le référentiel DSPPGMREF du chapitre 2 s'extrait de la même fa�
 
 ---
 chapitre: 4
+etape: 3
 ---
 
-# Industrialiser l'extraction
+# 4.3 Industrialiser l'extraction
 
 <div class="grid grid-cols-2 gap-6">
 
@@ -1343,9 +1348,10 @@ Et quelques garde-fous : un compte technique en lecture seule (RCAC si besoin), 
 
 ---
 chapitre: 4
+etape: 4
 ---
 
-# Sinapse : quand l'outil manque, on le construit
+# 4.4 En vrai : Sinapse construit l'outil qui manque
 
 <Logo class="absolute bottom-4 right-8" nom="sinapse.png" alt="Sinapse" hauteur="2.4rem" />
 

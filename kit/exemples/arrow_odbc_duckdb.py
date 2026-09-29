@@ -1,4 +1,4 @@
-"""Kit iBelieve 2026 — slide « ODBC → DuckDB, avec ou sans Arrow » : lire l'IBM i en lots Arrow.
+"""Kit iBelieve 2026 — slide « 4.2 ODBC → DuckDB, avec ou sans Arrow » : lire l'IBM i en lots Arrow.
 
 Prérequis : pilote IBM i Access ODBC, un DSN (ici MONIBMI) qui porte système, utilisateur et
 mot de passe, puis  pip install arrow-odbc pyarrow duckdb. Remplacer VOTREBIB. Prérequis kit : 00-terrain.sql.

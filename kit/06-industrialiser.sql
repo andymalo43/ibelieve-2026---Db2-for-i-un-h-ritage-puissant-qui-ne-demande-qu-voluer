@@ -1,5 +1,5 @@
 -- =====================================================================
--- Kit iBelieve 2026 — 06. Industrialiser l'extraction : découper une table en tranches.
+-- Kit iBelieve 2026 — 06. Industrialiser l'extraction (slide « 4.3 ») : découper une table en tranches.
 -- Lecture seule. Prérequis : 00-terrain.sql.
 -- =====================================================================
 
