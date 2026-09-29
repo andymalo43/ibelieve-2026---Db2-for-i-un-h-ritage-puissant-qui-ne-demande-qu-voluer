@@ -1335,7 +1335,14 @@ Pour finir ce chapitre, ce que ça donne en vrai chez Sinapse. Il n'y avait pas 
 <IconCard titre="Un tremplin" texte="l'existant construit la suite"><carbon-education /></IconCard>
 </div>
 
-<div class="text-center mt-12 text-xl"><carbon-growth class="inline" /> Un moteur qui <b>évolue</b> : <b>17 nouveaux services</b> à l'été 2026</div>
+<div class="text-center mt-8 opacity-70 text-sm uppercase tracking-wider">Les trois questions du début</div>
+<div class="grid grid-cols-3 gap-3 mt-2">
+<IconCard petit titre="Avec un outil : il accélère, l'IA aussi"><carbon-tool-kit /></IconCard>
+<IconCard petit titre="Sans outil : des standards ouverts"><carbon-idea /></IconCard>
+<IconCard petit titre="Avec le natif seul : le SQL va très loin"><carbon-ibm-i /></IconCard>
+</div>
+
+<div class="text-center mt-8 text-xl"><carbon-growth class="inline" /> Un moteur qui <b>évolue</b> : <b>17 nouveaux services</b> à l'été 2026</div>
 
 <div class="absolute bottom-4 left-8 text-xs opacity-60">
 <a href="https://www.itjungle.com/2026/07/27/what-ibms-got-cooking-in-db2-for-i-in-the-summer-trs/">IT Jungle — Summer TRs 2026</a> ·
