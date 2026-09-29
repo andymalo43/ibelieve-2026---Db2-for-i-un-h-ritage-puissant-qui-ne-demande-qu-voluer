@@ -67,6 +67,18 @@ classes: {
       font-size: 20
     }
   }
+  # Branche hors sujet sur cette slide : grisée (repère « vous êtes ici »)
+  eteint: {
+    style: {
+      fill: "#f6f7f7"
+      stroke: "#cfd6d9"
+      stroke-width: 1
+      stroke-dash: 3
+      font-color: "#a3aeb3"
+      border-radius: 8
+      font-size: 16
+    }
+  }
   # Le fil rouge (parcours, passeur)
   fil: {
     style: {
@@ -96,5 +108,15 @@ classes: {
     stroke-width: 2
     font-color: "#2f4f5c"
     font-size: 16
+  }
+}
+# Flèches grisées : en dernier, pour l'emporter sur le style par défaut
+(** -> **)[*]: {
+  &class: eteint
+  style: {
+    stroke: "#cfd6d9"
+    stroke-width: 1
+    stroke-dash: 3
+    font-color: "#a3aeb3"
   }
 }

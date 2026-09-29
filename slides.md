@@ -569,21 +569,26 @@ SELECT ENTRY_TIMESTAMP, JOURNAL_ENTRY_TYPE,
 
 <div class="col-span-2">
 
-```d2 {maxHeight: '20rem'}
+```d2 {maxHeight: '24rem'}
 ...@theme
 direction: down
 
 ibmi: "IBM i" {
   class: zone
-  j: "Journal\nQSQJRN" {class: bloc}
-  q: "*DTAQ" {class: bloc; shape: queue}
+  t: "Tables\nCLIENT · DEVIS…" {class: donnees}
+  j: "Journal\nQSQJRN" {class: fort}
+  q: "*DTAQ\nEVT_CLIENT" {class: eteint; shape: queue}
+  t -> j: chaque modification 
+  t -> q: SEND_DATA_QUEUE {class: eteint}
 }
-c: "Consommateur\nasynchrone" {class: fort}
-b: "MQ · Kafka\nAPI · data" {class: legacy}
+cdc: "Job de capture (CDC)\nlit DISPLAY_JOURNAL" {class: bloc}
+conso: "Consommateurs\nJava · Python · RPG" {class: eteint}
+cible: "Kafka · API\npipeline data" {class: legacy}
 
-ibmi.j -> c
-ibmi.q -> c
-c -> b
+ibmi.j -> cdc 
+ibmi.q -> conso {class: eteint}
+cdc -> cible 
+conso -> cible {class: eteint}
 ```
 
 </div>
@@ -598,13 +603,20 @@ c -> b
 <!--
 Au lieu que chaque programme sache qui prévenir, la base publie l'événement.
 D'abord, la capture sans rien écrire : les tables du kit sont journalisées. On valide puis on facture un devis, et le journal a tout vu : chaque mise à jour laisse l'image avant (UB) et l'image après (UP) — à l'écran, un extrait des UP et de l'insertion (PT) —, avec la table et le programme qui l'a faite : CALCULER et VALIDER sur DEVIS, NUMEROTER sur le compteur, FACTURER sur la facture et le client. Aucun programme n'a été modifié pour ça. C'est la base de toute capture de changements à grande échelle.
-Le schéma, à droite : surtout pas d'appel réseau au moment où la donnée change (dans un trigger, par exemple) : ça allonge chaque transaction et la rend dépendante du réseau — et les fonctions HTTP de Db2 ne bornent que le temps de connexion. Le schéma robuste : écrire localement (journal, file, outbox), un consommateur asynchrone relaie.
+Le schéma, à droite : deux façons de faire sortir un changement de l'IBM i. Ici, la branche du journal : un job de capture de changements — un outil de réplication du marché, ou un job maison qui lit DISPLAY_JOURNAL — relaie vers Kafka, une API ou un pipeline data. La branche grisée, la file de données, c'est la slide suivante.
+Et surtout pas d'appel réseau au moment où la donnée change (dans un trigger, par exemple) : ça allonge chaque transaction et la rend dépendante du réseau — et les fonctions HTTP de Db2 ne bornent que le temps de connexion. Le schéma robuste : écrire localement (journal, file, outbox), un consommateur asynchrone relaie.
 (Exécuté sur pub400 le 29/09 avec le kit : kit/03-decoupler.sql. Horodatage : heure de la machine pub400.)
 -->
 
 ---
+zoom: 0.9
+---
 
 # Étape 3 — Découpler : la base publie
+
+<div class="grid grid-cols-5 gap-6">
+
+<div class="col-span-3">
 
 ```sql
 -- Publier l'état du client en JSON
@@ -636,16 +648,54 @@ SELECT CAST(MESSAGE_DATA_UTF8 AS VARCHAR(1000)) AS MESSAGE
 
 </div>
 
+</div>
+
+<div class="col-span-2">
+
+```d2 {maxHeight: '19rem'}
+...@theme
+direction: down
+
+ibmi: "IBM i" {
+  class: zone
+  t: "Tables\nCLIENT · DEVIS…" {class: donnees}
+  j: "Journal\nQSQJRN" {class: eteint}
+  q: "*DTAQ\nEVT_CLIENT" {class: fort; shape: queue}
+  t -> j: chaque modification {class: eteint}
+  t -> q: SEND_DATA_QUEUE 
+}
+cdc: "Job de capture (CDC)\nlit DISPLAY_JOURNAL" {class: eteint}
+conso: "Consommateurs\nJava · Python · RPG" {class: bloc}
+cible: "Kafka · API\npipeline data" {class: legacy}
+
+ibmi.j -> cdc {class: eteint}
+ibmi.q -> conso 
+cdc -> cible {class: eteint}
+conso -> cible 
+```
+
+<div class="grid grid-cols-3 gap-1">
+<IconCard petit titre="Java · JTOpen"><logos-java /></IconCard>
+<IconCard petit titre="Python · ODBC"><logos-python /></IconCard>
+<IconCard petit titre="RPG · QRCVDTAQ"><carbon-ibm-i /></IconCard>
+</div>
+
+</div>
+
+</div>
+
 <div class="absolute bottom-4 left-8 text-xs opacity-60">
 <a href="https://ibm.com/support/knowledgecenter/ssw_ibm_i_75/rzajq/rzajqprocsenddtaq.htm">SEND_DATA_QUEUE</a> ·
 <a href="https://www.ibm.com/support/pages/qsys2receivedataqueue">RECEIVE_DATA_QUEUE</a> ·
+<a href="https://www.ibm.com/docs/en/i/7.5.0?topic=ssw_ibm_i_75/apis/qrcvdtaq.htm">QRCVDTAQ</a> ·
+<a href="https://javadoc.io/doc/net.sf.jt400/jt400/latest/com/ibm/as400/access/DataQueue.html">JTOpen DataQueue</a> ·
 <a href="https://www.ibm.com/support/knowledgecenter/ssw_ibm_i_72/sqlp/rbafymqdb2functions.htm">Db2 MQ functions</a> ·
 <a href="https://www.ibm.com/docs/en/ssw_ibm_i_75/sqlp/rbafyhttpoverview.htm">HTTP functions</a> ·
 <code>kit/03-decoupler.sql</code>
 </div>
 
 <!--
-Ensuite, la publication : un JSON construit en SQL, poussé dans une file de données — ici l'encours du client, juste après sa facture. [clic] Côté consommateur, la file se lit en SQL, y compris de l'extérieur par ODBC. De là, on relaie vers un broker : les fonctions Db2 MQ si IBM MQ est installé (absent de pub400, non exécuté), ou les fonctions HTTP de Db2 vers une API ou un proxy Kafka.
+Ensuite, la publication : un JSON construit en SQL, poussé dans une file de données — ici l'encours du client, juste après sa facture. Sur le schéma, c'est maintenant la branche de la file qui est en couleur. [clic] Côté consommateur, la file se lit en SQL, y compris de l'extérieur par ODBC. Et le consommateur peut être n'importe quoi : un service Java qui la lit avec la classe DataQueue de JTOpen, un script Python par ODBC avec la requête qu'on vient de voir, ou un bon vieux programme RPG en batch avec l'API QRCVDTAQ. La file est indifférente au langage de celui qui la lit. De là, on relaie vers un broker : les fonctions Db2 MQ si IBM MQ est installé (absent de pub400, non exécuté), ou les fonctions HTTP de Db2 vers une API ou un proxy Kafka.
 Sur un vrai système, on pose ce SEND_DATA_QUEUE_UTF8 dans un trigger AFTER UPDATE : chaque mise à jour publie son événement, avant et après. Sur pub400, CREATE TRIGGER est refusé au compte gratuit (SQL0552) : c'est pour ça qu'il n'est pas à l'écran.
 (Exécuté sur pub400 le 29/09 avec le kit : kit/03-decoupler.sql, file créée puis supprimée.)
 -->
