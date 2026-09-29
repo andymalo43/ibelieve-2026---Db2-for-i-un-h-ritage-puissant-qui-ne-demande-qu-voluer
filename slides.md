@@ -4,7 +4,7 @@ colorSchema: light
 title: "Db2 for i : un héritage puissant qui ne demande qu'à évoluer"
 info: |
   iBelieve 2026 — 15 octobre 2026
-  Andy — Ingénieur de données, Sinapse NC
+  Andy — Ingénieur de données, Sinapse
 class: text-center
 transition: slide-left
 mdc: true
@@ -19,7 +19,9 @@ drawings:
 
 <br>
 
-**Andy** — Ingénieur de données, Sinapse NC
+**Andy** — Ingénieur de données
+
+<Logo nom="sinapse.png" alt="Sinapse" hauteur="2.6rem" style="background: rgba(255,255,255,0.96); border-radius: 0.75rem; padding: 0.4rem 0.9rem" />
 
 iBelieve 2026 · 15 octobre 2026
 
@@ -47,7 +49,8 @@ layout: default
 
 <div class="col-span-2">
 <div class="text-6xl font-bold" style="color: var(--slidev-theme-primary)">Andy</div>
-<div class="text-xl mt-2">Ingénieur de données · Sinapse NC</div>
+<div class="text-xl mt-2">Ingénieur de données</div>
+<Logo class="mt-3" nom="sinapse.png" alt="Sinapse" hauteur="2.8rem" />
 </div>
 
 <div class="col-span-3 flex flex-col gap-3 text-lg">
@@ -77,7 +80,7 @@ ibmi: "IBM i" {
 data2: "Data" {
   class: [zone; etape4]
   cafat: "Architecte données\nCAFAT" {class: [bloc; etape4]}
-  sinapse: "Ingénieur données\nSinapse NC" {class: [fort; etape5]}
+  sinapse: "Ingénieur données\nSinapse" {class: [fort; etape5]}
   cafat -> sinapse: continuité {class: [fil; etape5]}
 }
 
@@ -92,13 +95,13 @@ ibmi.dba -> data2.cafat: {class: [fil; etape4]}
 Mes premières requêtes SQL, je les ai écrites dans Access, pour alimenter des outils Excel. Je ne le savais pas encore, mais le fil rouge de ma carrière était déjà là.
 [clic] Ensuite, je suis passé à la data, comme concepteur développeur Talend et Cognos. J'étais alors consommateur de la base IBM i.
 [clic] Puis je suis passé de l'autre côté du miroir, DBA puis DBE sur Db2 for i. J'y ai mené la modernisation de plus de 500 tables DDS vers SQL — c'est là que je suis tombé amoureux du SQL sur IBM i. Et je l'assume : depuis, je suis un vrai fan de l'IBM i.
-[clic] Puis retour à la data : architecte de données à la CAFAT, [clic] et aujourd'hui ingénieur de données à Sinapse NC, dans la continuité.
+[clic] Puis retour à la data : architecte de données à la CAFAT, [clic] et aujourd'hui ingénieur de données à Sinapse, dans la continuité.
 Je connais cette base de l'intérieur, et aujourd'hui je la connecte à une plateforme de données moderne. C'est ce regard de passeur que je veux partager.
 -->
 
 ---
 
-# Sinapse NC : la suite de la CAFAT
+# Sinapse : la suite de la CAFAT
 
 <div class="grid grid-cols-3 gap-4 mt-2 mb-4">
 <IconCard titre="GIE · 2024" texte="CAFAT · Gouvernement · FSH"><carbon-partnership /></IconCard>
@@ -116,7 +119,7 @@ Je connais cette base de l'intérieur, et aujourd'hui je la connecte à une plat
     </div>
   </div>
   <carbon-arrow-right class="text-3xl" style="color: #5d8392" />
-  <Logo nom="sinapse.png" alt="Sinapse NC" hauteur="3.6rem" />
+  <Logo nom="sinapse.png" alt="Sinapse" hauteur="3.6rem" />
   <div class="flex flex-col items-center"><carbon-arrow-right class="text-3xl" style="color: #b56959" /><span class="text-xs" style="color: #b56959">étape par étape</span></div>
   <div class="px-4 py-3 rounded-xl text-center font-bold" style="background: #eef3f5; border: 2px solid #5d8392; color: #1f3b47">SI social<br>modernisé</div>
 </div>
@@ -1264,9 +1267,9 @@ Et quelques garde-fous : un compte technique en lecture seule (RCAC si besoin), 
 chapitre: 4
 ---
 
-# Sinapse NC : quand l'outil manque, on le construit
+# Sinapse : quand l'outil manque, on le construit
 
-<Logo class="absolute bottom-4 right-8" nom="sinapse.png" alt="Sinapse NC" hauteur="2.4rem" />
+<Logo class="absolute bottom-4 right-8" nom="sinapse.png" alt="Sinapse" hauteur="2.4rem" />
 
 ```d2 {maxHeight: '11rem'}
 ...@theme
@@ -1339,7 +1342,7 @@ Merci — questions ?
   <div class="flex items-center gap-6 px-6 py-2 rounded-2xl" style="background: rgba(255,255,255,0.96)">
     <Logo nom="itheis.jpg" alt="Itheis" hauteur="2.6rem" />
     <simple-icons-ibm class="text-4xl" style="color: #1f70c1" />
-    <Logo nom="sinapse.png" alt="Sinapse NC" hauteur="2.4rem" />
+    <Logo nom="sinapse.png" alt="Sinapse" hauteur="2.4rem" />
   </div>
 </div>
 

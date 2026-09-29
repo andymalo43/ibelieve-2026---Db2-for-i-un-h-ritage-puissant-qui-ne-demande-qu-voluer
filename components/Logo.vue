@@ -1,5 +1,5 @@
 <!-- Logo d'un partenaire, depuis public/logos/ (marques de leurs détenteurs : voir public/logos/README.md).
-     <Logo nom="sinapse.png" alt="Sinapse NC" hauteur="2.5rem" /> ; retombe sur le texte si le fichier manque. -->
+     <Logo nom="sinapse.png" alt="Sinapse" hauteur="2.5rem" /> ; retombe sur le texte si le fichier manque. -->
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
