@@ -11,6 +11,7 @@ Ils ne sont **pas** couverts par les licences du dépôt (MIT pour le code, CC B
 | `gaia.png` | Gaia | https://www.gaia.fr/ |
 | `sinapse.png` | Sinapse | https://sinapse.nc/ |
 | `cafat.jpg`, `gouvernement.jpg`, `fsh.png` | CAFAT, Gouvernement de la Nouvelle-Calédonie, Fonds social de l'habitat | https://sinapse.nc/qui |
-| IBM | logo à barres d'IBM Design | icône `simple-icons-ibm` (package `@iconify-json/simple-icons`) |
+| `kestra-icone.svg` | Kestra | https://kestra.io/icon-simple.svg |
+| IBM, Excel, Access, Talend, dbt, dlt, ClickHouse | icônes de marque | Iconify `simple-icons` (package `@iconify-json/simple-icons`), colorées par le deck. Pas de logo Cognos sous la main : IBM + le mot « Cognos » |
 
 Récupérés le 29/09/2026. À remplacer par les fichiers officiels des organisations si elles en fournissent (charte, kit presse), et à faire valider par elles avant publication.
