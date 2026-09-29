@@ -1,5 +1,5 @@
 -- =====================================================================
--- Kit iBelieve 2026 — 03. Découpler (slides « le journal a tout vu », « la base publie »).
+-- Kit iBelieve 2026 — 03. Découpler (slide « 2.3 Le journal et la file : la base publie »).
 -- ÉCRIT dans votre bibliothèque : valide et facture le devis 101, crée puis supprime la *DTAQ EVT_CLIENT.
 -- Prérequis : 00-terrain.sql. Pour rejouer, relancer 99-menage.sql puis 00-terrain.sql.
 -- =====================================================================

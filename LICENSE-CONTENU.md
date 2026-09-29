@@ -12,4 +12,4 @@ fournir un lien vers la licence.
 Texte complet : https://creativecommons.org/licenses/by/4.0/legalcode.fr
 
 Le code (kit SQL, exemples, composants, configuration) relève de la licence MIT : voir `LICENSE`.
-Les marques citées (IBM, IBM i, Db2…) appartiennent à leurs propriétaires.
+Les marques et logos cités (IBM, IBM i, Db2, Sinapse, CAFAT, Itheis, Gaia, iBelieve…) appartiennent à leurs propriétaires et ne sont pas couverts par ces licences.

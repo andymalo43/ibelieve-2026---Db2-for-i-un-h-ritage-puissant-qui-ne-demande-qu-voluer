@@ -24,7 +24,7 @@ Chaque bloc SQL montré sur les slides figure ici mot pour mot.
 |---|---|---|---|
 | `00-terrain.sql` | — (variante sans compilation du terrain des slides, qui est celui de `rpg/`) | Mini-application de devis : 5 tables journalisées (`CLIENT`, `DEVIS`, `DEVLIG`, `FACTURE`, `COMPTEUR`) et 7 procédures SQL `PS_…` qui jouent le rôle des « programmes » | **oui**, dans votre bibliothèque |
 | `01-cartographier.sql` | « 2.1 Cartographier », « La chaîne d'appels », « Un diagramme sans outil » — **variante sans compilation** (les slides utilisent `rpg/15-cartographier-rpg.sql`) | `DSPPGMREF` piloté en SQL, chaîne d'appels récursive (catalogue `SYSROUTINEDEP`), diagramme Mermaid généré en SQL | dans `QTEMP` seulement |
-| `03-decoupler.sql` | « 2.3 Découpler » (×2) — **variante sans compilation** (les slides utilisent `rpg/17-decoupler.sql`) | Valide et facture un devis, lit le journal (`DISPLAY_JOURNAL`), publie et consomme un JSON dans une file de données | **oui** : devis 101 facturé, `*DTAQ` créée puis supprimée |
+| `03-decoupler.sql` | « 2.3 Le journal et la file » — **variante sans compilation** (les slides utilisent `rpg/17-decoupler.sql`) | Valide et facture un devis, lit le journal (`DISPLAY_JOURNAL`), publie et consomme un JSON dans une file de données | **oui** : devis 101 facturé, `*DTAQ` créée puis supprimée |
 | `04-la-base.sql` | « 1. Le chantier 2019-2022 » (notes) | Régénère le DDL de la bibliothèque (`GENERATE_SQL`) | dans `QTEMP` seulement |
 | `05-administrer.sql` | « 3. Administrer et exploiter en SQL », « Sécurité · exploitation · audit » | Services IBM i : valeurs système, historique, droits… | non |
 | `06-industrialiser.sql` | Industrialiser l'extraction | Taille au catalogue, tranche par `RRN` | non |
