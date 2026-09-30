@@ -24,6 +24,8 @@ drawings:
 **Andy** · Ingénieur de données · 15 octobre 2026
 
 <!--
+*⏱ 00:00 · 25 s*
+
 - Bonjour, merci à **Itheis et IBM** pour l'invitation
 - Pas de démo produit, pas de vente
 - Montrer **ce qui est possible** avec Db2 for i
@@ -135,20 +137,22 @@ chapitre: intro
 </style>
 
 <!--
+*⏱ 00:25 · 2 min 00 · 20 s avant le 1er clic*
+
 - **Avant 2016** : premières requêtes SQL dans Access, pour des outils Excel
 - Le fil rouge de ma carrière était déjà là : le SQL
 
-[click] **2016-2019** : développeur BI, Talend et Cognos
+[click] *⏱ 15 s* **2016-2019** : développeur BI, Talend et Cognos
 - J'étais **consommateur** de la base IBM i
 
-[click] **2019-2022** : DBA puis DBE Db2 for i, de l'autre côté du miroir
+[click] *⏱ 30 s* **2019-2022** : DBA puis DBE Db2 for i, de l'autre côté du miroir
 - 500+ tables DDS → SQL
 - Là que je suis tombé amoureux du SQL sur IBM i : **fan assumé**
 
-[click] **2022-2026** : retour à la data, architecte de données à la CAFAT
+[click] *⏱ 20 s* **2022-2026** : retour à la data, architecte de données à la CAFAT
 - Outils de la data moderne : dbt, dlt, Kestra, ClickHouse
 
-[click] **Depuis 2026** : ingénieur de données chez Sinapse, dans la continuité
+[click] *⏱ 35 s* **Depuis 2026** : ingénieur de données chez Sinapse, dans la continuité
 
 - Je connais cette base de l'intérieur, je la connecte à la data moderne
 - C'est ce regard de **passeur** que je veux partager
@@ -191,6 +195,8 @@ chapitre: intro
 </div>
 
 <!--
+*⏱ 02:25 · 1 min 35*
+
 - Là où je travaille aujourd'hui : ça explique mon regard
 - **Sinapse** : GIE créé en 2024 par la CAFAT, le Gouvernement de la Nouvelle-Calédonie et le FSH
 - Mission : moderniser le SI de la protection sociale
@@ -228,6 +234,8 @@ chapitre: intro
 </div>
 
 <!--
+*⏱ 04:00 · 1 min 15*
+
 - Situation connue : IBM i depuis des décennies, **40 ans d'applicatif**
 - Règles métier cachées dans les programmes, peu de documentation
 - On veut le faire évoluer : **par où commencer ?**
@@ -287,6 +295,8 @@ Source : <a href="https://www.itheis.com/sql-comment-migrer-votre-base-de-donnee
 </div>
 
 <!--
+*⏱ 05:15 · 2 min 05*
+
 - En 2021, je vous ai parlé de **migrer des tables**
 - 2019-2022 : **500+ tables DDS → SQL**, avec Itheis, Gaia, Xcase for i
 - La clé : **méthode surrogate**
@@ -341,19 +351,21 @@ Principes : <a href="https://redbooks.ibm.com/abstracts/sg248185.html">SG24-8185
 </div>
 
 <!--
+*⏱ 07:20 · 1 min 20 · 30 s avant le 1er clic*
+
 - Redbook SG24-8185 : pas que l'interface web, **quatre principes**
   - modularisation, couches, data-centric, orientation service
 - Redbook 2026 : data-centric + API REST
 - Démarche en quatre temps :
 - **Cartographier** : savoir ce qui existe
 
-[click] **Encapsuler** : rendre l'existant appelable, sans le réécrire
+[click] *⏱ 10 s* **Encapsuler** : rendre l'existant appelable, sans le réécrire
 
-[click] **Découpler** : la base publie ce qui change
+[click] *⏱ 10 s* **Découpler** : la base publie ce qui change
 
-[click] **Moderniser un bloc à la fois**, et seulement alors
+[click] *⏱ 10 s* **Moderniser un bloc à la fois**, et seulement alors
 
-[click] **On recommence** sur le bloc suivant
+[click] *⏱ 20 s* **On recommence** sur le bloc suivant
 
 - Le SQL est l'outil de **chacune** de ces étapes
 -->
@@ -409,6 +421,8 @@ Kit : <code>kit/rpg/</code> — 5 tables, 7 programmes RPG compilés depuis ACS,
 </div>
 
 <!--
+*⏱ 08:40 · 1 min 40*
+
 - Tout ce qui suit a **tourné sur pub400**, un IBM i public
 - Rejouable : le **kit** du dépôt, dans votre bibliothèque
 - Schéma petit : clients, devis, lignes, factures
@@ -463,6 +477,8 @@ CALL QSYS2.QCMDEXC(
 </div>
 
 <!--
+*⏱ 10:20 · 1 min 40*
+
 - Programmes des années 80, **relations dans le code**, pas dans la base
 - Avant de toucher : retrouver **chaînes d'appels** et **tables utilisées**
 - **Avec un outil** (X-Analysis) : diagrammes, modèle déduit du code, impact
@@ -620,6 +636,8 @@ graph LR
 </div>
 
 <!--
+*⏱ 12:00 · 2 min 25 · 40 s avant le 1er clic*
+
 - Départ : **PS_TRAITER_DEVIS**, valide puis facture un devis
 - La chaîne traverse **deux mondes**, SQL et RPG
 - Chaque maillon se lit à un endroit différent :
@@ -629,16 +647,16 @@ graph LR
 - Un UNION : une table, **T_APPELS**
 - **On matérialise, puis on interroge**
 
-[click] Requête récursive classique
+[click] *⏱ 20 s* Requête récursive classique
 - les programmes appelés par les programmes appelés
 - deux garde-fous : **profondeur max**, **pas de boucle**
 
-[click] Résultat réel sur pub400
+[click] *⏱ 30 s* Résultat réel sur pub400
 - du SQL, par les façades, jusqu'au RPG : VALDEVIS, CALCDEVIS, CALCTARIF
 - une branche inattendue : **CTLENCOURS**, le contrôle d'encours
 - la colonne SOURCE dit d'où vient chaque maillon
 
-[click] Une autre requête écrit **le même graphe en Mermaid**
+[click] *⏱ 55 s* Une autre requête écrit **le même graphe en Mermaid**
 - on colle dans un éditeur : diagramme de structure, SQL et RPG distingués
 - Limites, honnêtement (là qu'un outil fait la différence) :
   - appels à **nom littéral** seulement
@@ -713,6 +731,8 @@ contrat -> app: CALL {class: fil}
 </div>
 
 <!--
+*⏱ 14:25 · 2 min 15*
+
 - **Trois programmes, trois époques** : RPG III (OPM), RPG IV free-form, RPG façon Adélia
 - Derrière **trois procédures au contrat identique**
 - Aucun recompilé : **que du DDL**
@@ -852,17 +872,19 @@ apres: "Alternative testée : la base publie, chacun vient lire" {
 <div class="text-center mt-3 text-xl" v-click>Le programme n'a pas changé, et <b>la base publie</b> ce qui change.<div class="text-sm opacity-60 mt-1">Testé sur pub400 : journal et file. Aucun consommateur n'est déployé.</div></div>
 
 <!--
+*⏱ 16:40 · 2 min 00 · 45 s avant le 1er clic*
+
 - Découpler : séparer **celui qui produit un changement** de **ceux qui doivent le connaître**
 - Chez nous aujourd'hui : le programme **appelle lui-même** un service REST (fonctions HTTP de Db2)
   - lié à chaque service : en ajouter un = retoucher le programme
   - une panne du service se répercute sur la transaction
 
-[click] L'alternative, **testée sur pub400**
+[click] *⏱ 30 s* L'alternative, **testée sur pub400**
 - la responsabilité passe **dans la base**
 - le programme écrit sa donnée, ne sait rien de personne
 - la base publie (journal ou file), chacun vient lire
 
-[click] **Le programme n'a pas changé, et la base publie ce qui change**
+[click] *⏱ 45 s* **Le programme n'a pas changé, et la base publie ce qui change**
 - Honnêteté : journal et file ont tourné ; le consommateur (pipeline, API, Kafka) **reste à brancher**
 - Rien de tel n'est déployé chez nous aujourd'hui
 - Slide suivante : les deux moyens, le journal puis la file
@@ -1000,6 +1022,8 @@ conso -> cible {class: eteint}
 </div>
 
 <!--
+*⏱ 18:40 · 2 min 30 · 1 min 10 avant le 1er clic*
+
 - Deux moyens de publier, **sans toucher aux programmes**
 - **Le journal** d'abord : les tables sont journalisées
   - on traite un devis : le journal a **tout vu**
@@ -1008,11 +1032,11 @@ conso -> cible {class: eteint}
   - des programmes RPG **qu'on n'a pas touchés**
   - base de toute capture de changements ; le relais vers Kafka ou une API reste à écrire ou à acheter
 
-[click] **La file** ensuite : un JSON construit en SQL, déposé dans une file de données
+[click] *⏱ 35 s* **La file** ensuite : un JSON construit en SQL, déposé dans une file de données
 - ici envoyé **à la main** ; en vrai, un **trigger** le ferait à chaque modification
 - pub400 refuse CREATE TRIGGER au compte gratuit
 
-[click] **N'importe qui la lit** : SQL, ODBC, Java, un vieux programme RPG
+[click] *⏱ 45 s* **N'importe qui la lit** : SQL, ODBC, Java, un vieux programme RPG
 - l'encours du client passe à **2910** : la facture qu'on vient d'émettre
 - Règle d'or : **pas d'appel réseau** au moment où la donnée change
   - on écrit localement, un consommateur asynchrone relaie
@@ -1050,18 +1074,20 @@ neuf -> suivant: puis {class: [fil; etape3]}
 <div class="text-center text-sm opacity-60 mt-1">Principe, non exécuté : le kit montre trois implémentations derrière un même contrat (2.2), pas encore une réécriture.</div>
 
 <!--
+*⏱ 21:10 · 2 min 10 · 25 s avant le 1er clic*
+
 - Dernière étape : **celle pour laquelle on a fait tout le reste**
 - Aujourd'hui : les appelants (SQL, Java, ODBC, pipeline) appellent **la façade**
 - Derrière, le RPG **CALCTARIF** calcule
 
-[click] **Demain** : on réécrit le calcul, en SQL ou en Java
+[click] *⏱ 25 s* **Demain** : on réécrit le calcul, en SQL ou en Java
 - branché derrière **la même façade**
 - mêmes paramètres, mêmes résultats : **les appelants ne voient rien**
 
-[click] Puis **le bloc suivant** : contrôle d'encours, facturation…
+[click] *⏱ 20 s* Puis **le bloc suivant** : contrôle d'encours, facturation…
 - un bloc à la fois, **jamais tout d'un coup**
 
-[click] **Le contrat ne change pas, l'implémentation si**
+[click] *⏱ 1 min 00* **Le contrat ne change pas, l'implémentation si**
 - Comment savoir qu'on n'a rien cassé ? Comparer les versions (2.2 : l'écart d'un centime)
 - Honnêteté : **un principe** ; le kit montre trois implémentations, pas une réécriture
 - Transition : cartographier, encapsuler, découpler, remplacer → **toujours le SQL**
@@ -1110,6 +1136,8 @@ chapitre: 3
 </div>
 
 <!--
+*⏱ 23:20 · 50 s*
+
 - **IBM i Services** : vues, fonctions table, procédures dans QSYS2 et SYSTOOLS
 - Le système exposé **sans fichier de sortie**
 - Pour presque chaque commande CL : **son équivalent SQL** (le tableau)
@@ -1242,18 +1270,20 @@ SELECT AUTHORIZATION_NAME, OBJECT_AUTHORITY
 </div>
 
 <!--
+*⏱ 24:10 · 2 min 20 · 20 s avant le 1er clic*
+
 - Trois exemples suffisent
 - **Sécurité** : niveau de sécurité, essais de connexion, expiration des mots de passe
   - QSECURITY à 50, en une requête
 
-[click] **Exploitation** : messages graves de la dernière heure, sans DSPLOG
+[click] *⏱ 20 s* **Exploitation** : messages graves de la dernière heure, sans DSPLOG
 - 361 messages de sévérité 40+ en une heure (le chiffre bouge)
 
-[click] **Audit** : qui a quels droits sur CLIENT ?
+[click] *⏱ 30 s* **Audit** : qui a quels droits sur CLIENT ?
 - public exclu, seul le propriétaire a tout (nom masqué)
 - Sur un vrai système, plus loin : profils *ALLOBJ, échecs de mot de passe (pas sur pub400)
 
-[click] **Tout peut partir vers un SIEM** : Graylog, ELK, ClickStack
+[click] *⏱ 1 min 10* **Tout peut partir vers un SIEM** : Graylog, ELK, ClickStack
 - chemin direct : **syslog RFC 5424**, produit par DISPLAY_JOURNAL et HISTORY_LOG_INFO
 - ou le chemin de **l'étape 2.3** : journal ou file, un consommateur relaie
 - même mécanique pour les données métier et pour la sécurité
@@ -1295,6 +1325,8 @@ etape: 1
 </div>
 
 <!--
+*⏱ 26:30 · 1 min 20*
+
 - L'IBM i **n'est pas un silo** : 4.1, se connecter
 - **ODBC** (IBM i Access) : Windows, Linux, macOS → Python, BI, ETL, DuckDB
 - **JDBC** (JTOpen) : Java, Talend, outils JVM
@@ -1406,6 +1438,8 @@ apres: "En colonne" {
 </div>
 
 <!--
+*⏱ 27:50 · 2 min 00 · 55 s avant le 1er clic*
+
 - Sortir les données vers **DuckDB** : base analytique sur un poste, sans serveur
 - Deux chemins, par le pilote ODBC IBM, **les deux ont tourné sur pub400**
 - **Le plus simple** : l'extension ODBC officielle de DuckDB
@@ -1413,7 +1447,7 @@ apres: "En colonne" {
   - le résultat devient une table DuckDB, analysée en local
   - trois lignes de SQL
 
-[click] **Pour le volume** : arrow-odbc
+[click] *⏱ 1 min 05* **Pour le volume** : arrow-odbc
 - un pilote classique : une ligne = un objet → lent sur des millions
 - arrow-odbc lit **par lots, en colonne** (Arrow)
 - DuckDB lit la table Arrow **sans copie** : c'est le schéma
@@ -1479,6 +1513,8 @@ Sur le kit : **4** lignes au catalogue → 2 tranches de 2.
 </div>
 
 <!--
+*⏱ 29:50 · 55 s*
+
 - Du script **au pipeline** : dlt, backend pyarrow
   - vers Parquet, saute la normalisation : **20 à 30×** annoncé
 - **Orchestrer** : planifier, rejouer, historiser
@@ -1530,6 +1566,8 @@ duck -> dbt -> ia
 </div>
 
 <!--
+*⏱ 30:45 · 1 min 05 · 1 min 00 avant le 1er clic*
+
 - Pour finir le chapitre : **en vrai, chez Sinapse**
 - Pas d'outil ? On s'est appuyé **sur le natif** (le pilote ODBC IBM)
 - Et on a construit le reste avec des **standards ouverts**
@@ -1537,7 +1575,7 @@ duck -> dbt -> ia
 - **L'existant** : ODBC, fiable mais ligne à ligne
 - **Construit** : extraction en colonne avec Arrow, un pilote ADBC, piste Arrow Flight SQL
 
-[click] **Le résultat**
+[click] *⏱ 5 s* **Le résultat**
 
 -->
 
@@ -1570,6 +1608,8 @@ chapitre: fin
 </div>
 
 <!--
+*⏱ 31:50 · 1 min 35*
+
 - On referme sur **les trois questions** du début
   - **avec un outil** : il accélère, l'IA aussi pour l'état des lieux
   - **sans outil** : des standards ouverts et un peu de code
@@ -1617,6 +1657,8 @@ Merci — questions ?
 </div>
 
 <!--
+*⏱ 33:25 · 25 s*
+
 - **L'héritage est là. La seule question, c'est ce qu'on en fait.**
 - Merci
 - Le kit et le deck sont sur GitHub : tout se rejoue
