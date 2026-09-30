@@ -1575,7 +1575,7 @@ duck -> dbt -> ia
 ```
 
 <div class="grid grid-cols-4 gap-3 mt-4">
-<IconCard titre="Le besoin" texte="alimenter la plateforme data, sans peser sur la prod"><carbon-data-share /></IconCard>
+<IconCard titre="Le besoin" texte="préparer l'intégration du nouveau SI, anticiper les régressions"><carbon-data-share /></IconCard>
 <IconCard titre="L'existant" texte="ODBC, fiable mais ligne à ligne"><carbon-hourglass /></IconCard>
 <IconCard titre="Construit" texte="Arrow · ADBC · piste Flight SQL"><carbon-tool-kit /></IconCard>
 <div v-click><IconCard titre="Résultat" texte="[volumes, temps avant / après]"><carbon-growth /></IconCard></div>
@@ -1586,12 +1586,15 @@ duck -> dbt -> ia
 </div>
 
 <!--
-*⏱ 31:25 · 1 min 05 · 1 min 00 avant le 1er clic*
+*⏱ 31:25 · 1 min 30 · 1 min 25 avant le 1er clic*
 
 - Pour finir le chapitre : **en vrai, chez Sinapse**
 - Pas d'outil ? On s'est appuyé **sur le natif** (le pilote ODBC IBM)
 - Et on a construit le reste avec des **standards ouverts**
-- **Le besoin** : alimenter une plateforme data moderne, sans alourdir la prod
+- **Le besoin** : préparer l'**intégration du SI modernisé** livré par Sinapse
+  - avoir les données de l'existant sous la main pour **anticiper les régressions**
+  - le but premier n'est pas d'alimenter une plateforme data
+  - et sans alourdir la prod
 - **L'existant** : ODBC, fiable mais ligne à ligne
 - **Construit** : extraction en colonne avec Arrow, un pilote ADBC, piste Arrow Flight SQL
 
@@ -1628,7 +1631,7 @@ chapitre: fin
 </div>
 
 <!--
-*⏱ 32:30 · 1 min 35*
+*⏱ 32:55 · 1 min 35*
 
 - On referme sur **les trois questions** du début
   - **avec un outil** : il accélère, l'IA aussi pour l'état des lieux
@@ -1677,7 +1680,7 @@ Merci — questions ?
 </div>
 
 <!--
-*⏱ 34:05 · 25 s*
+*⏱ 34:30 · 25 s*
 
 - **L'héritage est là. La seule question, c'est ce qu'on en fait.**
 - Merci
