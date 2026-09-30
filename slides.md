@@ -595,7 +595,7 @@ CALL PS_CALC_TARIF_RPG3(10000.00, 5.00, ?, ?, ?, ?);
 
 </div>
 
-<div class="col-span-2" v-click>
+<div class="col-span-2">
 
 ```d2 {maxHeight: '22rem'}
 ...@theme
@@ -627,7 +627,7 @@ contrat -> app: CALL {class: fil}
 
 <!--
 Trois programmes d'époques différentes — un RPG III en OPM, un RPG IV free-form, et du RPG généré à la façon d'Adélia — derrière trois procédures au contrat identique. Aucun n'a été recompilé pour ça : on n'a écrit que du DDL. LANGUAGE RPG et non RPGLE, parce que c'est de l'OPM ; PARAMETER STYLE GENERAL, parce que le programme reçoit ses paramètres tels quels.
-[clic] Vu du catalogue, ce sont trois procédures interchangeables, appelables depuis ODBC, JDBC, Mapepire, un orchestrateur ou un pipeline data. Et sur pub400 elles rendent la même chose pour 10 000 HT et 5 % de remise : 9500 HT remisé, 1900 de TVA, 11400 TTC.
+Le schéma, à droite : vu du catalogue, ce sont trois procédures interchangeables, appelables depuis ODBC, JDBC, Mapepire, un orchestrateur ou un pipeline data. Et sur pub400 elles rendent la même chose pour 10 000 HT et 5 % de remise : 9500 HT remisé, 1900 de TVA, 11400 TTC.
 Et ça s'appelle de partout : en JDBC, on lit directement les paramètres de sortie ; en ODBC, beaucoup d'outils ne savent pas les lire, alors une petite fonction table rend les valeurs par un simple SELECT. Les deux exemples sont dans le kit.
 Et une fois encapsulés, on les compose : une procédure SQL peut enchaîner une validation existante, un peu de SQL neuf, puis une facturation existante. Chaque étape se remplace individuellement, le contrat est documenté dans le catalogue.
 Point d'attention : une transaction ouverte par l'appelant ne traverse pas un programme compilé COMMIT(*NONE), et sans lever d'erreur. Encapsuler, c'est aussi décider qui possède la transaction — dans le kit, c'est le programme de facturation.
