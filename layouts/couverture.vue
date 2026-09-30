@@ -1,6 +1,6 @@
 <!-- Couverture du gabarit iBelieve 2026 (template.pptx, disposition « Disposition personnalisée ») :
      fond public/gabarit/couverture.jpg, logo Sinapse, titre de la slide, « avec Itheis » en bas à droite,
-     pictogramme Db2 (icône Carbon d'IBM, carbon-ibm-db2) et « Db2 for i » en bas à gauche de la zone blanche.
+     logo IBM DB2 (public/logos/db2.png) et « Db2 for i » en bas à gauche de la zone blanche.
      Positions reprises du .pptx, en % de la slide. -->
 <script setup lang="ts">
 const base = import.meta.env.BASE_URL
@@ -13,7 +13,7 @@ const base = import.meta.env.BASE_URL
       <slot />
     </div>
     <div class="couverture__db2">
-      <carbon-ibm-db2 class="couverture__db2-icone" />
+      <img class="couverture__db2-icone" :src="`${base}logos/db2.png`" alt="IBM Db2">
       <span>Db2 for i</span>
     </div>
     <div class="couverture__avec">
@@ -68,10 +68,10 @@ const base = import.meta.env.BASE_URL
   font-family: var(--gabarit-police);
   font-weight: 700;
   font-size: 1.15rem;
-  color: #0f62fe;
+  color: var(--gabarit-marine);
 }
 .couverture__db2-icone {
-  font-size: 3.2rem;
+  height: 3.4rem;
 }
 .couverture__avec {
   position: absolute;
