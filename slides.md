@@ -5,7 +5,13 @@ title: "Db2 for i : un héritage puissant qui ne demande qu'à évoluer"
 info: |
   iBelieve 2026 — 15 octobre 2026
   Andy — Ingénieur de données, Sinapse
-class: text-center
+layout: couverture
+defaults:
+  class: gabarit
+fonts:
+  sans: Open Sans
+  serif: Open Sans
+  weights: '400,600,700'
 transition: slide-left
 mdc: true
 lineNumbers: false
@@ -13,26 +19,9 @@ drawings:
   persist: false
 ---
 
-# Db2 for i
+# Db2 for i : un héritage puissant qui ne demande qu'à évoluer
 
-## Un héritage puissant qui ne demande qu'à évoluer
-
-<br>
-
-**Andy** — Ingénieur de données
-
-<Logo nom="sinapse.png" alt="Sinapse" hauteur="2.6rem" style="background: rgba(255,255,255,0.96); border-radius: 0.75rem; padding: 0.4rem 0.9rem" />
-
-iBelieve 2026 · 15 octobre 2026
-
-<div class="absolute bottom-10 left-0 right-0 flex justify-center items-center gap-4">
-  <div class="px-6 py-2 rounded-2xl" style="background: #333e49"><Logo nom="ibelieve.png" alt="iBelieve 2026" hauteur="3rem" /></div>
-  <div class="flex items-center gap-6 px-6 py-2 rounded-2xl" style="background: rgba(255,255,255,0.96)">
-    <div class="text-xs leading-tight text-left" style="color: #4a5560">Co-organisé<br>par</div>
-    <Logo nom="itheis.jpg" alt="Itheis" hauteur="3rem" />
-    <simple-icons-ibm class="text-5xl" style="color: #1f70c1" />
-  </div>
-</div>
+**Andy** · Ingénieur de données · 15 octobre 2026
 
 <!--
 Bonjour à toutes et à tous. Merci à Itheis et IBM pour l'invitation.
@@ -41,6 +30,7 @@ Aujourd'hui, pas de démo produit, pas de vente : je vais vous montrer ce qui es
 
 ---
 layout: default
+chapitre: intro
 ---
 
 # Qui suis-je ?
@@ -152,6 +142,8 @@ Je connais cette base de l'intérieur, et aujourd'hui je la connecte à une plat
 -->
 
 ---
+chapitre: intro
+---
 
 # De la CAFAT à Sinapse : une suite logique
 
@@ -193,6 +185,7 @@ Et la méthode affichée par Sinapse — partir des besoins, livrer étape par �
 
 ---
 layout: default
+chapitre: intro
 ---
 
 # Faire évoluer son IBM i : par où commencer ?
@@ -223,6 +216,7 @@ Le fil de la réponse, vous allez le voir tout au long : le SQL sur IBM i dépas
 ---
 layout: two-cols
 chapitre: 1
+layoutClass: gabarit
 ---
 
 # 1. Le chantier 2019-2022
@@ -240,9 +234,7 @@ chapitre: 1
 
 ::right::
 
-<br><br>
-
-```d2 {maxHeight: '17rem'}
+```d2 {maxHeight: '18rem'}
 ...@theme
 direction: down
 
@@ -256,7 +248,7 @@ lf -> table
 new -> table: SQL {class: fil}
 ```
 
-<div class="absolute bottom-14 left-14 right-14 text-lg">
+<div class="absolute bottom-24 left-14 right-14 text-lg">
 
 <div class="text-sm opacity-80 mb-2"><carbon-favorite-filled class="inline" style="color: #b56959" /> Merci à <b>E. Sadiman</b>, qui m'a confié ce chantier — et m'a rendu fan de l'IBM i</div>
 
@@ -429,6 +421,35 @@ etape: 1
 <v-switch>
 <template #0>
 
+<div class="etape-carto"><carbon-data-table /> Trois sources, une table : T_APPELS</div>
+
+```d2 {maxHeight: '15rem'}
+...@theme
+direction: right
+
+sql: "Catalogue SQL" {
+  class: zone
+  dep: "SYSROUTINEDEP\nprocédure → procédure" {class: bloc}
+  ext: "SYSROUTINES\nfaçade → programme" {class: bloc}
+}
+rpg: "Programmes compilés" {
+  class: zone
+  ref: "DSPPGMREF → T_PGMREF\nprogramme → programme" {class: legacy}
+}
+t: "T_APPELS\nAPPELANT · APPELÉ · SOURCE" {class: [donnees; fort]}
+rec: "Requête récursive\ndescend la chaîne" {class: bloc}
+
+sql.dep -> t: UNION
+sql.ext -> t: UNION
+rpg.ref -> t: UNION
+t -> rec {class: fil}
+```
+
+<div class="text-sm opacity-70 mt-2">Chaque monde se lit à un endroit différent ; on matérialise, puis on interroge.</div>
+
+</template>
+<template #1>
+
 <div class="etape-carto"><carbon-flow /> Une requête récursive descend la chaîne</div>
 
 ```sql
@@ -445,10 +466,11 @@ WITH CHAINE (APPELE, NIVEAU, CHEMIN, SOURCE) AS (
 SELECT NIVEAU, CHEMIN, SOURCE FROM CHAINE ORDER BY CHEMIN;
 ```
 
-<div class="text-sm opacity-70 mt-2">T_APPELS rassemble trois sources : catalogue SQL, façades, DSPPGMREF (dans le kit).</div>
+
+> Le natif ne remplace pas un outil. Il permet de savoir **par où commencer** et **quoi ne pas casser**.
 
 </template>
-<template #1>
+<template #2>
 
 <div class="etape-carto"><carbon-checkmark-outline /> Résultat sur pub400</div>
 
@@ -463,10 +485,15 @@ SELECT NIVEAU, CHEMIN, SOURCE FROM CHAINE ORDER BY CHEMIN;
     ['3', 'PS_TRAITER_DEVIS > PS_VAL_DEVIS > VALDEVIS > CTLENCOURS', 'DSPPGMREF'],
   ]" />
 
-</template>
-<template #2>
+> Le natif ne remplace pas un outil. Il permet de savoir **par où commencer** et **quoi ne pas casser**.
 
-```mermaid {scale: 0.42}
+</template>
+<template #3>
+
+<div class="flex items-center gap-6">
+<div class="shrink-0">
+
+```mermaid {scale: 0.49}
 graph LR
   PS_TRAITER_DEVIS --> PS_VAL_DEVIS
   PS_TRAITER_DEVIS --> PS_GEN_FACT
@@ -492,12 +519,18 @@ graph LR
   classDef ps fill:#5d8392,stroke:#3f5f6b,color:#fff
 ```
 
-<div class="text-sm opacity-70 -mt-2">Le même graphe, écrit en Mermaid par une requête SQL (kit).</div>
+</div>
+<div>
+
+<div class="text-sm opacity-70 mb-4">Le même graphe, écrit en Mermaid par une requête SQL (kit).</div>
+
+> Le natif ne remplace pas un outil. Il permet de savoir **par où commencer** et **quoi ne pas casser**.
+
+</div>
+</div>
 
 </template>
 </v-switch>
-
-> Le natif ne remplace pas un outil. Il permet de savoir **par où commencer** et **quoi ne pas casser**.
 
 <style>
 .etape-carto {
@@ -519,8 +552,8 @@ graph LR
 </div>
 
 <!--
-Point de départ : PS_TRAITER_DEVIS, la procédure SQL qui valide puis facture un devis. La chaîne traverse deux mondes, le SQL et le RPG, et chaque maillon se lit à un endroit différent : le catalogue pour le SQL, DSPPGMREF pour le RPG. On les rassemble dans une table, T_APPELS — la requête est dans le kit.
-Ensuite, une récursion classique : les programmes appelés par les programmes appelés, avec deux garde-fous, une profondeur maximale et la détection de boucle.
+Point de départ : PS_TRAITER_DEVIS, la procédure SQL qui valide puis facture un devis. La chaîne traverse deux mondes, le SQL et le RPG, et chaque maillon se lit à un endroit différent. Procédure vers procédure : le catalogue, SYSROUTINEDEP. Façade vers programme : le catalogue encore, SYSROUTINES, qui donne le programme derrière chaque façade. Programme vers programme : DSPPGMREF, matérialisé dans T_PGMREF. Un UNION des trois, et on a une table, T_APPELS — la requête est dans le kit. On matérialise, puis on interroge.
+[clic] Ensuite, une récursion classique : les programmes appelés par les programmes appelés, avec deux garde-fous, une profondeur maximale et la détection de boucle.
 [clic] Résultat réel sur pub400 : on part du SQL, on passe par les façades, on descend dans le RPG — VALDEVIS, CALCDEVIS, CALCTARIF… et une branche qu'on n'avait pas en tête, le contrôle d'encours CTLENCOURS. La colonne SOURCE dit d'où vient chaque maillon.
 [clic] Et une autre requête écrit le même graphe en Mermaid, avec les tables : on colle le résultat dans un éditeur, et on a un diagramme de structure, où l'on voit ce qui est SQL et ce qui est RPG.
 Les limites, honnêtement — c'est là qu'un outil fait la différence : DSPPGMREF ne voit que les appels à nom littéral, et il ne voit pas les appels réseau.
@@ -685,7 +718,7 @@ etape: 3
 
 <div class="opacity-70 -mt-2">En clair : au lieu que le programme appelle chaque service, la base publie et chacun vient lire.</div>
 
-```d2 {maxHeight: '22rem'}
+```d2 {maxHeight: '16.5rem'}
 ...@theme
 direction: right
 
@@ -1117,6 +1150,7 @@ Et les procédures stockées de l'étape 2.2 sont appelables par ces mêmes poin
 ---
 chapitre: 4
 etape: 2
+zoom: 0.93
 ---
 
 # 4.2 ODBC → DuckDB, avec ou sans Arrow
@@ -1324,6 +1358,8 @@ Pour finir ce chapitre, ce que ça donne en vrai chez Sinapse. Il n'y avait pas 
 -->
 
 ---
+chapitre: fin
+---
 
 # À retenir
 
@@ -1341,7 +1377,7 @@ Pour finir ce chapitre, ce que ça donne en vrai chez Sinapse. Il n'y avait pas 
 <IconCard petit titre="Avec le natif seul : le SQL va très loin"><carbon-ibm-i /></IconCard>
 </div>
 
-<div class="text-center mt-8 text-xl"><carbon-growth class="inline" /> Un moteur qui <b>évolue</b> : <b>17 nouveaux services</b> à l'été 2026</div>
+<div class="text-center mt-3 text-xl"><carbon-growth class="inline" /> Un moteur qui <b>évolue</b> : <b>17 nouveaux services</b> à l'été 2026</div>
 
 <div class="absolute bottom-4 left-8 text-xs opacity-60">
 <a href="https://www.itjungle.com/2026/07/27/what-ibms-got-cooking-in-db2-for-i-in-the-summer-trs/">IT Jungle — Summer TRs 2026</a> ·
@@ -1365,7 +1401,7 @@ layout: end
 Merci — questions ?
 
 <div class="mt-8 flex justify-center items-center gap-4">
-  <Logo nom="ibelieve.png" alt="iBelieve 2026" hauteur="3rem" />
+  <div class="px-5 py-2 rounded-2xl" style="background: var(--gabarit-bandeau)"><Logo nom="ibelieve.png" alt="iBelieve 2026" hauteur="2.6rem" /></div>
   <div class="flex items-center gap-6 px-6 py-2 rounded-2xl" style="background: rgba(255,255,255,0.96)">
     <Logo nom="itheis.jpg" alt="Itheis" hauteur="2.6rem" />
     <simple-icons-ibm class="text-4xl" style="color: #1f70c1" />
@@ -1373,7 +1409,7 @@ Merci — questions ?
   </div>
 </div>
 
-<div class="absolute bottom-6 left-0 right-0 text-xs opacity-70">
+<div class="absolute bottom-4 left-[30%] right-0 text-xs opacity-70">
 <a href="https://redbooks.ibm.com/abstracts/sg248185.html">SG24-8185</a> ·
 <a href="https://www.redbooks.ibm.com/docs/MD260020/MD260020.html">MD260020</a> ·
 <a href="https://www.redbooks.ibm.com/abstracts/redp5095.html">REDP-5095</a> ·

@@ -1,0 +1,66 @@
+/* Gabarit iBelieve 2026 (template.pptx), images dans public/gabarit/.
+   Couverture : layouts/couverture.vue. Slides de contenu : classe `gabarit`, posée sur toutes les slides
+   par `defaults` (en-tête de slides.md), sauf la couverture ; global-top.vue place alors le fil rouge
+   dans le bandeau et ajoute le titre du pied et le numéro. Pour s'en passer sur une slide : lui donner
+   un autre `class:`. Layout two-cols : la classe va sur les colonnes, ajouter `layoutClass: gabarit`.
+   Repères du .pptx sur la slide Slidev (980 × 552) : titre en haut, bandeau marine à 62 px (11,2 %),
+   pied iBelieve à partir de 489 px (88,6 %).
+   --u vaut 1 px de la slide, même sous `zoom:` (la slide zoomée est agrandie puis réduite d'autant). */
+
+:root {
+  --gabarit-marine: #143058;
+  --gabarit-bandeau: #091a34;
+  --gabarit-rouge: #a61c2a;
+  --gabarit-jaune: #ffd400;
+  --gabarit-police: 'Open Sans', Arial, sans-serif;
+}
+
+.slidev-layout.gabarit:not(.couverture) {
+  --u: calc(1px / var(--slidev-slide-zoom-scale, 1));
+  padding: calc(96 * var(--u)) calc(68 * var(--u)) calc(70 * var(--u));
+  background:
+    url('/gabarit/pied.jpg') 0 100% / 100% calc(63 * var(--u)) no-repeat,
+    linear-gradient(var(--gabarit-bandeau), var(--gabarit-bandeau)) 0 calc(62 * var(--u)) / 100% calc(18 * var(--u)) no-repeat,
+    #fff;
+}
+
+/* Titre dans l'en-tête, au-dessus du bandeau */
+.slidev-layout.gabarit:not(.couverture):not(.end) h1 {
+  position: absolute;
+  top: calc(14 * var(--u));
+  left: calc(68 * var(--u));
+  right: calc(96 * var(--u));
+  margin: 0;
+  font-family: var(--gabarit-police);
+  font-size: calc(29.6 * var(--u));
+  line-height: calc(38 * var(--u));
+  font-weight: 700;
+  color: var(--gabarit-marine);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Pied de sources : au-dessus du bandeau rose */
+.slidev-layout.gabarit:not(.couverture) .absolute.bottom-4 {
+  bottom: calc(66 * var(--u));
+}
+
+/* Fin : fond à courbe jaune du gabarit (« 1_Disposition personnalisée »), texte dans la partie blanche */
+.slidev-layout.end.gabarit:not(.couverture) {
+  background: url('/gabarit/courbe.jpg') 0 0 / 100% 100% no-repeat, #fff;
+  color: var(--gabarit-marine);
+  letter-spacing: normal;
+  padding: calc(40 * var(--u)) calc(40 * var(--u)) calc(90 * var(--u)) 30%;
+}
+.slidev-layout.end.gabarit h1 {
+  font-family: var(--gabarit-police);
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--gabarit-marine);
+}
+.slidev-layout.end.gabarit h2 {
+  font-family: var(--gabarit-police);
+  color: var(--gabarit-rouge);
+  opacity: 1;
+}

@@ -1,6 +1,8 @@
 <!-- Bandeau de fil rouge, au-dessus de chaque slide de contenu.
-     Lit le frontmatter de la slide : chapitre (1-4), etape (0-4, chapitres 2 et 4 : voir etapesParChapitre).
-     Sans `chapitre`, rien n'est affiché (titre, intro, conclusion). -->
+     Lit le frontmatter de la slide : chapitre (intro, 1-4, fin), etape (0-4, chapitres 2 et 4 : voir etapesParChapitre).
+     Sans `chapitre`, rien n'est affiché (couverture, slide de fin).
+     Avec `class: gabarit` (gabarit iBelieve, style.css) : fil rouge dans le bandeau marine, titre de la session
+     dans le pied, numéro de slide en haut à droite. -->
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useNav } from '@slidev/client'
@@ -8,11 +10,13 @@ import { useNav } from '@slidev/client'
 const { currentSlideRoute } = useNav()
 const fm = computed<Record<string, any>>(() => currentSlideRoute.value?.meta?.slide?.frontmatter ?? {})
 
-const chapitres = [
+const chapitres: { n: number | string, titre: string }[] = [
+  { n: 'intro', titre: 'Intro' },
   { n: 1, titre: 'Chantier' },
   { n: 2, titre: 'Moderniser' },
   { n: 3, titre: 'Administrer' },
   { n: 4, titre: 'Données' },
+  { n: 'fin', titre: 'Conclusion' },
 ]
 const etapesParChapitre: Record<number, { n: number, titre: string }[]> = {
   2: [
@@ -29,18 +33,26 @@ const etapesParChapitre: Record<number, { n: number, titre: string }[]> = {
   ],
 }
 
-const chapitre = computed(() => Number(fm.value.chapitre) || 0)
+const chapitre = computed(() => chapitres.find(c => String(c.n) === String(fm.value.chapitre ?? ''))?.n)
 const etape = computed(() => Number(fm.value.etape) || 0)
-const etapes = computed(() => etapesParChapitre[chapitre.value] ?? [])
+const etapes = computed(() => etapesParChapitre[chapitre.value as number] ?? [])
 const avecEtapes = computed(() => etapes.value.length > 0 && fm.value.etape !== undefined)
+// etape 0 : ouverture du chapitre, étapes affichées mais c'est le chapitre qui est surligné
+const etapeActive = computed(() => avecEtapes.value && etapes.value.some(e => e.n === etape.value))
+const gabarit = computed(() => fm.value.layout !== 'couverture' && String(fm.value.class ?? '').split(/\s+/).includes('gabarit'))
+const numero = computed(() => currentSlideRoute.value?.no)
 </script>
 
 <template>
-  <div v-if="chapitre" class="fil-rouge">
+  <template v-if="gabarit">
+    <div class="gabarit-numero">{{ numero }}</div>
+    <div class="gabarit-pied">Db2 for i : un héritage puissant qui ne demande qu'à évoluer</div>
+  </template>
+  <div v-if="chapitre !== undefined" class="fil-rouge" :class="{ 'fil-rouge--gabarit': gabarit }">
     <div class="fil-rouge__groupe">
       <template v-for="(c, i) in chapitres" :key="c.n">
         <span v-if="i" class="fil-rouge__sep">›</span>
-        <span class="fil-rouge__item" :class="{ actif: c.n === chapitre && !avecEtapes }">{{ c.n }} · {{ c.titre }}</span>
+        <span class="fil-rouge__item" :class="{ actif: c.n === chapitre && !etapeActive }">{{ typeof c.n === 'number' ? `${c.n} · ${c.titre}` : c.titre }}</span>
         <template v-if="c.n === chapitre && avecEtapes">
           <span class="fil-rouge__sep">▸</span>
           <template v-for="(e, j) in etapes" :key="e.n">
@@ -87,5 +99,43 @@ const avecEtapes = computed(() => etapes.value.length > 0 && fm.value.etape !== 
 }
 .fil-rouge__sep {
   opacity: 0.35;
+}
+.fil-rouge--gabarit {
+  top: 62px;
+  height: 18px;
+  left: 4.25rem;
+  right: 4.25rem;
+  color: #fff;
+}
+.fil-rouge--gabarit .fil-rouge__item {
+  opacity: 0.6;
+}
+.fil-rouge--gabarit .fil-rouge__item.actif {
+  opacity: 1;
+  color: var(--gabarit-jaune);
+  border-bottom: none;
+}
+.fil-rouge--gabarit .fil-rouge__sep {
+  opacity: 0.5;
+}
+.gabarit-numero {
+  position: absolute;
+  top: 0.7rem;
+  right: 1.9rem;
+  font-size: 0.7rem;
+  color: #7a8599;
+  z-index: 5;
+}
+.gabarit-pied {
+  position: absolute;
+  top: 494px;
+  left: 33%;
+  width: 40%;
+  font-family: var(--gabarit-police);
+  font-size: 0.62rem;
+  line-height: 1.1;
+  color: var(--gabarit-marine);
+  z-index: 5;
+  pointer-events: none;
 }
 </style>
