@@ -286,7 +286,7 @@ new -> table: SQL {class: fil}
 
 <div class="text-sm opacity-80 mb-2"><carbon-favorite-filled class="inline" style="color: #b56959" /> Merci à <b>E. Sadiman</b>, qui m'a confié ce chantier — et m'a rendu fan de l'IBM i</div>
 
-> iBelieve 2021 : **migrer des tables**. iBelieve 2026 : en faire **une plateforme de données**.
+> iBelieve 2021 : **migrer des tables**. iBelieve 2026 : **reprendre la maîtrise**, carte en main.
 
 </div>
 
@@ -312,7 +312,7 @@ Source : <a href="https://www.itheis.com/sql-comment-migrer-votre-base-de-donnee
 
 - **Dédicace** : merci à E. Sadiman, qui m'a fait confiance, et m'a rendu fan de l'IBM i
 - Transition : migrer la base, c'était la **première marche**
-- En 2026 : ce que la base devient traitée comme une **plateforme de données**
+- En 2026 : **reprendre la maîtrise** de l'existant, en commençant par le **cartographier**
 -->
 
 ---
