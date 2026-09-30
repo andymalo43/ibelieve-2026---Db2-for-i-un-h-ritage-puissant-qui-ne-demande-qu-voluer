@@ -24,8 +24,9 @@ drawings:
 **Andy** · Ingénieur de données · 15 octobre 2026
 
 <!--
-Bonjour à toutes et à tous. Merci à Itheis et IBM pour l'invitation.
-Aujourd'hui, pas de démo produit, pas de vente : je vais vous montrer ce qui est possible avec Db2 for i.
+- Bonjour, merci à **Itheis et IBM** pour l'invitation
+- Pas de démo produit, pas de vente
+- Montrer **ce qui est possible** avec Db2 for i
 -->
 
 ---
@@ -134,11 +135,24 @@ chapitre: intro
 </style>
 
 <!--
-Mes premières requêtes SQL, avant 2016, je les ai écrites dans Access, pour alimenter des outils Excel. Je ne le savais pas encore, mais le fil rouge de ma carrière était déjà là.
-[clic] De 2016 à 2019, je suis passé à la data, comme concepteur développeur Talend et Cognos. J'étais alors consommateur de la base IBM i.
-[clic] De 2019 à 2022, je suis passé de l'autre côté du miroir, DBA puis DBE sur Db2 for i. J'y ai mené la modernisation de plus de 500 tables DDS vers SQL — c'est là que je suis tombé amoureux du SQL sur IBM i. Et je l'assume : depuis, je suis un vrai fan de l'IBM i.
-[clic] De 2022 à 2026, retour à la data : architecte de données à la CAFAT, avec les outils de la data moderne — dbt, dlt, Kestra, ClickHouse. [clic] Et depuis 2026, ingénieur de données à Sinapse, dans la continuité.
-Je connais cette base de l'intérieur, et aujourd'hui je la connecte à une plateforme de données moderne. C'est ce regard de passeur que je veux partager.
+- **Avant 2016** : premières requêtes SQL dans Access, pour des outils Excel
+- Le fil rouge de ma carrière était déjà là : le SQL
+
+[click] **2016-2019** : développeur BI, Talend et Cognos
+- J'étais **consommateur** de la base IBM i
+
+[click] **2019-2022** : DBA puis DBE Db2 for i, de l'autre côté du miroir
+- 500+ tables DDS → SQL
+- Là que je suis tombé amoureux du SQL sur IBM i : **fan assumé**
+
+[click] **2022-2026** : retour à la data, architecte de données à la CAFAT
+- Outils de la data moderne : dbt, dlt, Kestra, ClickHouse
+
+[click] **Depuis 2026** : ingénieur de données chez Sinapse, dans la continuité
+
+- Je connais cette base de l'intérieur, je la connecte à la data moderne
+- C'est ce regard de **passeur** que je veux partager
+
 -->
 
 ---
@@ -177,10 +191,16 @@ chapitre: intro
 </div>
 
 <!--
-Quelques mots sur là où je travaille aujourd'hui, parce que ça explique le regard que je porte.
-Sinapse est un groupement d'intérêt économique créé en 2024 par la CAFAT, le Gouvernement de la Nouvelle-Calédonie et le Fonds social de l'habitat. Sa mission : moderniser le système d'information de la protection sociale, en commençant par le recouvrement et les parcours des employeurs et des travailleurs indépendants. 265 000 Calédoniens sont concernés.
-Pour moi, c'est une suite logique. À la CAFAT, j'ai appris à connaître ces données, leur histoire, leurs contraintes. Aujourd'hui, je mets cette connaissance au service du système d'information de demain, avec toute l'équipe Sinapse. Même mission de service public, un autre rôle.
-Et la méthode affichée par Sinapse — partir des besoins, livrer étape par étape — c'est ce que je vais vous montrer côté base de données dans la deuxième partie : moderniser progressivement.
+- Là où je travaille aujourd'hui : ça explique mon regard
+- **Sinapse** : GIE créé en 2024 par la CAFAT, le Gouvernement de la Nouvelle-Calédonie et le FSH
+- Mission : moderniser le SI de la protection sociale
+  - d'abord le recouvrement, les parcours employeurs et travailleurs indépendants
+  - **265 000** Calédoniens concernés
+- Pour moi, une **suite logique**
+  - à la CAFAT, j'ai appris ces données : leur histoire, leurs contraintes
+  - aujourd'hui, je mets cette connaissance au service du SI de demain, **avec toute l'équipe**
+- Méthode Sinapse : partir des besoins, **livrer étape par étape**
+- → c'est ce que je montre côté base au chapitre 2
 -->
 
 ---
@@ -208,9 +228,15 @@ chapitre: intro
 </div>
 
 <!--
-Le point de départ, c'est une situation que beaucoup d'entre vous connaissent : un IBM i qui tourne depuis des décennies, 40 ans d'applicatif, des règles métier cachées dans les programmes, et peu de documentation. On veut le faire évoluer. Par où commencer ?
-Trois façons de s'y prendre, et trois questions qui vont guider toute la session. Avec un outil du marché : jusqu'où nous aident-ils ? Sans outil, parce qu'il n'y a pas de budget ou pas encore : comment avancer quand même ? Et avec le natif seul : que permet le SQL de l'IBM i ?
-Le fil de la réponse, vous allez le voir tout au long : le SQL sur IBM i dépasse largement les transactions. Il sert à moderniser, à administrer, à exploiter, et à ouvrir les données au reste du système d'information.
+- Situation connue : IBM i depuis des décennies, **40 ans d'applicatif**
+- Règles métier cachées dans les programmes, peu de documentation
+- On veut le faire évoluer : **par où commencer ?**
+- Trois questions qui guident la session :
+  - **avec un outil** du marché : jusqu'où aide-t-il ?
+  - **sans outil** (pas de budget, pas encore) : comment avancer ?
+  - **avec le natif seul** : que permet le SQL de l'IBM i ?
+- Le fil de la réponse : le SQL dépasse les transactions
+  - moderniser · administrer · exploiter · ouvrir les données
 -->
 
 ---
@@ -261,11 +287,22 @@ Source : <a href="https://www.itheis.com/sql-comment-migrer-votre-base-de-donnee
 </div>
 
 <!--
-En 2021, je vous ai parlé de migrer des tables. Rappel rapide : entre 2019 et 2022, plus de 500 tables DDS passées en SQL, accompagnés par Itheis et Gaia, avec l'outil Xcase for i. La clé, c'est la méthode surrogate : un fichier logique de substitution garde le format de l'ancien fichier, et les programmes existants continuent de tourner sans recompilation.
-Et après la migration, ce que le SQL débloque : des contraintes — les relations enfin portées par la base —, des tables temporelles pour l'historisation, RCAC pour la sécurité par ligne et par colonne. Pour un petit périmètre, le natif suffit : QSYS2.GENERATE_SQL régénère le DDL d'une bibliothèque (kit/04-la-base.sql, exécuté sur pub400).
-Pourquoi les contraintes comptent : une application moderne qui écrit directement dans une table, sans passer par le RPG, ne rencontre que les clés et l'intégrité référentielle ; plafond d'encours et cycle de vie du devis vivent dans les programmes, et elle les contourne sans le savoir. Chaque règle remontée dans la base est une règle qu'aucun nouveau client ne peut oublier.
-Et une dédicace, parce qu'on ne mène pas un chantier pareil seul : merci à E. Sadiman, qui m'a fait confiance sur ce sujet — et qui, sans le savoir, m'a rendu fan de l'IBM i.
-Transition : migrer la base, c'était la première marche. Mais une base moderne avec des programmes des années 80 autour, ça ne suffit pas. En 2026, je vous montre ce que cette base devient quand on la traite comme une vraie plateforme de données.
+- En 2021, je vous ai parlé de **migrer des tables**
+- 2019-2022 : **500+ tables DDS → SQL**, avec Itheis, Gaia, Xcase for i
+- La clé : **méthode surrogate**
+  - un LF de substitution garde l'ancien format
+  - les programmes tournent **sans recompilation**
+- Ce que le SQL débloque ensuite : **contraintes**, **tables temporelles**, **RCAC**
+- Pourquoi les contraintes comptent
+  - une appli qui écrit en direct ne voit que les clés
+  - plafond d'encours, cycle de vie du devis : dans les programmes → contournés
+  - une règle dans la base, aucun client ne peut l'oublier
+- Petit périmètre : le natif suffit, `GENERATE_SQL`
+
+
+- **Dédicace** : merci à E. Sadiman, qui m'a fait confiance, et m'a rendu fan de l'IBM i
+- Transition : migrer la base, c'était la **première marche**
+- En 2026 : ce que la base devient traitée comme une **plateforme de données**
 -->
 
 ---
@@ -304,8 +341,21 @@ Principes : <a href="https://redbooks.ibm.com/abstracts/sg248185.html">SG24-8185
 </div>
 
 <!--
-Le Redbook SG24-8185 ne parle pas seulement d'interface web. Il pose quatre principes qu'on oublie : modularisation, architecture en couches, data-centric — les règles portées par la base —, et orientation service. Le Redbook 2026 reprend l'approche data-centric et y ajoute l'exposition en API REST.
-Concrètement, ça donne une démarche en quatre temps. D'abord cartographier : savoir ce qui existe. [clic] Encapsuler : rendre l'existant appelable, sans le réécrire. [clic] Découpler : que la base publie ce qui change. [clic] Et seulement alors, moderniser un bloc à la fois. [clic] Et on recommence, sur le bloc suivant. Le SQL est l'outil de chacune de ces étapes.
+- Redbook SG24-8185 : pas que l'interface web, **quatre principes**
+  - modularisation, couches, data-centric, orientation service
+- Redbook 2026 : data-centric + API REST
+- Démarche en quatre temps :
+- **Cartographier** : savoir ce qui existe
+
+[click] **Encapsuler** : rendre l'existant appelable, sans le réécrire
+
+[click] **Découpler** : la base publie ce qui change
+
+[click] **Moderniser un bloc à la fois**, et seulement alors
+
+[click] **On recommence** sur le bloc suivant
+
+- Le SQL est l'outil de **chacune** de ces étapes
 -->
 
 ---
@@ -359,10 +409,19 @@ Kit : <code>kit/rpg/</code> — 5 tables, 7 programmes RPG compilés depuis ACS,
 </div>
 
 <!--
-Pour que ce ne soit pas que de la théorie, tous les exemples de cette partie ont été exécutés sur pub400, un IBM i public — et vous pouvez les rejouer : tout est dans le kit du dépôt, à lancer dans votre propre bibliothèque. Le schéma est volontairement petit : des clients, des devis, des lignes, des factures. Mais il a les défauts d'une vraie base : une date stockée en numérique, « parce que c'est partout », et des règles métier — remise, plafond d'encours, cycle de vie du devis — qui vivent dans les programmes.
-Le terrain, ce sont de vrais programmes RPG, publiés avec le kit et compilés depuis ACS : VALDEVIS valide un devis — il appelle CALCDEVIS, qui appelle CALCTARIF pour la remise et la TVA, et CTLENCOURS pour le plafond d'encours. GENFACT facture, et possède sa transaction. Par-dessus, un début de SQL : deux façades, PS_VAL_DEVIS et PS_GEN_FACT, et une procédure SQL, PS_TRAITER_DEVIS, qui les enchaîne. On verra à l'étape 2.2 comment on les écrit.
-Un mot : PS_ désigne une procédure stockée ; un programme RPG n'a pas de préfixe (détail dans kit/README.md).
-Pas de compilateur, ou pas le droit de compiler ? Le kit a une variante tout SQL (kit/00-terrain.sql), où des procédures SQL jouent le rôle des programmes.
+- Tout ce qui suit a **tourné sur pub400**, un IBM i public
+- Rejouable : le **kit** du dépôt, dans votre bibliothèque
+- Schéma petit : clients, devis, lignes, factures
+- Mais les défauts d'une vraie base
+  - date stockée en numérique, « parce que c'est partout »
+  - règles métier dans les programmes : remise, encours, cycle de vie
+- De **vrais programmes RPG**, compilés depuis ACS
+  - VALDEVIS valide → CALCDEVIS → CALCTARIF (remise, TVA)
+  - VALDEVIS → CTLENCOURS (plafond d'encours)
+  - GENFACT facture, possède sa transaction
+- Par-dessus : deux façades, **PS_VAL_DEVIS**, **PS_GEN_FACT**, et **PS_TRAITER_DEVIS** qui les enchaîne
+- `PS_` = procédure stockée ; un RPG n'a pas de préfixe (kit/README.md)
+- Pas de compilateur ? Variante tout SQL : kit/00-terrain.sql
 -->
 
 ---
@@ -404,11 +463,20 @@ CALL QSYS2.QCMDEXC(
 </div>
 
 <!--
-Des programmes des années 80 tournent toujours, et les relations entre tables vivent souvent dans le code, pas dans la base. Avant de toucher à quoi que ce soit, il faut retrouver les chaînes d'appels et les tables utilisées.
-Avec un outil comme X-Analysis : diagrammes de structure, modèle de données déduit du code RPG, analyse d'impact. Et depuis peu, l'IA change la donne : avec Bob, l'assistant d'IBM disponible depuis mars 2026, ou avec un autre assistant, faire l'état des lieux devient bien plus facile — il lit le RPG, le CL, les DDS, explique, documente, dessine les relations. Mon avis : c'est un accélérateur, pas un substitut ; il faut toujours savoir vérifier. Sans outil : le natif, DSPPGMREF, de quoi cadrer grossièrement — et de quoi vérifier ce que l'IA affirme.
-Une commande CL, pilotée depuis SQL, sur toute la bibliothèque courante. Le résultat est matérialisé dans une table de la bibliothèque, T_PGMREF : c'est le début d'un référentiel, qu'on interroge ensuite comme n'importe quelle table. (Pour explorer sans rien laisser, QTEMP suffit : c'est ce que fait la variante tout SQL du kit.)
-Le fichier de sortie (format QADSPPGM) : WHPNAM, le programme analysé ; WHFNAM et WHLNAM, l'objet référencé et sa bibliothèque ; WHOTYP, son type (*PGM, *FILE, *SRVPGM…) ; WHFUSG, l'usage — 1 lecture, 2 écriture, 4 mise à jour, cumulables. Pour un programme SQLRPGLE ou une procédure SQL, les tables du SQL statique apparaissent aussi.
-Sur le kit (exécuté sur pub400 le 29/09, kit/rpg/15-cartographier-rpg.sql) : 8 programmes analysés — les 7 RPG et PS_TRTDEV, le *PGM de la procédure SQL —, 3 appels entre programmes (VALDEVIS vers CALCDEVIS et CTLENCOURS, CALCDEVIS vers CALCTARIF), 9 références de tables. Les références au système — moteur SQL, runtime RPG, catalogue QSYS2 — sont écartées.
+- Programmes des années 80, **relations dans le code**, pas dans la base
+- Avant de toucher : retrouver **chaînes d'appels** et **tables utilisées**
+- **Avec un outil** (X-Analysis) : diagrammes, modèle déduit du code, impact
+- **Avec l'IA** (Bob, dispo depuis mars 2026, ou un autre assistant)
+  - lit RPG, CL, DDS ; explique, documente, dessine
+  - mon avis : **un accélérateur, pas un substitut** ; savoir vérifier
+- **Sans outil** : DSPPGMREF, pour cadrer, et vérifier ce que dit l'IA
+- La commande : une CL pilotée en SQL, sur toute la bibliothèque
+  - résultat matérialisé dans **T_PGMREF** : début d'un référentiel
+- Sur le kit : **8 programmes, 3 appels, 9 références de tables**
+  - hors système : moteur SQL, runtime RPG, QSYS2
+
+*Réserve* : format QADSPPGM — WHPNAM programme, WHFNAM/WHLNAM objet référencé, WHOTYP type, WHFUSG usage (1 lecture, 2 écriture, 4 mise à jour). QTEMP pour explorer sans rien laisser.
+*Source* : exécuté sur pub400 le 29/09, kit/rpg/15-cartographier-rpg.sql.
 -->
 
 ---
@@ -552,14 +620,33 @@ graph LR
 </div>
 
 <!--
-Point de départ : PS_TRAITER_DEVIS, la procédure SQL qui valide puis facture un devis. La chaîne traverse deux mondes, le SQL et le RPG, et chaque maillon se lit à un endroit différent. Procédure vers procédure : le catalogue, SYSROUTINEDEP. Façade vers programme : le catalogue encore, SYSROUTINES, qui donne le programme derrière chaque façade. Programme vers programme : DSPPGMREF, matérialisé dans T_PGMREF. Un UNION des trois, et on a une table, T_APPELS — la requête est dans le kit. On matérialise, puis on interroge.
-[clic] Ensuite, une récursion classique : les programmes appelés par les programmes appelés, avec deux garde-fous, une profondeur maximale et la détection de boucle.
-[clic] Résultat réel sur pub400 : on part du SQL, on passe par les façades, on descend dans le RPG — VALDEVIS, CALCDEVIS, CALCTARIF… et une branche qu'on n'avait pas en tête, le contrôle d'encours CTLENCOURS. La colonne SOURCE dit d'où vient chaque maillon.
-[clic] Et une autre requête écrit le même graphe en Mermaid, avec les tables : on colle le résultat dans un éditeur, et on a un diagramme de structure, où l'on voit ce qui est SQL et ce qui est RPG.
-Les limites, honnêtement — c'est là qu'un outil fait la différence : DSPPGMREF ne voit que les appels à nom littéral, et il ne voit pas les appels réseau.
-Le natif ne remplace pas un outil. Il permet de savoir par où commencer, et quoi ne pas casser.
-(En réserve pour les questions : la requête qui rassemble les trois sources et celle qui génère le Mermaid, dans kit/rpg/15-cartographier-rpg.sql ; SQL dynamique — SYSPROGRAMSTMTSTAT, PARSE_STATEMENT, BOUND_MODULE_INFO ; « qui touche à DEVIS ? » : CALCDEVIS, VALDEVIS et GENFACT, usage 5.)
-(Exécuté sur pub400 le 29/09 : kit/rpg/15-cartographier-rpg.sql, résultat repris de pub400/resultats-kit/rpg/15-cartographier-rpg.txt ; Mermaid : sortie réelle de 27 lignes, seul l'ordre des lignes est retouché pour l'écran.)
+- Départ : **PS_TRAITER_DEVIS**, valide puis facture un devis
+- La chaîne traverse **deux mondes**, SQL et RPG
+- Chaque maillon se lit à un endroit différent :
+  - procédure → procédure : **SYSROUTINEDEP**
+  - façade → programme : **SYSROUTINES**
+  - programme → programme : **DSPPGMREF** (T_PGMREF)
+- Un UNION : une table, **T_APPELS**
+- **On matérialise, puis on interroge**
+
+[click] Requête récursive classique
+- les programmes appelés par les programmes appelés
+- deux garde-fous : **profondeur max**, **pas de boucle**
+
+[click] Résultat réel sur pub400
+- du SQL, par les façades, jusqu'au RPG : VALDEVIS, CALCDEVIS, CALCTARIF
+- une branche inattendue : **CTLENCOURS**, le contrôle d'encours
+- la colonne SOURCE dit d'où vient chaque maillon
+
+[click] Une autre requête écrit **le même graphe en Mermaid**
+- on colle dans un éditeur : diagramme de structure, SQL et RPG distingués
+- Limites, honnêtement (là qu'un outil fait la différence) :
+  - appels à **nom littéral** seulement
+  - **appels réseau** invisibles
+- **Le natif ne remplace pas un outil** : il dit par où commencer, quoi ne pas casser
+
+*Réserve* : requêtes T_APPELS et Mermaid dans kit/rpg/15-cartographier-rpg.sql ; SQL dynamique : SYSPROGRAMSTMTSTAT, PARSE_STATEMENT, BOUND_MODULE_INFO ; « qui touche à DEVIS ? » : CALCDEVIS, VALDEVIS, GENFACT.
+*Source* : exécuté sur pub400 le 29/09 ; Mermaid : sortie réelle de 27 lignes, ordre retouché pour l'écran.
 -->
 ---
 zoom: 0.9
@@ -626,13 +713,24 @@ contrat -> app: CALL {class: fil}
 </div>
 
 <!--
-Trois programmes d'époques différentes — un RPG III en OPM, un RPG IV free-form, et du RPG généré à la façon d'Adélia — derrière trois procédures au contrat identique. Aucun n'a été recompilé pour ça : on n'a écrit que du DDL. LANGUAGE RPG et non RPGLE, parce que c'est de l'OPM ; PARAMETER STYLE GENERAL, parce que le programme reçoit ses paramètres tels quels.
-Le schéma, à droite : vu du catalogue, ce sont trois procédures interchangeables, appelables depuis ODBC, JDBC, Mapepire, un orchestrateur ou un pipeline data. Et sur pub400 elles rendent la même chose pour 10 000 HT et 5 % de remise : 9500 HT remisé, 1900 de TVA, 11400 TTC.
-Et ça s'appelle de partout : en JDBC, on lit directement les paramètres de sortie ; en ODBC, beaucoup d'outils ne savent pas les lire, alors une petite fonction table rend les valeurs par un simple SELECT. Les deux exemples sont dans le kit.
-Et une fois encapsulés, on les compose : une procédure SQL peut enchaîner une validation existante, un peu de SQL neuf, puis une facturation existante. Chaque étape se remplace individuellement, le contrat est documenté dans le catalogue.
-Point d'attention : une transaction ouverte par l'appelant ne traverse pas un programme compilé COMMIT(*NONE), et sans lever d'erreur. Encapsuler, c'est aussi décider qui possède la transaction — dans le kit, c'est le programme de facturation.
-Anecdote à garder si le temps le permet : sur 99,99 avec 33,33 % de remise, les trois versions divergent d'un centime — 79,99 contre 80,00 — parce que les arrondis ne sont pas écrits pareil. Encapsuler n'efface pas les différences : ça les rend testables (kit/rpg/14-rejouer.sql le montre).
-(Exécuté sur pub400 le 29/09 avec le kit RPG : sources chargées par SQL, compilées, façades créées ; les trois CALL rendent 9500.00 / 1900.00 / 11400.00.)
+- **Trois programmes, trois époques** : RPG III (OPM), RPG IV free-form, RPG façon Adélia
+- Derrière **trois procédures au contrat identique**
+- Aucun recompilé : **que du DDL**
+  - `LANGUAGE RPG`, pas RPGLE : c'est de l'OPM
+  - `PARAMETER STYLE GENERAL` : paramètres passés tels quels
+- Le schéma : vu du catalogue, trois procédures **interchangeables**
+  - appelables depuis ODBC, JDBC, Mapepire, un pipeline
+  - 10 000 HT, 5 % → **9500 · 1900 · 11400**, les trois pareils
+- S'appelle de partout
+  - JDBC : lit les paramètres de sortie
+  - ODBC : une fonction table rend les valeurs par un SELECT (kit)
+- Une fois encapsulés, **on les compose** : validation existante + SQL neuf + facturation existante
+- Attention : une transaction de l'appelant **ne traverse pas** un programme COMMIT(*NONE)
+  - encapsuler, c'est aussi décider **qui possède la transaction**
+- *Si le temps le permet* : 99,99 à 33,33 % → **un centime d'écart** (79,99 / 80,00)
+  - encapsuler n'efface pas les différences : **ça les rend testables**
+
+*Source* : exécuté sur pub400 le 29/09, kit RPG ; les trois CALL rendent 9500.00 / 1900.00 / 11400.00.
 -->
 
 ---
@@ -702,11 +800,16 @@ print(remise, tva, ttc)   # 9500.00 1900.00 11400.00
 </div>
 
 <!--
-(Slide en réserve, masquée par hide: true : à montrer en questions.)
-Une fois encapsulé, le RPG s'appelle comme n'importe quelle procédure, depuis n'importe quel langage. Deux exemples.
-À gauche, JDBC, avec le pilote JTOpen : un CallableStatement, on passe le montant et le taux, on enregistre les quatre paramètres de sortie, on exécute — et on lit ce que le programme RPG III a calculé. 9500, 1900, 11400.
-À droite, ODBC. Piège : beaucoup de clients ODBC, dont pyodbc en Python et une partie des outils BI, ne savent pas lire les paramètres de sortie d'un CALL. La solution native : une petite fonction table SQL qui appelle la façade et rend ses valeurs en ligne. Du coup, un simple SELECT suffit — depuis Python, Excel, Power BI ou DuckDB. Et c'est une idée qu'on retrouvera au chapitre 4 : l'IBM i comme source de données.
-(Exécuté sur pub400 le 29/09 avec le kit RPG : le programme Java tel quel, et la requête du script Python avec ses marqueurs alimentés par des flottants, comme le fait pyodbc ; le script Python lui-même n'a pas tourné, le pilote ODBC ne passant pas par le tunnel. La fonction table : kit/rpg/16-appeler.sql.)
+*Slide en réserve, masquée par hide: true : à montrer en questions.*
+
+- Une fois encapsulé, le RPG s'appelle **depuis n'importe quel langage**
+- **JDBC** (JTOpen) : CallableStatement, montant et taux en entrée, quatre sorties → 9500, 1900, 11400
+- **ODBC** : piège, pyodbc et beaucoup d'outils BI **ne lisent pas les OUT**
+  - solution native : une **fonction table** qui appelle la façade
+  - un simple SELECT suffit : Python, Excel, Power BI, DuckDB
+- Idée qu'on retrouve au chapitre 4 : l'IBM i comme source de données
+
+*Source* : exécuté sur pub400 le 29/09 : programme Java tel quel, requête du script Python ; kit/rpg/16-appeler.sql.
 -->
 
 ---
@@ -749,10 +852,20 @@ apres: "Alternative testée : la base publie, chacun vient lire" {
 <div class="text-center mt-3 text-xl" v-click>Le programme n'a pas changé, et <b>la base publie</b> ce qui change.<div class="text-sm opacity-60 mt-1">Testé sur pub400 : journal et file. Aucun consommateur n'est déployé.</div></div>
 
 <!--
-Découpler, c'est séparer celui qui produit un changement de ceux qui ont besoin de le connaître.
-Chez nous, aujourd'hui, quand une donnée change et qu'un autre système doit le savoir, le programme appelle lui-même un service REST, avec les fonctions HTTP de Db2. Le programme est lié à chaque service : en ajouter un, c'est retoucher le programme, et une panne du service se répercute sur la transaction.
-[clic] L'alternative, que j'ai testée sur pub400 : on déplace cette responsabilité dans la base. Le programme écrit sa donnée et ne sait rien de personne. La base publie le changement, par le journal ou par une file, et chacun vient lire ce qui l'intéresse.
-[clic] Le programme n'a pas changé, et la base publie ce qui change. Honnêteté : ce qui a tourné, c'est le journal et la file ; le consommateur, pipeline, API ou Kafka, reste à brancher, et rien de tel n'est déployé chez nous aujourd'hui. La slide suivante montre les deux moyens : le journal, puis la file.
+- Découpler : séparer **celui qui produit un changement** de **ceux qui doivent le connaître**
+- Chez nous aujourd'hui : le programme **appelle lui-même** un service REST (fonctions HTTP de Db2)
+  - lié à chaque service : en ajouter un = retoucher le programme
+  - une panne du service se répercute sur la transaction
+
+[click] L'alternative, **testée sur pub400**
+- la responsabilité passe **dans la base**
+- le programme écrit sa donnée, ne sait rien de personne
+- la base publie (journal ou file), chacun vient lire
+
+[click] **Le programme n'a pas changé, et la base publie ce qui change**
+- Honnêteté : journal et file ont tourné ; le consommateur (pipeline, API, Kafka) **reste à brancher**
+- Rien de tel n'est déployé chez nous aujourd'hui
+- Slide suivante : les deux moyens, le journal puis la file
 -->
 
 ---
@@ -887,12 +1000,24 @@ conso -> cible {class: eteint}
 </div>
 
 <!--
-Deux moyens pour que la base publie, sans toucher aux programmes.
-Le journal d'abord. Les tables sont journalisées. On traite un devis, et le journal a tout vu : chaque modification, avec la table et le programme qui l'a faite — CALCDEVIS et VALDEVIS sur le devis, GENFACT sur la facture et le client. Ce sont les programmes RPG eux-mêmes, qu'on n'a pas touchés. C'est la base de toute capture de changements ; le job qui relaierait vers Kafka ou une API reste à écrire ou à acheter.
-[clic] La file ensuite : un JSON construit en SQL, déposé dans une file de données. Ici je l'envoie à la main ; sur un vrai système, un trigger le ferait à chaque modification — pub400 refuse CREATE TRIGGER au compte gratuit.
-[clic] Et n'importe qui la lit : en SQL, y compris par ODBC, un service Java, ou un vieux programme RPG. L'encours du client est passé à 2910 : la facture qu'on vient d'émettre.
-Surtout pas d'appel réseau au moment où la donnée change : on écrit localement, un consommateur asynchrone relaie.
-(Exécuté sur pub400 le 29/09 : kit/rpg/17-decoupler.sql — 6 entrées de journal sur les 90 de l'heure, file créée puis supprimée ; MQ et trigger non exécutés. Variante sans compilation : kit/03-decoupler.sql.)
+- Deux moyens de publier, **sans toucher aux programmes**
+- **Le journal** d'abord : les tables sont journalisées
+  - on traite un devis : le journal a **tout vu**
+  - chaque modification, avec la table et **le programme** qui l'a faite
+  - CALCDEVIS, VALDEVIS sur le devis ; GENFACT sur facture et client
+  - des programmes RPG **qu'on n'a pas touchés**
+  - base de toute capture de changements ; le relais vers Kafka ou une API reste à écrire ou à acheter
+
+[click] **La file** ensuite : un JSON construit en SQL, déposé dans une file de données
+- ici envoyé **à la main** ; en vrai, un **trigger** le ferait à chaque modification
+- pub400 refuse CREATE TRIGGER au compte gratuit
+
+[click] **N'importe qui la lit** : SQL, ODBC, Java, un vieux programme RPG
+- l'encours du client passe à **2910** : la facture qu'on vient d'émettre
+- Règle d'or : **pas d'appel réseau** au moment où la donnée change
+  - on écrit localement, un consommateur asynchrone relaie
+
+*Source* : exécuté sur pub400 le 29/09, kit/rpg/17-decoupler.sql ; MQ et trigger non exécutés.
 -->
 
 ---
@@ -925,13 +1050,23 @@ neuf -> suivant: puis {class: [fil; etape3]}
 <div class="text-center text-sm opacity-60 mt-1">Principe, non exécuté : le kit montre trois implémentations derrière un même contrat (2.2), pas encore une réécriture.</div>
 
 <!--
-Dernière étape, et c'est celle pour laquelle on a fait tout le reste.
-Aujourd'hui, les appelants — du SQL, un programme Java, un outil par ODBC, un pipeline — appellent la façade SQL. Derrière, c'est le RPG CALCTARIF qui calcule.
-[clic] Demain, on réécrit ce calcul, en SQL ou en Java, et on le branche derrière la même façade. Le contrat ne bouge pas : mêmes paramètres, mêmes résultats. Les appelants ne voient rien.
-[clic] Puis on passe au bloc suivant, le contrôle d'encours, la facturation… un bloc à la fois, jamais tout d'un coup.
-[clic] Le contrat ne change pas, l'implémentation si. Et comment sait-on qu'on n'a rien cassé ? On l'a vu à l'étape 2.2 : on compare les versions sur un jeu de valeurs — c'est là qu'on avait trouvé l'écart d'un centime.
-Honnêteté : c'est un principe ; le kit montre trois implémentations derrière un même contrat, pas encore une réécriture.
-Transition : cartographier, encapsuler, découpler, remplacer — à chaque étape, l'outil, c'était le SQL. Le SQL sur IBM i n'est pas qu'un langage de requête : c'est un langage d'intégration. Et il sert aussi à administrer le système : c'est la suite.
+- Dernière étape : **celle pour laquelle on a fait tout le reste**
+- Aujourd'hui : les appelants (SQL, Java, ODBC, pipeline) appellent **la façade**
+- Derrière, le RPG **CALCTARIF** calcule
+
+[click] **Demain** : on réécrit le calcul, en SQL ou en Java
+- branché derrière **la même façade**
+- mêmes paramètres, mêmes résultats : **les appelants ne voient rien**
+
+[click] Puis **le bloc suivant** : contrôle d'encours, facturation…
+- un bloc à la fois, **jamais tout d'un coup**
+
+[click] **Le contrat ne change pas, l'implémentation si**
+- Comment savoir qu'on n'a rien cassé ? Comparer les versions (2.2 : l'écart d'un centime)
+- Honnêteté : **un principe** ; le kit montre trois implémentations, pas une réécriture
+- Transition : cartographier, encapsuler, découpler, remplacer → **toujours le SQL**
+  - pas qu'un langage de requête : un **langage d'intégration**
+  - il sert aussi à **administrer** : c'est la suite
 -->
 
 ---
@@ -975,9 +1110,14 @@ chapitre: 3
 </div>
 
 <!--
-Les IBM i Services : des vues, fonctions table et procédures dans QSYS2 et SYSTOOLS qui exposent le système sans passer par des fichiers de sortie. Pour presque chaque commande CL de tous les jours, il y a son équivalent SQL.
-(Les cinq services du tableau répondent sur pub400, le 29/09 : kit/05-administrer.sql. WRKPTFGRP → GROUP_PTF_INFO, lui, est refusé au compte gratuit : c'est pour ça qu'il n'est pas dans le tableau.)
-À droite : pas besoin de connaître les services par cœur. Dans ACS, Run SQL Scripts, menu Edit → Insert from Examples : des centaines d'exemples prêts à l'emploi, classés par thème.
+- **IBM i Services** : vues, fonctions table, procédures dans QSYS2 et SYSTOOLS
+- Le système exposé **sans fichier de sortie**
+- Pour presque chaque commande CL : **son équivalent SQL** (le tableau)
+- À droite : pas besoin de tout connaître par cœur
+  - ACS → Run SQL Scripts → **Edit → Insert from Examples**
+  - des centaines d'exemples, classés par thème
+
+*Source* : les cinq services répondent sur pub400 (29/09, kit/05-administrer.sql) ; GROUP_PTF_INFO refusé au compte gratuit.
 -->
 
 ---
@@ -1102,15 +1242,27 @@ SELECT AUTHORIZATION_NAME, OBJECT_AUTHORITY
 </div>
 
 <!--
-Trois exemples suffisent : la sécurité, l'exploitation, l'audit.
-Sécurité : le niveau de sécurité du système, le nombre d'essais de connexion, l'expiration des mots de passe, en une requête. [clic] Exploitation : les messages graves de la dernière heure, sans ouvrir DSPLOG. [clic] Audit : qui a quels droits sur la table CLIENT — le public est exclu, seul le propriétaire a tout.
-Sous chaque requête, son résultat sur pub400 (lignes reprises de pub400/resultats-kit/05-administrer.txt, mises en forme : ce n'est pas une capture) : QSECURITY à 50, 361 messages de sévérité 40 ou plus en une heure (les 5 premiers affichés ; le chiffre bouge d'un passage à l'autre), et la table CLIENT fermée au public. Le nom du profil propriétaire est masqué.
-[clic] Et tout ça peut partir vers un SIEM, l'outil où la sécurité centralise ses journaux : Graylog, la pile Elastic (ELK), ou ClickStack, la pile d'observabilité de ClickHouse. Deux chemins. Le plus direct : DISPLAY_JOURNAL et HISTORY_LOG_INFO savent produire leurs lignes au format syslog RFC 5424, qu'un collecteur envoie tel quel. L'autre, c'est exactement ce qu'on a vu à l'étape 2.3 : le journal, ou une file de données, lu par un consommateur qui relaie vers le SIEM. Même mécanique pour les données métier et pour la sécurité.
-(Principe, non exécuté : aucun SIEM n'est branché sur pub400. Le format syslog est documenté par IBM, lien en pied de slide.)
-Sur un vrai système, on irait plus loin : les profils qui ont *ALLOBJ (QSYS2.USER_INFO), les échecs de mot de passe (SYSTOOLS.AUDIT_JOURNAL_PW). Sur pub400, les services respectent les droits : la première rend 0 ligne, la seconde est refusée faute d'accès au journal d'audit (SQL0443).
-(Exécuté tel quel sur pub400 le 29/09 : kit/05-administrer.sql. Le texte des messages n'est pas affiché : le client JDBC utilisé en abîme les accents.)
-Trois requêtes, trois domaines, et à chaque fois la même idée : le système devient une table comme les autres. Conseil d'IBM au passage : filtrer tôt, et matérialiser le résultat dans une table.
-Et une table, ça s'extrait : c'est la transition vers la dernière partie.
+- Trois exemples suffisent
+- **Sécurité** : niveau de sécurité, essais de connexion, expiration des mots de passe
+  - QSECURITY à 50, en une requête
+
+[click] **Exploitation** : messages graves de la dernière heure, sans DSPLOG
+- 361 messages de sévérité 40+ en une heure (le chiffre bouge)
+
+[click] **Audit** : qui a quels droits sur CLIENT ?
+- public exclu, seul le propriétaire a tout (nom masqué)
+- Sur un vrai système, plus loin : profils *ALLOBJ, échecs de mot de passe (pas sur pub400)
+
+[click] **Tout peut partir vers un SIEM** : Graylog, ELK, ClickStack
+- chemin direct : **syslog RFC 5424**, produit par DISPLAY_JOURNAL et HISTORY_LOG_INFO
+- ou le chemin de **l'étape 2.3** : journal ou file, un consommateur relaie
+- même mécanique pour les données métier et pour la sécurité
+- Principe, **non exécuté** : aucun SIEM sur pub400
+- À chaque fois : **le système devient une table**
+  - conseil IBM : filtrer tôt, matérialiser dans une table
+- Et une table, **ça s'extrait** → dernière partie
+
+*Source* : exécuté tel quel sur pub400 le 29/09, kit/05-administrer.sql ; texte des messages non affiché (accents abîmés côté JDBC).
 -->
 
 ---
@@ -1143,8 +1295,15 @@ etape: 1
 </div>
 
 <!--
-L'IBM i n'est pas un silo. On s'y connecte depuis de multiples points d'accès. ODBC (IBM i Access), sous Windows, Linux et macOS : Python, BI, ETL, DuckDB. JDBC (JTOpen) : Java, Talend, les outils JVM. Mapepire : des clients légers, un seul port chiffré, adapté au cloud. HTTP depuis SQL : l'IBM i qui appelle des API. MCP : des assistants IA qui interrogent Db2 for i. Point fort : le pilote ODBC sous Linux s'installe comme n'importe quel paquet, donc dans un conteneur ou un pipeline.
-Et les procédures stockées de l'étape 2.2 sont appelables par ces mêmes points d'accès : un pipeline data peut déclencher un traitement RPG existant par un simple CALL.
+- L'IBM i **n'est pas un silo** : 4.1, se connecter
+- **ODBC** (IBM i Access) : Windows, Linux, macOS → Python, BI, ETL, DuckDB
+- **JDBC** (JTOpen) : Java, Talend, outils JVM
+- **Mapepire** : clients légers, un seul port chiffré, cloud
+- **HTTP** depuis SQL : l'IBM i appelle des API
+- **MCP** : des assistants IA interrogent Db2 for i
+- Point fort : ODBC sous Linux s'installe **comme un paquet** → conteneur, pipeline
+- Les procédures de l'étape 2.2 passent **par les mêmes portes**
+  - un pipeline déclenche un traitement RPG par un simple CALL
 -->
 
 ---
@@ -1247,12 +1406,22 @@ apres: "En colonne" {
 </div>
 
 <!--
-Deux façons de sortir les données de l'IBM i vers DuckDB, une base analytique qui tourne sur un poste, sans serveur. Les deux passent par le pilote ODBC d'IBM, et les deux ont tourné sur pub400.
-La plus simple d'abord : DuckDB a depuis peu une extension ODBC officielle. On charge l'extension, on ouvre une connexion sur un DSN, et on envoie la requête à l'IBM i. Le résultat devient une table DuckDB, qu'on analyse en local. Trois lignes de SQL.
-[clic] Pour le volume, l'autre chemin : arrow-odbc. Un pilote SQL classique renvoie des lignes, une par une, converties en objets du langage ; sur des millions d'enregistrements, c'est lent. arrow-odbc lit par lots et remplit directement des tableaux Arrow, en colonne, et DuckDB lit cette table en mémoire sans copie. C'est ce que montre le schéma.
-Dans les deux cas, le même résultat : trois clients, 48 000 d'encours. Et les types sont conservés : les DECIMAL de l'IBM i restent des DECIMAL dans DuckDB.
-Clin d'œil : le référentiel DSPPGMREF du chapitre 2 s'extrait de la même façon, et la carte des programmes devient analysable dans DuckDB.
-(Exécuté sur pub400 le 30/09, en connexion directe par le pilote IBM i Access ODBC et un DSN, sans tunnel : kit/exemples/duckdb-odbc.sql et arrow_odbc_duckdb.py, sorties dans pub400/resultats-kit/exemples/. MONIBMI est le nom de DSN illustratif. Pas de mesure de performance : pub400 est un système partagé, et 3 lignes ne disent rien d'un volume.)
+- Sortir les données vers **DuckDB** : base analytique sur un poste, sans serveur
+- Deux chemins, par le pilote ODBC IBM, **les deux ont tourné sur pub400**
+- **Le plus simple** : l'extension ODBC officielle de DuckDB
+  - une connexion sur un DSN, la requête part à l'IBM i
+  - le résultat devient une table DuckDB, analysée en local
+  - trois lignes de SQL
+
+[click] **Pour le volume** : arrow-odbc
+- un pilote classique : une ligne = un objet → lent sur des millions
+- arrow-odbc lit **par lots, en colonne** (Arrow)
+- DuckDB lit la table Arrow **sans copie** : c'est le schéma
+- Même résultat : **3 clients, 48 000** d'encours
+- **Types conservés** : les DECIMAL restent des DECIMAL
+- Clin d'œil : le référentiel DSPPGMREF s'extrait pareil → la carte des programmes dans DuckDB
+
+*Source* : exécuté sur pub400 le 30/09, connexion directe, kit/exemples/ ; pas de mesure de performance (système partagé, 3 lignes).
 -->
 
 ---
@@ -1310,10 +1479,19 @@ Sur le kit : **4** lignes au catalogue → 2 tranches de 2.
 </div>
 
 <!--
-Pour passer du script au pipeline : dlt, avec le backend pyarrow, produit des tables Arrow et, vers Parquet, saute l'étape de normalisation — dlt annonce un gain de 20 à 30 fois.
-Pour les grosses tables : découper par numéro relatif d'enregistrement, en partant du nombre de lignes connu du catalogue, et extraire les tranches en parallèle.
-(Exécuté tel quel sur pub400 le 29/09 avec le kit : DEVLIG compte 4 lignes, la tranche 1-2 rend les deux lignes du devis 101 — kit/06-industrialiser.sql.)
-Et quelques garde-fous : un compte technique en lecture seule (RCAC si besoin), une connexion chiffrée, un œil sur le typage — précision des DECIMAL, dates, CCSID —, et on extrait hors des pics, avec le Query Supervisor comme filet.
+- Du script **au pipeline** : dlt, backend pyarrow
+  - vers Parquet, saute la normalisation : **20 à 30×** annoncé
+- **Orchestrer** : planifier, rejouer, historiser
+- **Grosses tables** : découper par numéro relatif (RRN)
+  - nombre de lignes connu du catalogue
+  - tranches extraites **en parallèle**
+- **Garde-fous**
+  - compte en **lecture seule** (RCAC si besoin)
+  - connexion **chiffrée**
+  - **typage** : DECIMAL, dates, CCSID
+  - **hors pics**, Query Supervisor en filet
+
+*Source* : exécuté tel quel sur pub400 le 29/09 : DEVLIG, 4 lignes, tranche 1-2 (kit/06-industrialiser.sql).
 -->
 
 ---
@@ -1352,9 +1530,15 @@ duck -> dbt -> ia
 </div>
 
 <!--
-Pour finir ce chapitre, ce que ça donne en vrai chez Sinapse. Il n'y avait pas d'outil ? On s'est appuyé sur le natif — le pilote ODBC IBM — et on a construit le reste avec des standards ouverts. Le besoin : alimenter une plateforme data moderne, sans alourdir la production. L'existant : ODBC, fiable mais ligne à ligne. Ce qu'on a construit : l'extraction en colonne avec Arrow, un pilote ADBC, et la piste d'un service Arrow Flight SQL devant l'IBM i.
-[clic] Le résultat.
-À ajuster selon ce qui peut être montré publiquement.
+- Pour finir le chapitre : **en vrai, chez Sinapse**
+- Pas d'outil ? On s'est appuyé **sur le natif** (le pilote ODBC IBM)
+- Et on a construit le reste avec des **standards ouverts**
+- **Le besoin** : alimenter une plateforme data moderne, sans alourdir la prod
+- **L'existant** : ODBC, fiable mais ligne à ligne
+- **Construit** : extraction en colonne avec Arrow, un pilote ADBC, piste Arrow Flight SQL
+
+[click] **Le résultat**
+
 -->
 
 ---
@@ -1386,8 +1570,17 @@ chapitre: fin
 </div>
 
 <!--
-On referme sur les trois questions du début. Avec un outil : il accélère, notamment l'IA pour l'état des lieux. Sans outil : on a des standards ouverts et un peu de code. Avec le natif seul : le SQL de l'IBM i va très loin, comme on l'a vu. Quatre messages à retenir. Moderniser progressivement : cartographier, encapsuler, découpler, un bloc à la fois. Le SQL va au-delà du transactionnel : il administre, il exploite, il intègre. L'IBM i est une source de données de premier plan : ODBC, Arrow, DuckDB. Et les compétences IBM i sont un tremplin : connaître l'existant, c'est construire la suite.
-Et pourquoi ça marche : la base est intégrée à l'OS — catalogue, journaux, sécurité objet ; c'est un langage d'intégration ; elle est ouverte — ODBC, JDBC, Mapepire, HTTP, MCP ; et elle évolue en continu : les TR de l'été 2026 ont livré 5 améliorations, 17 nouveaux services et 10 services enrichis.
+- On referme sur **les trois questions** du début
+  - **avec un outil** : il accélère, l'IA aussi pour l'état des lieux
+  - **sans outil** : des standards ouverts et un peu de code
+  - **avec le natif seul** : le SQL de l'IBM i va très loin
+- Quatre messages
+  - **pas à pas** : cartographier, encapsuler, découpler, un bloc à la fois
+  - **le SQL intègre** : il administre, exploite, publie
+  - **une vraie source** : ODBC, Arrow, DuckDB
+  - **un tremplin** : connaître l'existant, c'est construire la suite
+- Pourquoi ça marche : base intégrée à l'OS, ouverte, et qui **évolue**
+  - été 2026 : 5 améliorations, **17 nouveaux services**, 10 enrichis
 -->
 
 ---
@@ -1422,3 +1615,10 @@ Merci — questions ?
 <a href="https://mapepire-ibmi.github.io/">Mapepire</a> ·
 <a href="https://duckdb.org/docs/current/core_extensions/odbc/overview">DuckDB ODBC</a>
 </div>
+
+<!--
+- **L'héritage est là. La seule question, c'est ce qu'on en fait.**
+- Merci
+- Le kit et le deck sont sur GitHub : tout se rejoue
+- Place aux questions
+-->
