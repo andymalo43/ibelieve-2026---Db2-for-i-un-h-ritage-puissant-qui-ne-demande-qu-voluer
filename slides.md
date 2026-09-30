@@ -286,7 +286,7 @@ new -> table: SQL {class: fil}
 
 <div class="text-sm opacity-80 mb-2"><carbon-favorite-filled class="inline" style="color: #b56959" /> Merci à <b>E. Sadiman</b>, qui m'a confié ce chantier — et m'a rendu fan de l'IBM i</div>
 
-> iBelieve 2021 : **migrer des tables**. iBelieve 2026 : **reprendre la maîtrise**, carte en main.
+> iBelieve 2021 : **migrer des tables**. iBelieve 2026 : **reprendre la maîtrise**, en cartographiant.
 
 </div>
 
