@@ -1567,11 +1567,14 @@ db2: "Db2 for i" {class: donnees}
 x: "arrow-odbc / ADBC\nextraction colonne" {class: fort}
 duck: "DuckDB\nParquet" {class: donnees}
 dbt: "dbt\nmodèles" {class: bloc}
+carto: "Cartographie du SI\nface IBM i\n(livrables HTML)" {class: bloc}
 ia: "Analyse · IA" {class: bloc}
 
 db2 -> x: ODBC
 x -> duck: Arrow {class: fil}
-duck -> dbt -> ia
+duck -> dbt
+dbt -> carto
+dbt -> ia
 ```
 
 <div class="grid grid-cols-4 gap-3 mt-4">
@@ -1586,7 +1589,7 @@ duck -> dbt -> ia
 </div>
 
 <!--
-*⏱ 31:25 · 1 min 30 · 1 min 25 avant le 1er clic*
+*⏱ 31:25 · 2 min 05 · 2 min 00 avant le 1er clic*
 
 - Pour finir le chapitre : **en vrai, chez Sinapse**
 - Pas d'outil ? On s'est appuyé **sur le natif** (le pilote ODBC IBM)
@@ -1597,6 +1600,9 @@ duck -> dbt -> ia
   - et sans alourdir la prod
 - **L'existant** : ODBC, fiable mais ligne à ligne
 - **Construit** : extraction en colonne avec Arrow, un pilote ADBC, piste Arrow Flight SQL
+- **Ce qui en sort**, par dbt :
+  - une **cartographie du SI, face IBM i** : livrables HTML que j'ai développés, mis à jour à partir des sources et des traitements dbt
+  - de l'**analyse**, et de l'IA
 
 [click] *⏱ 5 s* **Le résultat**
 
@@ -1631,7 +1637,7 @@ chapitre: fin
 </div>
 
 <!--
-*⏱ 32:55 · 1 min 35*
+*⏱ 33:30 · 1 min 35*
 
 - On referme sur **les trois questions** du début
   - **avec un outil** : il accélère, l'IA aussi pour l'état des lieux
@@ -1680,7 +1686,7 @@ Merci — questions ?
 </div>
 
 <!--
-*⏱ 34:30 · 25 s*
+*⏱ 35:05 · 25 s*
 
 - **L'héritage est là. La seule question, c'est ce qu'on en fait.**
 - Merci
