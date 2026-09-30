@@ -1210,7 +1210,7 @@ SELECT AUTHORIZATION_NAME, OBJECT_AUTHORITY
 </template>
 <template #3>
 
-<div class="etape-admin"><carbon-security /> Tout peut partir vers un SIEM, par le chemin de 2.3</div>
+<div class="etape-admin"><carbon-security /> Tout peut partir vers un SIEM ou une plateforme data, par le chemin de 2.3</div>
 
 <div class="siem">
   <div class="siem__col">
@@ -1222,26 +1222,42 @@ SELECT AUTHORIZATION_NAME, OBJECT_AUTHORITY
   <div class="siem__bloc siem__bloc--fort">syslog RFC 5424<br>ou consommateur<br><span>comme en 2.3</span></div>
   <carbon-arrow-right class="siem__fleche" />
   <div class="siem__col">
-    <div class="siem__outil"><simple-icons-graylog style="color: #ff3633" />Graylog</div>
-    <div class="siem__outil"><simple-icons-elasticstack style="color: #005571" />ELK</div>
-    <div class="siem__outil"><simple-icons-clickhouse style="color: #e6b800" />ClickStack</div>
+    <div class="siem__dest">
+      <div class="siem__dest-titre"><carbon-security /> Sécurité → SIEM</div>
+      <div class="siem__outils">
+        <span class="siem__outil"><simple-icons-graylog style="color: #ff3633" />Graylog</span>
+        <span class="siem__outil"><simple-icons-elasticstack style="color: #005571" />ELK</span>
+        <span class="siem__outil"><simple-icons-clickhouse style="color: #e6b800" />ClickStack</span>
+      </div>
+    </div>
+    <div class="siem__dest">
+      <div class="siem__dest-titre"><carbon-data-share /> Données → plateforme data</div>
+      <div class="siem__outils">
+        <span class="siem__outil"><carbon-data-base style="color: #5d8392" />Entrepôt</span>
+        <span class="siem__outil"><carbon-data-set style="color: #5d8392" />Datalake</span>
+        <span class="siem__outil"><carbon-data-vis-1 style="color: #5d8392" />Lakehouse</span>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="text-center mt-6 text-lg">La sécurité de l'IBM i rejoint <b>la supervision de toute l'entreprise</b>.</div>
-<div class="text-center text-sm opacity-60 mt-1">Principe, non exécuté : aucun SIEM branché sur pub400.</div>
+<div class="text-center mt-3 text-base">Un même chemin : la sécurité rejoint <b>la supervision</b>, les données rejoignent <b>la plateforme data</b>.</div>
+<div class="text-center text-sm opacity-60 mt-1">Principe, non exécuté : ni SIEM ni entrepôt branché sur pub400.</div>
 
 <style>
-.siem { display: flex; align-items: center; justify-content: center; gap: 1.2rem; margin-top: 1rem; }
-.siem__col { display: flex; flex-direction: column; gap: 0.6rem; }
-.siem__bloc { padding: 0.5rem 1rem; border-radius: 10px; background: #eef3f5; border: 2px solid #5d8392; text-align: center; font-weight: 700; color: #1f3b47; line-height: 1.25; }
+.siem { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 0.5rem; }
+.siem__col { display: flex; flex-direction: column; gap: 0.45rem; }
+.siem__bloc { padding: 0.35rem 0.8rem; border-radius: 10px; background: #eef3f5; border: 2px solid #5d8392; text-align: center; font-weight: 700; color: #1f3b47; line-height: 1.2; font-size: 0.9rem; white-space: nowrap; }
 .siem__bloc span { font-weight: 400; font-size: 0.75rem; font-family: var(--slidev-code-font-family, monospace); opacity: 0.8; }
 .siem__bloc svg { display: inline; color: #5d8392; }
 .siem__bloc--fort { background: #5d8392; border-color: #2f4f5c; color: #fff; }
 .siem__bloc--fort span { font-family: inherit; }
 .siem__fleche { color: #b56959; font-size: 2rem; }
-.siem__outil { display: flex; align-items: center; gap: 0.5rem; font-size: 1.2rem; font-weight: 700; color: #1f3b47; }
-.siem__outil svg { font-size: 2rem; }
+.siem__dest { padding: 0.45rem 0.8rem; border-radius: 10px; border: 2px dashed #5d8392; }
+.siem__dest-titre { display: flex; align-items: center; gap: 0.35rem; font-weight: 700; font-size: 0.85rem; color: #5d8392; margin-bottom: 0.3rem; }
+.siem__outils { display: flex; gap: 0.9rem; }
+.siem__outil { display: flex; align-items: center; gap: 0.35rem; font-size: 0.95rem; font-weight: 700; color: #1f3b47; }
+.siem__outil svg { font-size: 1.5rem; }
 </style>
 
 </template>
@@ -1270,7 +1286,7 @@ SELECT AUTHORIZATION_NAME, OBJECT_AUTHORITY
 </div>
 
 <!--
-*⏱ 24:10 · 2 min 20 · 20 s avant le 1er clic*
+*⏱ 24:10 · 3 min 00 · 20 s avant le 1er clic*
 
 - Trois exemples suffisent
 - **Sécurité** : niveau de sécurité, essais de connexion, expiration des mots de passe
@@ -1283,14 +1299,18 @@ SELECT AUTHORIZATION_NAME, OBJECT_AUTHORITY
 - public exclu, seul le propriétaire a tout (nom masqué)
 - Sur un vrai système, plus loin : profils *ALLOBJ, échecs de mot de passe (pas sur pub400)
 
-[click] *⏱ 1 min 10* **Tout peut partir vers un SIEM** : Graylog, ELK, ClickStack
-- chemin direct : **syslog RFC 5424**, produit par DISPLAY_JOURNAL et HISTORY_LOG_INFO
-- ou le chemin de **l'étape 2.3** : journal ou file, un consommateur relaie
-- même mécanique pour les données métier et pour la sécurité
-- Principe, **non exécuté** : aucun SIEM sur pub400
+[click] *⏱ 1 min 50* **Tout peut partir ailleurs, par le chemin de l'étape 2.3**
+- deux sorties : **syslog RFC 5424** (DISPLAY_JOURNAL, HISTORY_LOG_INFO), ou journal / file lus par un consommateur
+- **Sécurité → SIEM** : Graylog, ELK, ClickStack
+  - la sécurité de l'IBM i rejoint la supervision de l'entreprise
+- **Données → plateforme data** : entrepôt, datalake, lakehouse
+  - les changements métier alimentent l'analyse, sans toucher aux programmes
+  - c'est **mon métier d'architecte data** : relier l'IBM i à cette plateforme
+- **Même mécanique** pour la sécurité et pour les données
+- Principe, **non exécuté** : ni SIEM ni entrepôt sur pub400
 - À chaque fois : **le système devient une table**
   - conseil IBM : filtrer tôt, matérialiser dans une table
-- Et une table, **ça s'extrait** → dernière partie
+- Et une table, **ça s'extrait** : c'est le chapitre 4
 
 *Source* : exécuté tel quel sur pub400 le 29/09, kit/05-administrer.sql ; texte des messages non affiché (accents abîmés côté JDBC).
 -->
@@ -1325,7 +1345,7 @@ etape: 1
 </div>
 
 <!--
-*⏱ 26:30 · 1 min 20*
+*⏱ 27:10 · 1 min 20*
 
 - L'IBM i **n'est pas un silo** : 4.1, se connecter
 - **ODBC** (IBM i Access) : Windows, Linux, macOS → Python, BI, ETL, DuckDB
@@ -1438,7 +1458,7 @@ apres: "En colonne" {
 </div>
 
 <!--
-*⏱ 27:50 · 2 min 00 · 55 s avant le 1er clic*
+*⏱ 28:30 · 2 min 00 · 55 s avant le 1er clic*
 
 - Sortir les données vers **DuckDB** : base analytique sur un poste, sans serveur
 - Deux chemins, par le pilote ODBC IBM, **les deux ont tourné sur pub400**
@@ -1513,7 +1533,7 @@ Sur le kit : **4** lignes au catalogue → 2 tranches de 2.
 </div>
 
 <!--
-*⏱ 29:50 · 55 s*
+*⏱ 30:30 · 55 s*
 
 - Du script **au pipeline** : dlt, backend pyarrow
   - vers Parquet, saute la normalisation : **20 à 30×** annoncé
@@ -1566,7 +1586,7 @@ duck -> dbt -> ia
 </div>
 
 <!--
-*⏱ 30:45 · 1 min 05 · 1 min 00 avant le 1er clic*
+*⏱ 31:25 · 1 min 05 · 1 min 00 avant le 1er clic*
 
 - Pour finir le chapitre : **en vrai, chez Sinapse**
 - Pas d'outil ? On s'est appuyé **sur le natif** (le pilote ODBC IBM)
@@ -1608,7 +1628,7 @@ chapitre: fin
 </div>
 
 <!--
-*⏱ 31:50 · 1 min 35*
+*⏱ 32:30 · 1 min 35*
 
 - On referme sur **les trois questions** du début
   - **avec un outil** : il accélère, l'IA aussi pour l'état des lieux
@@ -1657,7 +1677,7 @@ Merci — questions ?
 </div>
 
 <!--
-*⏱ 33:25 · 25 s*
+*⏱ 34:05 · 25 s*
 
 - **L'héritage est là. La seule question, c'est ce qu'on en fait.**
 - Merci

@@ -31,7 +31,7 @@ des transactions : il sert à moderniser, administrer, exploiter et ouvrir les d
 
 ### 3. Administrer et exploiter en SQL
 - **Ce que ça montre** : l'état du système (sécurité, messages, droits) se consulte comme une table, avec des requêtes.
-- **Pourquoi ça compte** : contrôles et audits deviennent reproductibles, automatisables et partageables. Et tout peut partir vers l'outil de sécurité de l'entreprise (un SIEM : Graylog, ELK, ClickStack), par le même chemin que l'étape 2.3.
+- **Pourquoi ça compte** : contrôles et audits deviennent reproductibles, automatisables et partageables. Et par le même chemin que l'étape 2.3, tout peut partir ailleurs : la sécurité vers l'outil de supervision de l'entreprise (un SIEM : Graylog, ELK, ClickStack), les données vers la plateforme data (entrepôt, datalake, lakehouse).
 - **À demander à un collègue technique** : « Quels contrôles d'exploitation refait-on à la main que l'on pourrait écrire une fois en SQL ? »
 
 ### 4. L'IBM i, source de données
@@ -68,6 +68,8 @@ des transactions : il sert à moderniser, administrer, exploiter et ouvrir les d
 | **Apache Arrow** | Un format de données en colonnes, très rapide à transférer et à analyser. |
 | **DuckDB** | Une base d'analyse légère, installée sur un poste, sans serveur. |
 | **Parquet** | Un format de fichier en colonnes, compact, courant pour l'analyse. |
+| **Entrepôt de données** | Une base conçue pour l'analyse, qui rassemble les données de plusieurs systèmes. |
+| **Datalake, lakehouse** | Un stockage de fichiers de données brutes ; le lakehouse y ajoute les garanties d'une base (tables, transactions). |
 | **SIEM** | L'outil où la sécurité centralise et analyse les journaux de tous les systèmes (Graylog, ELK, ClickStack…). |
 | **Syslog** | Le format standard d'envoi des journaux vers un outil de supervision. |
 | **Pipeline de données** | Une chaîne automatisée qui extrait, transforme et charge des données. |
