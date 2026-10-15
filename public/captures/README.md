@@ -10,5 +10,6 @@ professionnel à l'écran.
 
 | Fichier | Slide | Contenu | Durée |
 |---|---|---|---|
-| `acs-insert-from-examples.png` | 3. Administrer et exploiter en SQL | ACS → Run SQL Scripts → menu **Edit → Insert from Examples**, la liste des exemples IBM i Services dépliée (idéalement sur *Work Management* ou *Security*) | capture fixe |
+| `acs-exemples-menu.png` | 3. Administrer et exploiter en SQL | ACS (français) → Exécution de scripts SQL → menu **Edition**, sous-menu **Exemples** | capture fixe (fournie le 15/10) |
+| `acs-exemples-liste.png` | 3. Administrer et exploiter en SQL | Fenêtre **Exemples**, catégorie IBM i Services, un exemple affiché | capture fixe (fournie le 15/10) |
 | *(à compléter au fil des chapitres de la refonte)* | | | |

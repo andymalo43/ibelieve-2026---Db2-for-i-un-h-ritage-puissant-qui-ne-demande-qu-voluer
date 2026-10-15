@@ -295,7 +295,7 @@ Source : <a href="https://www.itheis.com/sql-comment-migrer-votre-base-de-donnee
 </div>
 
 <!--
-*⏱ 05:15 · 2 min 05*
+*⏱ 05:15 · 2 min 15*
 
 - En 2021, je vous ai parlé de **migrer des tables**
 - 2019-2022 : **500+ tables DDS → SQL**, avec Itheis, Gaia, Xcase for i
@@ -309,6 +309,7 @@ Source : <a href="https://www.itheis.com/sql-comment-migrer-votre-base-de-donnee
   - une règle dans la base, aucun client ne peut l'oublier
 - Petit périmètre : le natif suffit, `GENERATE_SQL`
 
+**À l'oral** : les chiffres du chantier (délais, phases, incidents évités), rien à l'écran.
 
 - **Dédicace** : merci à E. Sadiman, qui m'a fait confiance, et m'a rendu fan de l'IBM i
 - Transition : migrer la base, c'était la **première marche**
@@ -351,7 +352,7 @@ Principes : <a href="https://redbooks.ibm.com/abstracts/sg248185.html">SG24-8185
 </div>
 
 <!--
-*⏱ 07:20 · 1 min 20 · 30 s avant le 1er clic*
+*⏱ 07:30 · 1 min 20 · 30 s avant le 1er clic*
 
 - Redbook SG24-8185 : pas que l'interface web, **quatre principes**
   - modularisation, couches, data-centric, orientation service
@@ -421,7 +422,7 @@ Kit : <code>kit/rpg/</code> — 5 tables, 7 programmes RPG compilés depuis ACS,
 </div>
 
 <!--
-*⏱ 08:40 · 1 min 40*
+*⏱ 08:50 · 1 min 40*
 
 - Tout ce qui suit a **tourné sur pub400**, un IBM i public
 - Rejouable : le **kit** du dépôt, dans votre bibliothèque
@@ -477,7 +478,7 @@ CALL QSYS2.QCMDEXC(
 </div>
 
 <!--
-*⏱ 10:20 · 1 min 40*
+*⏱ 10:30 · 1 min 40*
 
 - Programmes des années 80, **relations dans le code**, pas dans la base
 - Avant de toucher : retrouver **chaînes d'appels** et **tables utilisées**
@@ -636,7 +637,7 @@ graph LR
 </div>
 
 <!--
-*⏱ 12:00 · 2 min 25 · 40 s avant le 1er clic*
+*⏱ 12:10 · 2 min 25 · 40 s avant le 1er clic*
 
 - Départ : **PS_TRAITER_DEVIS**, valide puis facture un devis
 - La chaîne traverse **deux mondes**, SQL et RPG
@@ -731,7 +732,7 @@ contrat -> app: CALL {class: fil}
 </div>
 
 <!--
-*⏱ 14:25 · 2 min 15*
+*⏱ 14:35 · 2 min 15*
 
 - **Trois programmes, trois époques** : RPG III (OPM), RPG IV free-form, RPG façon Adélia
 - Derrière **trois procédures au contrat identique**
@@ -872,7 +873,7 @@ apres: "Alternative testée : la base publie, chacun vient lire" {
 <div class="text-center mt-3 text-xl" v-click>Le programme n'a pas changé, et <b>la base publie</b> ce qui change.<div class="text-sm opacity-60 mt-1">Testé sur pub400 : journal et file. Aucun consommateur n'est déployé.</div></div>
 
 <!--
-*⏱ 16:40 · 2 min 00 · 45 s avant le 1er clic*
+*⏱ 16:50 · 2 min 00 · 45 s avant le 1er clic*
 
 - Découpler : séparer **celui qui produit un changement** de **ceux qui doivent le connaître**
 - Chez nous aujourd'hui : le programme **appelle lui-même** un service REST (fonctions HTTP de Db2)
@@ -1022,7 +1023,7 @@ conso -> cible {class: eteint}
 </div>
 
 <!--
-*⏱ 18:40 · 2 min 30 · 1 min 10 avant le 1er clic*
+*⏱ 18:50 · 2 min 30 · 1 min 10 avant le 1er clic*
 
 - Deux moyens de publier, **sans toucher aux programmes**
 - **Le journal** d'abord : les tables sont journalisées
@@ -1074,7 +1075,7 @@ neuf -> suivant: puis {class: [fil; etape3]}
 <div class="text-center text-sm opacity-60 mt-1">Principe, non exécuté : le kit montre trois implémentations derrière un même contrat (2.2), pas encore une réécriture.</div>
 
 <!--
-*⏱ 21:10 · 2 min 10 · 25 s avant le 1er clic*
+*⏱ 21:20 · 2 min 10 · 25 s avant le 1er clic*
 
 - Dernière étape : **celle pour laquelle on a fait tout le reste**
 - Aujourd'hui : les appelants (SQL, Java, ODBC, pipeline) appellent **la façade**
@@ -1123,7 +1124,10 @@ chapitre: 3
 
 ### Les exemples sont livrés
 
-<Capture src="captures/acs-insert-from-examples.png" sujet="ACS → Run SQL Scripts → Insert from Examples" duree="capture fixe" hauteur="17rem" />
+<div class="relative" style="height: 17rem">
+  <div class="absolute top-0 left-0"><Capture src="captures/acs-exemples-menu.png" sujet="ACS → Exécution de scripts SQL → Edition → Exemples" duree="capture fixe" hauteur="12rem" /></div>
+  <div class="absolute bottom-0 right-0"><Capture src="captures/acs-exemples-liste.png" sujet="ACS → fenêtre Exemples, IBM i Services" duree="capture fixe" hauteur="12.5rem" /></div>
+</div>
 
 </div>
 
@@ -1136,14 +1140,14 @@ chapitre: 3
 </div>
 
 <!--
-*⏱ 23:20 · 50 s*
+*⏱ 23:30 · 1 min 00*
 
 - **IBM i Services** : vues, fonctions table, procédures dans QSYS2 et SYSTOOLS
 - Le système exposé **sans fichier de sortie**
 - Pour presque chaque commande CL : **son équivalent SQL** (le tableau)
 - À droite : pas besoin de tout connaître par cœur
-  - ACS → Run SQL Scripts → **Edit → Insert from Examples**
-  - des centaines d'exemples, classés par thème
+  - ACS → Exécution de scripts SQL → **Edition → Exemples** (en anglais : Edit → Insert from Examples)
+  - des centaines d'exemples, classés par thème : ici **IBM i Services**, on clique, on insère
 
 *Source* : les cinq services répondent sur pub400 (29/09, kit/05-administrer.sql) ; GROUP_PTF_INFO refusé au compte gratuit.
 -->
@@ -1286,7 +1290,7 @@ SELECT AUTHORIZATION_NAME, OBJECT_AUTHORITY
 </div>
 
 <!--
-*⏱ 24:10 · 3 min 00 · 20 s avant le 1er clic*
+*⏱ 24:30 · 3 min 00 · 20 s avant le 1er clic*
 
 - Trois exemples suffisent
 - **Sécurité** : niveau de sécurité, essais de connexion, expiration des mots de passe
@@ -1345,7 +1349,7 @@ etape: 1
 </div>
 
 <!--
-*⏱ 27:10 · 1 min 20*
+*⏱ 27:30 · 1 min 20*
 
 - L'IBM i **n'est pas un silo** : 4.1, se connecter
 - **ODBC** (IBM i Access) : Windows, Linux, macOS → Python, BI, ETL, DuckDB
@@ -1458,7 +1462,7 @@ apres: "En colonne" {
 </div>
 
 <!--
-*⏱ 28:30 · 2 min 00 · 55 s avant le 1er clic*
+*⏱ 28:50 · 2 min 00 · 55 s avant le 1er clic*
 
 - Sortir les données vers **DuckDB** : base analytique sur un poste, sans serveur
 - Deux chemins, par le pilote ODBC IBM, **les deux ont tourné sur pub400**
@@ -1533,7 +1537,7 @@ Sur le kit : **4** lignes au catalogue → 2 tranches de 2.
 </div>
 
 <!--
-*⏱ 30:30 · 55 s*
+*⏱ 30:50 · 55 s*
 
 - Du script **au pipeline** : dlt, backend pyarrow
   - vers Parquet, saute la normalisation : **20 à 30×** annoncé
@@ -1581,7 +1585,7 @@ dbt -> ia
 <IconCard titre="Le besoin" texte="préparer l'intégration du nouveau SI, anticiper les régressions"><carbon-data-share /></IconCard>
 <IconCard titre="L'existant" texte="ODBC, fiable mais ligne à ligne"><carbon-hourglass /></IconCard>
 <IconCard titre="Construit" texte="Arrow · ADBC · piste Flight SQL"><carbon-tool-kit /></IconCard>
-<div v-click><IconCard titre="Résultat" texte="[volumes, temps avant / après]"><carbon-growth /></IconCard></div>
+<div v-click><IconCard titre="Résultat" texte="les chiffres, de vive voix"><carbon-growth /></IconCard></div>
 </div>
 
 <div class="absolute bottom-4 left-8 text-xs opacity-60">
@@ -1589,7 +1593,7 @@ dbt -> ia
 </div>
 
 <!--
-*⏱ 31:25 · 2 min 05 · 2 min 00 avant le 1er clic*
+*⏱ 31:45 · 2 min 25 · 2 min 00 avant le 1er clic*
 
 - Pour finir le chapitre : **en vrai, chez Sinapse**
 - Pas d'outil ? On s'est appuyé **sur le natif** (le pilote ODBC IBM)
@@ -1604,8 +1608,9 @@ dbt -> ia
   - une **cartographie du SI, face IBM i** : livrables HTML que j'ai développés, mis à jour à partir des sources et des traitements dbt
   - de l'**analyse**, et de l'IA
 
-[click] *⏱ 5 s* **Le résultat**
+[click] *⏱ 25 s* **Le résultat**
 
+**À l'oral** : volumes, temps avant / après, seulement ce qui peut être dit publiquement ; rien d'écrit dans le deck.
 -->
 
 ---
@@ -1637,7 +1642,7 @@ chapitre: fin
 </div>
 
 <!--
-*⏱ 33:30 · 1 min 35*
+*⏱ 34:10 · 1 min 35*
 
 - On referme sur **les trois questions** du début
   - **avec un outil** : il accélère, l'IA aussi pour l'état des lieux
@@ -1686,7 +1691,7 @@ Merci — questions ?
 </div>
 
 <!--
-*⏱ 35:05 · 25 s*
+*⏱ 35:45 · 25 s*
 
 - **L'héritage est là. La seule question, c'est ce qu'on en fait.**
 - Merci
