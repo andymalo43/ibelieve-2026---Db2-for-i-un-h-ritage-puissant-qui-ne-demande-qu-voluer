@@ -1,7 +1,7 @@
 # Db2 for i : un héritage puissant qui ne demande qu'à évoluer
 
 Session de 40 minutes présentée à **iBelieve 2026** (15 octobre 2026, en ligne,
-co-organisé par Itheis et IBM), par Andy, ingénieur de données.
+co-organisé par Itheis et IBM), par Andy MALO, ingénieur de données.
 
 Le propos : sur IBM i, le SQL ne se limite pas au transactionnel. Il sert à
 **moderniser, administrer, exploiter et ouvrir les données** — avec ou sans outil,

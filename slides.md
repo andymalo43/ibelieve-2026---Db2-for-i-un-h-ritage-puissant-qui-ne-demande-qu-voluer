@@ -4,7 +4,7 @@ colorSchema: light
 title: "Db2 for i : un héritage puissant qui ne demande qu'à évoluer"
 info: |
   iBelieve 2026 — 15 octobre 2026
-  Andy — Ingénieur de données, Sinapse
+  Andy MALO — Ingénieur de données, Sinapse
 layout: couverture
 defaults:
   class: gabarit
@@ -21,7 +21,7 @@ drawings:
 
 # Db2 for i : un héritage puissant qui ne demande qu'à évoluer
 
-**Andy** · Ingénieur de données · 15 octobre 2026
+**Andy MALO** · Ingénieur de données · 15 octobre 2026
 
 <!--
 *⏱ 00:00 · 25 s*
@@ -41,7 +41,7 @@ chapitre: intro
 <div class="grid grid-cols-5 gap-6 items-center">
 
 <div class="col-span-2">
-<div class="text-6xl font-bold" style="color: var(--slidev-theme-primary)">Andy</div>
+<div class="text-5xl font-bold whitespace-nowrap" style="color: var(--slidev-theme-primary)">Andy MALO</div>
 <div class="text-xl mt-2">Ingénieur de données · Sinapse</div>
 </div>
 
@@ -69,6 +69,7 @@ chapitre: intro
   <div class="etape">
     <div class="etape__annee">2016 – 2019</div>
     <div class="etape__role">Développeur BI</div>
+    <div class="etape__employeur"><Logo nom="cafat.jpg" alt="CAFAT" hauteur="2rem" /></div>
     <div class="etape__logos"><simple-icons-talend style="color: #ff6d70" /><span class="cognos">Cognos</span></div>
     <div class="etape__note">consomme la base</div>
   </div>
@@ -79,6 +80,7 @@ chapitre: intro
   <div class="etape fort">
     <div class="etape__annee">2019 – 2022</div>
     <div class="etape__role">DBA / DBE Db2 for i</div>
+    <div class="etape__employeur"><Logo nom="cafat.jpg" alt="CAFAT" hauteur="2rem" /></div>
     <div class="etape__logos"><span class="puce puce--multi"><carbon-ibm-i style="color: #1f3b47" /><simple-icons-postgresql style="color: #4169e1" /><carbon-sql style="color: #5d8392" /></span></div>
     <div class="etape__note">500+ tables → SQL</div>
   </div>
@@ -127,6 +129,7 @@ chapitre: intro
 .etape__role { font-weight: 700; font-size: 0.85rem; line-height: 1.15; }
 .etape__logos { display: flex; align-items: center; justify-content: center; gap: 0.4rem; font-size: 1.8rem; min-height: 2.4rem; }
 .etape__note { font-size: 0.7rem; opacity: 0.8; }
+.etape__employeur { display: flex; background: #fff; border-radius: 0.4rem; padding: 0.1rem 0.3rem; }
 .puce { display: inline-flex; align-items: center; background: rgba(255, 255, 255, 0.96); border-radius: 0.6rem; padding: 0.3rem 0.6rem; }
 .cognos { display: inline-flex; align-items: center; font-size: 1rem; font-weight: 800; letter-spacing: 0.02em; color: #1f3b47; }
 .puce--multi { gap: 0.3rem; padding: 0.3rem 0.45rem; }
@@ -137,19 +140,19 @@ chapitre: intro
 </style>
 
 <!--
-*⏱ 00:25 · 2 min 00 · 20 s avant le 1er clic*
+*⏱ 00:25 · 2 min 15 · 20 s avant le 1er clic*
 
 - **Avant 2016** : premières requêtes SQL dans Access, pour des outils Excel
 - Le fil rouge de ma carrière était déjà là : le SQL
 
-[click] *⏱ 15 s* **2016-2019** : développeur BI, Talend et Cognos
+[click] *⏱ 20 s* **2016-2019** : développeur BI à la **CAFAT**, Talend et Cognos
 - J'étais **consommateur** de la base IBM i
 
-[click] *⏱ 30 s* **2019-2022** : DBA puis DBE Db2 for i, de l'autre côté du miroir
+[click] *⏱ 35 s* **2019-2022** : DBA puis DBE Db2 for i, toujours à la CAFAT, de l'autre côté du miroir
 - 500+ tables DDS → SQL
 - Là que je suis tombé amoureux du SQL sur IBM i : **fan assumé**
 
-[click] *⏱ 20 s* **2022-2026** : retour à la data, architecte de données à la CAFAT
+[click] *⏱ 25 s* **2022-2026** : retour à la data, architecte de données, encore à la CAFAT
 - Outils de la data moderne : dbt, dlt, Kestra, ClickHouse
 
 [click] *⏱ 35 s* **Depuis 2026** : ingénieur de données chez Sinapse, dans la continuité
@@ -195,7 +198,7 @@ chapitre: intro
 </div>
 
 <!--
-*⏱ 02:25 · 1 min 35*
+*⏱ 02:40 · 1 min 35*
 
 - Là où je travaille aujourd'hui : ça explique mon regard
 - **Sinapse** : GIE créé en 2024 par la CAFAT, le Gouvernement de la Nouvelle-Calédonie et le FSH
@@ -234,7 +237,7 @@ chapitre: intro
 </div>
 
 <!--
-*⏱ 04:00 · 1 min 15*
+*⏱ 04:15 · 1 min 15*
 
 - Situation connue : IBM i depuis des décennies, **40 ans d'applicatif**
 - Règles métier cachées dans les programmes, peu de documentation
@@ -295,7 +298,7 @@ Source : <a href="https://www.itheis.com/sql-comment-migrer-votre-base-de-donnee
 </div>
 
 <!--
-*⏱ 05:15 · 2 min 15*
+*⏱ 05:30 · 2 min 15*
 
 - En 2021, je vous ai parlé de **migrer des tables**
 - 2019-2022 : **500+ tables DDS → SQL**, avec Itheis, Gaia, Xcase for i
@@ -352,7 +355,7 @@ Principes : <a href="https://redbooks.ibm.com/abstracts/sg248185.html">SG24-8185
 </div>
 
 <!--
-*⏱ 07:30 · 1 min 20 · 30 s avant le 1er clic*
+*⏱ 07:45 · 1 min 20 · 30 s avant le 1er clic*
 
 - Redbook SG24-8185 : pas que l'interface web, **quatre principes**
   - modularisation, couches, data-centric, orientation service
@@ -422,7 +425,7 @@ Kit : <code>kit/rpg/</code> — 5 tables, 7 programmes RPG compilés depuis ACS,
 </div>
 
 <!--
-*⏱ 08:50 · 1 min 40*
+*⏱ 09:05 · 1 min 40*
 
 - Tout ce qui suit a **tourné sur pub400**, un IBM i public
 - Rejouable : le **kit** du dépôt, dans votre bibliothèque
@@ -478,7 +481,7 @@ CALL QSYS2.QCMDEXC(
 </div>
 
 <!--
-*⏱ 10:30 · 1 min 40*
+*⏱ 10:45 · 1 min 40*
 
 - Programmes des années 80, **relations dans le code**, pas dans la base
 - Avant de toucher : retrouver **chaînes d'appels** et **tables utilisées**
@@ -637,7 +640,7 @@ graph LR
 </div>
 
 <!--
-*⏱ 12:10 · 2 min 25 · 40 s avant le 1er clic*
+*⏱ 12:25 · 2 min 25 · 40 s avant le 1er clic*
 
 - Départ : **PS_TRAITER_DEVIS**, valide puis facture un devis
 - La chaîne traverse **deux mondes**, SQL et RPG
@@ -732,7 +735,7 @@ contrat -> app: CALL {class: fil}
 </div>
 
 <!--
-*⏱ 14:35 · 2 min 15*
+*⏱ 14:50 · 2 min 15*
 
 - **Trois programmes, trois époques** : RPG III (OPM), RPG IV free-form, RPG façon Adélia
 - Derrière **trois procédures au contrat identique**
@@ -873,7 +876,7 @@ apres: "Alternative testée : la base publie, chacun vient lire" {
 <div class="text-center mt-3 text-xl" v-click>Le programme n'a pas changé, et <b>la base publie</b> ce qui change.<div class="text-sm opacity-60 mt-1">Testé sur pub400 : journal et file. Aucun consommateur n'est déployé.</div></div>
 
 <!--
-*⏱ 16:50 · 2 min 00 · 45 s avant le 1er clic*
+*⏱ 17:05 · 2 min 00 · 45 s avant le 1er clic*
 
 - Découpler : séparer **celui qui produit un changement** de **ceux qui doivent le connaître**
 - Chez nous aujourd'hui : le programme **appelle lui-même** un service REST (fonctions HTTP de Db2)
@@ -1023,7 +1026,7 @@ conso -> cible {class: eteint}
 </div>
 
 <!--
-*⏱ 18:50 · 2 min 30 · 1 min 10 avant le 1er clic*
+*⏱ 19:05 · 2 min 30 · 1 min 10 avant le 1er clic*
 
 - Deux moyens de publier, **sans toucher aux programmes**
 - **Le journal** d'abord : les tables sont journalisées
@@ -1075,7 +1078,7 @@ neuf -> suivant: puis {class: [fil; etape3]}
 <div class="text-center text-sm opacity-60 mt-1">Principe, non exécuté : le kit montre trois implémentations derrière un même contrat (2.2), pas encore une réécriture.</div>
 
 <!--
-*⏱ 21:20 · 2 min 10 · 25 s avant le 1er clic*
+*⏱ 21:35 · 2 min 10 · 25 s avant le 1er clic*
 
 - Dernière étape : **celle pour laquelle on a fait tout le reste**
 - Aujourd'hui : les appelants (SQL, Java, ODBC, pipeline) appellent **la façade**
@@ -1140,7 +1143,7 @@ chapitre: 3
 </div>
 
 <!--
-*⏱ 23:30 · 1 min 00*
+*⏱ 23:45 · 1 min 00*
 
 - **IBM i Services** : vues, fonctions table, procédures dans QSYS2 et SYSTOOLS
 - Le système exposé **sans fichier de sortie**
@@ -1290,7 +1293,7 @@ SELECT AUTHORIZATION_NAME, OBJECT_AUTHORITY
 </div>
 
 <!--
-*⏱ 24:30 · 3 min 00 · 20 s avant le 1er clic*
+*⏱ 24:45 · 3 min 00 · 20 s avant le 1er clic*
 
 - Trois exemples suffisent
 - **Sécurité** : niveau de sécurité, essais de connexion, expiration des mots de passe
@@ -1349,7 +1352,7 @@ etape: 1
 </div>
 
 <!--
-*⏱ 27:30 · 1 min 20*
+*⏱ 27:45 · 1 min 20*
 
 - L'IBM i **n'est pas un silo** : 4.1, se connecter
 - **ODBC** (IBM i Access) : Windows, Linux, macOS → Python, BI, ETL, DuckDB
@@ -1462,7 +1465,7 @@ apres: "En colonne" {
 </div>
 
 <!--
-*⏱ 28:50 · 2 min 00 · 55 s avant le 1er clic*
+*⏱ 29:05 · 2 min 00 · 55 s avant le 1er clic*
 
 - Sortir les données vers **DuckDB** : base analytique sur un poste, sans serveur
 - Deux chemins, par le pilote ODBC IBM, **les deux ont tourné sur pub400**
@@ -1537,7 +1540,7 @@ Sur le kit : **4** lignes au catalogue → 2 tranches de 2.
 </div>
 
 <!--
-*⏱ 30:50 · 55 s*
+*⏱ 31:05 · 55 s*
 
 - Du script **au pipeline** : dlt, backend pyarrow
   - vers Parquet, saute la normalisation : **20 à 30×** annoncé
@@ -1585,7 +1588,7 @@ dbt -> ia
 <IconCard titre="Le besoin" texte="préparer l'intégration du nouveau SI, anticiper les régressions"><carbon-data-share /></IconCard>
 <IconCard titre="L'existant" texte="ODBC, fiable mais ligne à ligne"><carbon-hourglass /></IconCard>
 <IconCard titre="Construit" texte="Arrow · ADBC · piste Flight SQL"><carbon-tool-kit /></IconCard>
-<div v-click><IconCard titre="Résultat" texte="les chiffres, de vive voix"><carbon-growth /></IconCard></div>
+<IconCard v-click titre="Résultat" texte="les chiffres, de vive voix"><carbon-growth /></IconCard>
 </div>
 
 <div class="absolute bottom-4 left-8 text-xs opacity-60">
@@ -1593,7 +1596,7 @@ dbt -> ia
 </div>
 
 <!--
-*⏱ 31:45 · 2 min 25 · 2 min 00 avant le 1er clic*
+*⏱ 32:00 · 2 min 25 · 2 min 00 avant le 1er clic*
 
 - Pour finir le chapitre : **en vrai, chez Sinapse**
 - Pas d'outil ? On s'est appuyé **sur le natif** (le pilote ODBC IBM)
@@ -1642,7 +1645,7 @@ chapitre: fin
 </div>
 
 <!--
-*⏱ 34:10 · 1 min 35*
+*⏱ 34:25 · 1 min 35*
 
 - On referme sur **les trois questions** du début
   - **avec un outil** : il accélère, l'IA aussi pour l'état des lieux
@@ -1691,7 +1694,7 @@ Merci — questions ?
 </div>
 
 <!--
-*⏱ 35:45 · 25 s*
+*⏱ 36:00 · 25 s*
 
 - **L'héritage est là. La seule question, c'est ce qu'on en fait.**
 - Merci
