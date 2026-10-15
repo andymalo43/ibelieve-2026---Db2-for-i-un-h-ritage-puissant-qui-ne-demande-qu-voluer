@@ -383,7 +383,10 @@ etape: 0
 
 <div class="opacity-70 -mt-2 mb-2"><carbon-checkmark-outline class="inline" /> Tout le SQL qui suit a <b>tourné</b> sur pub400 — et se rejoue avec le <b>kit</b> du dépôt</div>
 
-```d2 {maxHeight: '21rem'}
+<div class="flex items-center gap-4">
+<div class="flex-1 min-w-0">
+
+```d2 {maxHeight: '20rem'}
 ...@theme
 direction: right
 
@@ -420,15 +423,22 @@ rpg.ctl -> donnees.client
 rpg.genfact -> donnees.facture
 ```
 
+</div>
+<div class="flex flex-col items-center gap-1 shrink-0">
+  <img src="/qr/depot.svg" alt="QR code du dépôt GitHub du kit" style="height: 7rem" />
+  <div class="text-xs font-bold" style="color: #1f3b47">Le kit · GitHub</div>
+</div>
+</div>
+
 <div class="absolute bottom-4 left-8 text-xs opacity-60">
 Kit : <code>kit/rpg/</code> — 5 tables, 7 programmes RPG compilés depuis ACS, 3 procédures SQL · sans compilateur : <code>kit/00-terrain.sql</code>
 </div>
 
 <!--
-*⏱ 09:05 · 1 min 40*
+*⏱ 09:05 · 1 min 50*
 
 - Tout ce qui suit a **tourné sur pub400**, un IBM i public
-- Rejouable : le **kit** du dépôt, dans votre bibliothèque
+- Rejouable : le **kit** du dépôt, dans votre bibliothèque ; **QR code** à droite : le dépôt GitHub, à flasher maintenant
 - Schéma petit : clients, devis, lignes, factures
 - Mais les défauts d'une vraie base
   - date stockée en numérique, « parce que c'est partout »
@@ -481,7 +491,7 @@ CALL QSYS2.QCMDEXC(
 </div>
 
 <!--
-*⏱ 10:45 · 1 min 40*
+*⏱ 10:55 · 1 min 40*
 
 - Programmes des années 80, **relations dans le code**, pas dans la base
 - Avant de toucher : retrouver **chaînes d'appels** et **tables utilisées**
@@ -640,7 +650,7 @@ graph LR
 </div>
 
 <!--
-*⏱ 12:25 · 2 min 25 · 40 s avant le 1er clic*
+*⏱ 12:35 · 2 min 25 · 40 s avant le 1er clic*
 
 - Départ : **PS_TRAITER_DEVIS**, valide puis facture un devis
 - La chaîne traverse **deux mondes**, SQL et RPG
@@ -735,7 +745,7 @@ contrat -> app: CALL {class: fil}
 </div>
 
 <!--
-*⏱ 14:50 · 2 min 15*
+*⏱ 15:00 · 2 min 15*
 
 - **Trois programmes, trois époques** : RPG III (OPM), RPG IV free-form, RPG façon Adélia
 - Derrière **trois procédures au contrat identique**
@@ -876,7 +886,7 @@ apres: "Alternative testée : la base publie, chacun vient lire" {
 <div class="text-center mt-3 text-xl" v-click>Le programme n'a pas changé, et <b>la base publie</b> ce qui change.<div class="text-sm opacity-60 mt-1">Testé sur pub400 : journal et file. Aucun consommateur n'est déployé.</div></div>
 
 <!--
-*⏱ 17:05 · 2 min 00 · 45 s avant le 1er clic*
+*⏱ 17:15 · 2 min 00 · 45 s avant le 1er clic*
 
 - Découpler : séparer **celui qui produit un changement** de **ceux qui doivent le connaître**
 - Chez nous aujourd'hui : le programme **appelle lui-même** un service REST (fonctions HTTP de Db2)
@@ -1026,7 +1036,7 @@ conso -> cible {class: eteint}
 </div>
 
 <!--
-*⏱ 19:05 · 2 min 30 · 1 min 10 avant le 1er clic*
+*⏱ 19:15 · 2 min 30 · 1 min 10 avant le 1er clic*
 
 - Deux moyens de publier, **sans toucher aux programmes**
 - **Le journal** d'abord : les tables sont journalisées
@@ -1078,7 +1088,7 @@ neuf -> suivant: puis {class: [fil; etape3]}
 <div class="text-center text-sm opacity-60 mt-1">Principe, non exécuté : le kit montre trois implémentations derrière un même contrat (2.2), pas encore une réécriture.</div>
 
 <!--
-*⏱ 21:35 · 2 min 10 · 25 s avant le 1er clic*
+*⏱ 21:45 · 2 min 10 · 25 s avant le 1er clic*
 
 - Dernière étape : **celle pour laquelle on a fait tout le reste**
 - Aujourd'hui : les appelants (SQL, Java, ODBC, pipeline) appellent **la façade**
@@ -1143,7 +1153,7 @@ chapitre: 3
 </div>
 
 <!--
-*⏱ 23:45 · 1 min 00*
+*⏱ 23:55 · 1 min 00*
 
 - **IBM i Services** : vues, fonctions table, procédures dans QSYS2 et SYSTOOLS
 - Le système exposé **sans fichier de sortie**
@@ -1293,7 +1303,7 @@ SELECT AUTHORIZATION_NAME, OBJECT_AUTHORITY
 </div>
 
 <!--
-*⏱ 24:45 · 3 min 00 · 20 s avant le 1er clic*
+*⏱ 24:55 · 3 min 00 · 20 s avant le 1er clic*
 
 - Trois exemples suffisent
 - **Sécurité** : niveau de sécurité, essais de connexion, expiration des mots de passe
@@ -1352,7 +1362,7 @@ etape: 1
 </div>
 
 <!--
-*⏱ 27:45 · 1 min 20*
+*⏱ 27:55 · 1 min 20*
 
 - L'IBM i **n'est pas un silo** : 4.1, se connecter
 - **ODBC** (IBM i Access) : Windows, Linux, macOS → Python, BI, ETL, DuckDB
@@ -1465,7 +1475,7 @@ apres: "En colonne" {
 </div>
 
 <!--
-*⏱ 29:05 · 2 min 00 · 55 s avant le 1er clic*
+*⏱ 29:15 · 2 min 00 · 55 s avant le 1er clic*
 
 - Sortir les données vers **DuckDB** : base analytique sur un poste, sans serveur
 - Deux chemins, par le pilote ODBC IBM, **les deux ont tourné sur pub400**
@@ -1540,7 +1550,7 @@ Sur le kit : **4** lignes au catalogue → 2 tranches de 2.
 </div>
 
 <!--
-*⏱ 31:05 · 55 s*
+*⏱ 31:15 · 55 s*
 
 - Du script **au pipeline** : dlt, backend pyarrow
   - vers Parquet, saute la normalisation : **20 à 30×** annoncé
@@ -1596,7 +1606,7 @@ dbt -> ia
 </div>
 
 <!--
-*⏱ 32:00 · 2 min 25 · 2 min 00 avant le 1er clic*
+*⏱ 32:10 · 2 min 25 · 2 min 00 avant le 1er clic*
 
 - Pour finir le chapitre : **en vrai, chez Sinapse**
 - Pas d'outil ? On s'est appuyé **sur le natif** (le pilote ODBC IBM)
@@ -1645,7 +1655,7 @@ chapitre: fin
 </div>
 
 <!--
-*⏱ 34:25 · 1 min 35*
+*⏱ 34:35 · 1 min 35*
 
 - On referme sur **les trois questions** du début
   - **avec un outil** : il accélère, l'IA aussi pour l'état des lieux
@@ -1669,6 +1679,11 @@ layout: end
 ## La seule question, c'est ce qu'on en fait.
 
 Merci — questions ?
+
+<div class="absolute flex flex-col items-center gap-1" style="top: 265px; left: 165px">
+  <img src="/qr/depot.svg" alt="QR code du dépôt GitHub du kit" style="height: 7.5rem" />
+  <div class="text-xs font-bold" style="color: #1f3b47">Le kit et le deck · GitHub</div>
+</div>
 
 <div class="mt-8 flex justify-center items-center gap-4">
   <div class="px-5 py-2 rounded-2xl" style="background: var(--gabarit-bandeau)"><Logo nom="ibelieve.png" alt="iBelieve 2026" hauteur="2.6rem" /></div>
@@ -1694,10 +1709,10 @@ Merci — questions ?
 </div>
 
 <!--
-*⏱ 36:00 · 25 s*
+*⏱ 36:10 · 30 s*
 
 - **L'héritage est là. La seule question, c'est ce qu'on en fait.**
 - Merci
-- Le kit et le deck sont sur GitHub : tout se rejoue
+- Le kit et le deck sont sur GitHub : tout se rejoue, **QR code** en bas à gauche
 - Place aux questions
 -->
